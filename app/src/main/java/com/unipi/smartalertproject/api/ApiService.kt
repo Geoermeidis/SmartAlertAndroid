@@ -8,12 +8,13 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
     @POST("api/login")
     fun loginUser(@Body loginInfo: LoginInfo): Call<APIResponse>
     @POST("api/refresh-token")
-    suspend fun refreshToken(refreshToken: String): APIResponse
+    fun refreshToken(@Body refreshToken: String): Call<APIResponse>
     @GET("incidents")
     fun getIncidents(@Header("Authorization") accessToken: String): Call<APIResponse>
 }

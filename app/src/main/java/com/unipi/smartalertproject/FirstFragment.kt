@@ -1,22 +1,21 @@
 package com.unipi.smartalertproject
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.unipi.smartalertproject.api.ApiService
 import com.unipi.smartalertproject.api.AuthManager
 import com.unipi.smartalertproject.api.Models.APIResponse
 import com.unipi.smartalertproject.api.Models.LoginInfo
-import com.unipi.smartalertproject.api.Models.Tokens
 import com.unipi.smartalertproject.api.RetrofitClient
 import com.unipi.smartalertproject.databinding.FragmentFirstBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import com.google.gson.Gson
 
 
 /**
@@ -53,34 +52,44 @@ class FirstFragment : Fragment() {
 
         binding.buttonIncidents.setOnClickListener{
             // create call
-            val token = authManager?.getAccessToken()
-            if (token != null){
-                val call: Call<APIResponse> = apiService.getIncidents("Bearer $token")
-
-                Log.e("Button Incindets", "Incidents clicked!")
-
-                // execute call and wait for response or fail
-                call.enqueue(object : Callback<APIResponse> {
-                    override fun onResponse(call: Call<APIResponse>, response: Response<APIResponse>) {
-                        if (response.isSuccessful) { // Handle successful response here
-                            authManager?.getAccessToken()?.let { it1 -> Log.e("ApiResponse", it1) }
-                            authManager?.getRefreshToken()?.let { it1 -> Log.e("ApiResponse", it1) }
-                        } else {
-                            // Handle error response here
-                            Log.e("Api response 2", response.code().toString())
-                            Log.e("Api response 2", response.message().toString())
-                            // You can check response.code() and response.message() for details
-                        }
-                    }
-
-                    override fun onFailure(call: Call<APIResponse>, t: Throwable) {
-                        // Handle failure here
-                        Log.e("Api error",  t.message.toString())
-                    }
-                })
-            }
+            getIncidents(it)
         }
 
+    }
+
+    private fun getIncidents(view: View){
+        val token = authManager?.getAccessToken()
+        if (token != null && authManager != null){
+            val call: Call<APIResponse> = apiService.getIncidents("Bearer $token")
+
+            Log.e("Incidents button", "Incidents clicked!")
+
+            // execute call and wait for response or fail
+            call.enqueue(object : Callback<APIResponse> {
+                override fun onResponse(call: Call<APIResponse>, response: Response<APIResponse>) {
+                    if (response.isSuccessful) { // TODO incidents
+                        authManager!!.getAccessToken()?.let { it1 -> Log.e("Access token", it1) }
+                        authManager!!.getRefreshToken()?.let { it1 -> Log.e("Refresh token", it1) }
+                    }
+                    else {
+                        // Access token has expired so we must refresh it
+                        if (authManager!!.isAccessTokenExpired(token)){
+                            Log.e("Token expiration", "Token expired")
+                            refreshToken(view)
+                            getIncidents(view)
+                        }
+                        Log.e("Incidents error code", response.code().toString())
+                        Log.e("Incidents error", response.message().toString())
+                        // You can check response.code() and response.message() for details
+                    }
+                }
+
+                override fun onFailure(call: Call<APIResponse>, t: Throwable) {
+                    // Handle failure here
+                    Log.e("Api error",  t.message.toString())
+                }
+            })
+        }
     }
 
     private fun login(view: View){
@@ -92,8 +101,6 @@ class FirstFragment : Fragment() {
         // create call
         val call: Call<APIResponse> = apiService.loginUser(loginData)
 
-        Log.d("Button", "Clicked!")
-
         // execute call and wait for response or fail
         call.enqueue(object : Callback<APIResponse> {
 
@@ -101,7 +108,6 @@ class FirstFragment : Fragment() {
 
                 if (response.isSuccessful) { // Handle successful response here
                     val data: APIResponse? = response.body()
-                    Log.d("Api response", data?.result.toString())
 
                     // Due to an error this must be converted to strings map
                     val tokenMap: Map<String, String>? = data?.result as Map<String, String>?
@@ -111,20 +117,24 @@ class FirstFragment : Fragment() {
                         val refreshToken: String? = tokenMap["refreshToken"]
                         // Store them in shared preferences storage
                         if (accessToken != null) {
-                            Log.e("API Response", accessToken)
+                            Log.d("Access token login", accessToken)
                             authManager?.setAccessToken(accessToken)
-                            authManager?.getAccessToken()?.let { Log.e("Token access", it) }
                         }
                         if (refreshToken != null) {
-                            Log.e("API Response", refreshToken)
+                            Log.d("Refresh token login", refreshToken)
                             authManager?.setRefreshToken(refreshToken)
-                            authManager?.getRefreshToken()?.let { Log.e("Refresh token", it) }
                         }
                     }
 
-                } else {
-                    // Handle error response here
-                    Log.d("Api response", response.code().toString())
+                }
+                else {
+                    // Get api error messages
+                    val apiError = response.errorBody()?.string()
+                    val gson = Gson()
+                    val apiResponse: APIResponse? = gson.fromJson(apiError, APIResponse::class.java)
+                    val errorMessages: List<String>? = apiResponse?.errorMessages
+
+                    errorMessages?.get(0)?.let { Log.e("Api error login response", it) }
                     // You can check response.code() and response.message() for details
                 }
             }
@@ -136,9 +146,44 @@ class FirstFragment : Fragment() {
         })
     }
 
+    private fun refreshToken(view: View){
+        val refreshToken = authManager?.getRefreshToken()
+        if (refreshToken != null){
+            val call: Call<APIResponse> = apiService.refreshToken(refreshToken)
+
+            // execute call and wait for response or fail
+            call.enqueue(object : Callback<APIResponse> {
+                override fun onResponse(call: Call<APIResponse>, response: Response<APIResponse>) {
+                    if (response.isSuccessful) { // new token has been generated
+                        val ApiResponse: APIResponse? = response.body()
+                        val newToken = ApiResponse?.result as String
+                        authManager?.setAccessToken(newToken)
+                        Log.d("New token", newToken)
+                    }
+                    else {
+                        val apiError = response.errorBody()?.string()
+                        val gson = Gson()
+                        val apiResponse: APIResponse? = gson.fromJson(apiError, APIResponse::class.java)
+                        val errorMessages: List<String>? = apiResponse?.errorMessages
+                        if (errorMessages != null) {
+                            Log.e("Refresh failure", errorMessages[0])
+                        }
+
+                    }
+                }
+
+                override fun onFailure(call: Call<APIResponse>, t: Throwable) {
+                    // Handle failure here
+                    Log.e("Api error",  t.message.toString())
+                }
+            })
+        }
+    }
+
     private fun redirectToRegister(view: View){
         // TODO
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
