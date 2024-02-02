@@ -1,11 +1,17 @@
 package com.unipi.smartalertproject
 
+import android.R
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.google.gson.Gson
 import com.unipi.smartalertproject.api.ApiService
 import com.unipi.smartalertproject.api.AuthManager
 import com.unipi.smartalertproject.api.Models.APIResponse
@@ -15,7 +21,6 @@ import com.unipi.smartalertproject.databinding.FragmentFirstBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import com.google.gson.Gson
 
 
 /**
@@ -25,6 +30,7 @@ class FirstFragment : Fragment() {
     private val apiService = RetrofitClient.retrofit.create(ApiService::class.java)
     private var _binding: FragmentFirstBinding? = null
     private var authManager: AuthManager? = null
+    private val utils: Utils = Utils()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -38,8 +44,6 @@ class FirstFragment : Fragment() {
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
         authManager = AuthManager(requireContext())
         return binding.root
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,8 +55,11 @@ class FirstFragment : Fragment() {
         }
 
         binding.buttonIncidents.setOnClickListener{
-            // create call
-            getIncidents(it)
+            //getIncidents(it)
+        }
+
+        binding.buttonSignup.setOnClickListener(){
+            redirectToRegister(it)
         }
 
     }
@@ -123,18 +130,17 @@ class FirstFragment : Fragment() {
                         if (refreshToken != null) {
                             Log.d("Refresh token login", refreshToken)
                             authManager?.setRefreshToken(refreshToken)
+                            utils.showSuccessMessage("You have logged in!", Toast.LENGTH_SHORT, requireContext())
                         }
                     }
 
                 }
                 else {
                     // Get api error messages
-                    val apiError = response.errorBody()?.string()
-                    val gson = Gson()
-                    val apiResponse: APIResponse? = gson.fromJson(apiError, APIResponse::class.java)
-                    val errorMessages: List<String>? = apiResponse?.errorMessages
+                    val apiResponse: APIResponse? = response.errorBody()?.string()
+                        ?.let { utils.convertStringToObject<APIResponse?>(it) }
 
-                    errorMessages?.get(0)?.let { Log.e("Api error login response", it) }
+                    apiResponse?.errorMessages?.get(0)?.let {  utils.showMessage("Login", it, requireContext()) }
                     // You can check response.code() and response.message() for details
                 }
             }
@@ -181,11 +187,13 @@ class FirstFragment : Fragment() {
     }
 
     private fun redirectToRegister(view: View){
-        // TODO
+        findNavController().navigate(com.unipi.smartalertproject.R.id.action_FirstFragment_to_SecondFragment)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
+
 }
