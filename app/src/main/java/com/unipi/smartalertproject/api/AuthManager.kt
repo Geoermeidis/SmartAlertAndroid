@@ -33,6 +33,37 @@ class AuthManager(val context: Context) {
         } // TODO save the strings refreshToken to a string resource file
     }
 
+    fun setUserId(value: String){
+        with(sharedPreferences.edit()) {
+            this?.putString("userId", value)
+            this?.apply()
+        } // TODO save the strings refreshToken to a string resource file
+    }
+
+    fun getUserId(): String? {
+        return sharedPreferences.getString("userId", "")
+    }
+
+    fun setUserIdFromToken(token: String){
+        val payload = decodeToken(token)
+        setUserId(JSONObject(payload).getString("userId"))
+    }
+
+    fun setUserRole(value: String){
+        with(sharedPreferences.edit()) {
+            this?.putString("userRole", value)
+            this?.apply()
+        } // TODO save the strings refreshToken to a string resource file
+    }
+
+    fun getUserRole(): String?{
+        return sharedPreferences.getString("userRole", "")
+    }
+
+    fun setUserRoleFromToken(token: String){
+        val payload = decodeToken(token)
+        setUserRole(JSONObject(payload).getString("userRole"))  // TODO RIGHT JSON
+    }
 
     fun isAccessTokenExpired(token: String): Boolean {
         val payload = decodeToken(token)

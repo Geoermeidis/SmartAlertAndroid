@@ -113,6 +113,7 @@ class SecondFragment : Fragment() {
                         if (response.isSuccessful) { // Handle successful response here
                             utils.showSuccessMessage("You have a created a new account!",
                                 Toast.LENGTH_LONG, requireContext())
+                            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
                         }
                         else {
                             // Get api error messages
@@ -151,12 +152,11 @@ class SecondFragment : Fragment() {
             else {
                 // No validation errors have appeared
                 Log.e("Register error", "Error spotted")
-                val errors: APIResponse? = response.errorBody()?.string()
+
+                val apiResponse: APIResponse? = errorBody
                     ?.let { utils.convertStringToObject<APIResponse?>(it) }
-                if (errors != null) {
-                    utils.showMessage("Error in registering", errors.errorMessages[0],
-                        requireContext())
-                }
+                apiResponse?.errorMessages?.get(0)?.let {  utils.showMessage("Registration", it, requireContext()) }
+
             }
         }
     }

@@ -54,10 +54,6 @@ class FirstFragment : Fragment() {
             login(it)
         }
 
-        binding.buttonIncidents.setOnClickListener{
-            //getIncidents(it)
-        }
-
         binding.buttonSignup.setOnClickListener(){
             redirectToRegister(it)
         }
@@ -122,22 +118,34 @@ class FirstFragment : Fragment() {
                     if (tokenMap != null){  // get access and refresh tokens from the response
                         val accessToken: String? = tokenMap["accessToken"]
                         val refreshToken: String? = tokenMap["refreshToken"]
+
                         // Store them in shared preferences storage
                         if (accessToken != null) {
                             Log.d("Access token login", accessToken)
                             authManager?.setAccessToken(accessToken)
+                            authManager?.getAccessToken()
+                                ?.let { authManager?.setUserIdFromToken(it) }
                         }
                         if (refreshToken != null) {
                             Log.d("Refresh token login", refreshToken)
                             authManager?.setRefreshToken(refreshToken)
                             utils.showSuccessMessage("You have logged in!", Toast.LENGTH_SHORT, requireContext())
+                            if (authManager?.getUserRole().equals("Civilian"))
+                            {  // redirect to submit new incident
+                                findNavController().navigate(com.unipi.smartalertproject.R.id.action_FirstFragment_to_submitIncidentFragment2)
+                            }
+                            else
+                            {
+                                findNavController().navigate(com.unipi.smartalertproject.R.id.action_FirstFragment_to_SecondFragment)
+                            }
                         }
                     }
 
                 }
                 else {
                     // Get api error messages
-                    val apiResponse: APIResponse? = response.errorBody()?.string()
+                    val apiError = response.errorBody()?.string()
+                    val apiResponse: APIResponse? = apiError
                         ?.let { utils.convertStringToObject<APIResponse?>(it) }
 
                     apiResponse?.errorMessages?.get(0)?.let {  utils.showMessage("Login", it, requireContext()) }
@@ -168,11 +176,10 @@ class FirstFragment : Fragment() {
                     }
                     else {
                         val apiError = response.errorBody()?.string()
-                        val gson = Gson()
-                        val apiResponse: APIResponse? = gson.fromJson(apiError, APIResponse::class.java)
-                        val errorMessages: List<String>? = apiResponse?.errorMessages
-                        if (errorMessages != null) {
-                            Log.e("Refresh failure", errorMessages[0])
+                        val errors: APIResponse? = apiError?.let {
+                            utils.convertStringToObject<APIResponse>(it) }
+                        if (errors != null) {
+                            Log.e("Refresh failure", errors.errorMessages[0])
                         }
 
                     }
