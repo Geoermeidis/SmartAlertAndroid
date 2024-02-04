@@ -49,6 +49,8 @@
         android:layout_width="170dp"
         android:layout_height="65dp"
         android:layout_marginTop="72dp"
+        android:entries="@array/dangerCategories"
+        android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.698"
         app:layout_constraintStart_toStartOf="parent"

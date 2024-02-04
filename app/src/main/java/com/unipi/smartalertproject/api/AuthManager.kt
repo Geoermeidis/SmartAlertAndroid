@@ -4,12 +4,19 @@ import android.content.Context
 import android.content.SharedPreferences
 import java.util.Calendar
 import android.util.Log
+import android.view.View
+import com.unipi.smartalertproject.Utils
+import com.unipi.smartalertproject.api.Models.APIResponse
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.Base64
 
 class AuthManager(val context: Context) {
 
     private var sharedPreferences: SharedPreferences = context.getSharedPreferences("com.unipi.smartalertproject.token_keys", Context.MODE_PRIVATE)
+    private val utils: Utils = Utils()
 
     fun getAccessToken(): String? {
         return sharedPreferences.getString("accessToken", "")
@@ -86,4 +93,38 @@ class AuthManager(val context: Context) {
             "Error parsing JWT: $e"
         }
     }
+
+    fun refreshToken(apiService: ApiService){
+        val refreshToken = getRefreshToken()
+        if (refreshToken != null){
+            val call: Call<APIResponse> = apiService.refreshToken(refreshToken)
+
+            // execute call and wait for response or fail
+            call.enqueue(object : Callback<APIResponse> {
+                override fun onResponse(call: Call<APIResponse>, response: Response<APIResponse>) {
+                    if (response.isSuccessful) { // new token has been generated
+                        val apiResponse: APIResponse? = response.body()
+                        val newToken = apiResponse?.result as String
+                        setAccessToken(newToken)
+                        Log.d("New token", newToken)
+                    }
+                    else {
+                        val apiError = response.errorBody()?.string()
+                        val errors: APIResponse? = apiError?.let {
+                            utils.convertStringToObject<APIResponse>(it) }
+                        if (errors != null) {
+                            Log.e("Refresh failure", errors.errorMessages[0])
+                        }
+
+                    }
+                }
+
+                override fun onFailure(call: Call<APIResponse>, t: Throwable) {
+                    // Handle failure here
+                    Log.e("Api error",  t.message.toString())
+                }
+            })
+        }
+    }
+
 }

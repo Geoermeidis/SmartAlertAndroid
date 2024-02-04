@@ -37,7 +37,7 @@ data class Incident(
     @SerializedName("userId") val userId: String,
     @SerializedName("longitude")  val longitude: Double,
     @SerializedName("latitude") val latitude: Double,
-    @SerializedName("Comments") val comments: String,
-    @SerializedName("photoURL") val photoUrl: String,
-    @SerializedName("categoryName") val categoryName: Double
+    @SerializedName("comments") val comments: String,
+    @SerializedName("photoURL") val photoUrl: String = "",
+    @SerializedName("categoryName") val categoryName: String
 )
