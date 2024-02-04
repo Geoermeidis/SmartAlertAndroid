@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "390126396237",
+    "firebase_url": "https://smartalert-2faa1-default-rtdb.firebaseio.com",
+    "project_id": "smartalert-2faa1",
+    "storage_bucket": "smartalert-2faa1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:390126396237:android:f245a8e8d8f913f3690d04",
+        "android_client_info": {
+          "package_name": "com.unipi.smartalertproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgC1C_A2HRPjDdvW7Fz_L9s0uTQ-OsYFo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
