@@ -1,6 +1,7 @@
 package com.unipi.smartalertproject.api
 
 import com.unipi.smartalertproject.api.Models.APIResponse
+import com.unipi.smartalertproject.api.Models.Incident
 import com.unipi.smartalertproject.api.Models.LoginInfo
 import com.unipi.smartalertproject.api.Models.RegisterInfo
 import retrofit2.Call
@@ -18,4 +19,6 @@ interface ApiService {
     fun refreshToken(@Body refreshToken: String): Call<APIResponse>
     @GET("incidents")
     fun getIncidents(@Header("Authorization") accessToken: String): Call<APIResponse>
+    @POST("incidents/create")
+    fun submitIncident(@Header("Authorization") accessToken: String, @Body incident: Incident): Call<APIResponse>
 }

@@ -5,48 +5,52 @@
     android:id="@+id/constraintLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CivilianFragments.SubmitIncidentFragment" >
+    tools:context=".civilianFragments.SubmitIncidentFragment" >
 
     <Button
         android:id="@+id/button_submit_incident"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="244dp"
+        android:layout_width="127dp"
+        android:layout_height="51dp"
+        android:layout_marginBottom="32dp"
         android:text="Submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:text="Submit new incident"
         android:textSize="30sp"
-        tools:layout_editor_absoluteX="69dp"
-        tools:layout_editor_absoluteY="41dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/text_comments"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="259dp"
+        android:layout_height="77dp"
         android:ems="10"
         android:gravity="start|top"
         android:hint="Comments"
         android:inputType="textMultiLine"
         app:layout_constraintBottom_toTopOf="@+id/button_camera"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        app:layout_constraintVertical_bias="0.445" />
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="84dp"
+        android:layout_width="170dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="72dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.679"
+        app:layout_constraintHorizontal_bias="0.698"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -62,13 +66,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+
     <Button
         android:id="@+id/button_camera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="152dp"
         android:text="Take photo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="362dp" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+
+    <ImageView
+        android:id="@+id/view_photo"
+        android:layout_width="286dp"
+        android:layout_height="163dp"
+        android:src="?attr/actionModeBackground"
+        app:layout_constraintBottom_toTopOf="@+id/button_submit_incident"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_camera" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

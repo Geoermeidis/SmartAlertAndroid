@@ -1,17 +1,15 @@
 package com.unipi.smartalertproject
 
-import android.R
+
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.google.gson.Gson
 import com.unipi.smartalertproject.api.ApiService
 import com.unipi.smartalertproject.api.AuthManager
 import com.unipi.smartalertproject.api.Models.APIResponse
@@ -21,16 +19,37 @@ import com.unipi.smartalertproject.databinding.FragmentFirstBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.core.content.ContextCompat
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class FirstFragment : Fragment() {
+
     private val apiService = RetrofitClient.retrofit.create(ApiService::class.java)
     private var _binding: FragmentFirstBinding? = null
     private var authManager: AuthManager? = null
     private val utils: Utils = Utils()
+    private val locationPermissionRequest = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        // Handle Permission granted/rejected
+        var permissionGranted = true
+        permissions.entries.forEach {
+        if (it.key in REQUIRED_PERMISSIONS && !it.value)
+            permissionGranted = false
+        }
+        if (!permissionGranted) {
+            utils.showMessage("Permissions", "Permission request denied",
+                requireContext())
+        }
+        else {
+            Log.i("Permissions", "Permissions granted")
+        }
+    }
+
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -54,10 +73,34 @@ class FirstFragment : Fragment() {
             login(it)
         }
 
-        binding.buttonSignup.setOnClickListener(){
-            redirectToRegister(it)
+        binding.buttonSignup.setOnClickListener{
+            if (allPermissionsGranted()) {
+                Log.i("Permissions button", "Permissions granted" )
+            } else {
+                requestPermissions()
+            }
+
+            //redirectToRegister(it)
         }
 
+    }
+
+    private fun requestPermissions() {
+        locationPermissionRequest.launch(REQUIRED_PERMISSIONS)
+    }
+
+    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
+        ContextCompat.checkSelfPermission(
+            requireContext(), it) == PackageManager.PERMISSION_GRANTED
+    }
+
+    companion object {
+        private val REQUIRED_PERMISSIONS =
+            mutableListOf (
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ).apply {
+            }.toTypedArray()
     }
 
     private fun getIncidents(view: View){
@@ -123,20 +166,22 @@ class FirstFragment : Fragment() {
                         if (accessToken != null) {
                             Log.d("Access token login", accessToken)
                             authManager?.setAccessToken(accessToken)
-                            authManager?.getAccessToken()
-                                ?.let { authManager?.setUserIdFromToken(it) }
+                            authManager?.setUserIdFromToken(accessToken)
+                            authManager?.setUserRoleFromToken(accessToken)
                         }
                         if (refreshToken != null) {
                             Log.d("Refresh token login", refreshToken)
                             authManager?.setRefreshToken(refreshToken)
                             utils.showSuccessMessage("You have logged in!", Toast.LENGTH_SHORT, requireContext())
+                            authManager?.getUserRole()?.let { Log.d("User role", it) }
+                            authManager?.getUserId()?.let { Log.d("User id", it) }
                             if (authManager?.getUserRole().equals("Civilian"))
                             {  // redirect to submit new incident
-                                findNavController().navigate(com.unipi.smartalertproject.R.id.action_FirstFragment_to_submitIncidentFragment2)
+                                findNavController().navigate(R.id.action_FirstFragment_to_submitIncidentFragment2)
                             }
                             else
                             {
-                                findNavController().navigate(com.unipi.smartalertproject.R.id.action_FirstFragment_to_SecondFragment)
+                                findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
                             }
                         }
                     }

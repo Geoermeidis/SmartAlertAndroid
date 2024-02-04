@@ -30,7 +30,15 @@
     </fragment>
     <fragment
         android:id="@+id/submitIncidentFragment2"
-        android:name="com.unipi.smartalertproject.CivilianFragments.SubmitIncidentFragment"
+        android:name="com.unipi.smartalertproject.civilianFragments.SubmitIncidentFragment"
         android:label="fragment_submit_incident"
-        tools:layout="@layout/fragment_submit_incident" />
+        tools:layout="@layout/fragment_submit_incident" >
+        <action
+            android:id="@+id/action_submitIncidentFragment2_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.unipi.smartalertproject.helperFragments.CameraFragment"
+        android:label="CameraFragment" />
 </navigation>

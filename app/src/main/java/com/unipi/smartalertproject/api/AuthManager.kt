@@ -46,7 +46,7 @@ class AuthManager(val context: Context) {
 
     fun setUserIdFromToken(token: String){
         val payload = decodeToken(token)
-        setUserId(JSONObject(payload).getString("userId"))
+        setUserId(JSONObject(payload).getString("Id"))
     }
 
     fun setUserRole(value: String){
@@ -62,7 +62,7 @@ class AuthManager(val context: Context) {
 
     fun setUserRoleFromToken(token: String){
         val payload = decodeToken(token)
-        setUserRole(JSONObject(payload).getString("userRole"))  // TODO RIGHT JSON
+        setUserRole(JSONObject(payload).getString("Role"))  // TODO RIGHT JSON
     }
 
     fun isAccessTokenExpired(token: String): Boolean {
