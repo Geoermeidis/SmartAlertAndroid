@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="dangerCategories">
+        <item>
+            tornado
+        </item>
+        <item>
+            earthquake
+        </item>
+        <item>
+            avalanche
+        </item>
+        <item>
+            landslide
+        </item>
+        <item>
+            storm
+        </item>
+        <item>
+            floods
+        </item>
+        <item>
+            typhoon
+        </item>
+        <item>
+            cyclone
+        </item>
+        <item>
+            fire
+        </item>
+        <item>
+            volcano erruption
+        </item>
+        <item>
+            heatwave
+        </item>
+    </array>
+</resources>
