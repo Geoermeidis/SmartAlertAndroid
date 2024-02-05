@@ -12,6 +12,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.Base64
+import java.util.Date
 
 class AuthManager(val context: Context) {
 
@@ -69,16 +70,18 @@ class AuthManager(val context: Context) {
 
     fun setUserRoleFromToken(token: String){
         val payload = decodeToken(token)
-        setUserRole(JSONObject(payload).getString("Role"))  // TODO RIGHT JSON
+        setUserRole(JSONObject(payload).getString("Role"))
     }
 
     fun isAccessTokenExpired(token: String): Boolean {
         val payload = decodeToken(token)
-        val expirationDateLong: Long = JSONObject(payload).getString("exp").toLong()
+        val expirationDate = Date(JSONObject(payload).getString("exp").toLong() * 1000)
+        val currentDate: Date = Calendar.getInstance().time
 
-        Log.e("Date expiring", expirationDateLong.toString())
-        Log.e("Date current", Calendar.getInstance().time.time.toString())
-        return expirationDateLong <= Calendar.getInstance().time.time  // expiration has passed
+        Log.e("Date expiring", expirationDate.toString())
+        Log.e("Date current", Calendar.getInstance().time.toString())
+
+        return expirationDate <= currentDate // expiration has passed
     }
 
     private fun decodeToken(jwt: String): String {

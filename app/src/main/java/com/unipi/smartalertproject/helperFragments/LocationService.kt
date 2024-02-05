@@ -28,8 +28,8 @@ class LocationService(fragment: Fragment) {
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
     private val utils: Utils = Utils()
-    private var latitude: Double = -1.0
-    private var longitude: Double = -1.0
+    private var latitude: Double = -181.0
+    private var longitude: Double = -181.0
 
     init {
         _fragment = fragment
