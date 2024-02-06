@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_FirstFragment_to_submitIncidentFragment2"
             app:destination="@id/submitIncidentFragment2" />
+        <action
+            android:id="@+id/action_FirstFragment_to_incidentsPreviewFragment2"
+            app:destination="@id/incidentsPreviewFragment2" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -41,4 +44,9 @@
         android:id="@+id/cameraFragment"
         android:name="com.unipi.smartalertproject.helperFragments.CameraFragment"
         android:label="CameraFragment" />
+    <fragment
+        android:id="@+id/incidentsPreviewFragment2"
+        android:name="com.unipi.smartalertproject.officerFragments.IncidentsPreviewFragment"
+        android:label="fragment_incidents_preview"
+        tools:layout="@layout/fragment_incidents_preview" />
 </navigation>

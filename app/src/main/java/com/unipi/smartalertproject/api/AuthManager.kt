@@ -4,9 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import java.util.Calendar
 import android.util.Log
-import android.view.View
-import com.unipi.smartalertproject.Utils
-import com.unipi.smartalertproject.api.Models.APIResponse
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback

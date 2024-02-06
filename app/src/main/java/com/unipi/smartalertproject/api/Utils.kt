@@ -1,15 +1,13 @@
-package com.unipi.smartalertproject
+package com.unipi.smartalertproject.api
 
-import android.app.Dialog
 import android.content.Context
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.DialogFragment
 import com.google.gson.Gson
+import com.unipi.smartalertproject.R
 
 class Utils {
     fun showSuccessMessage(text: String, duration: Int, context: Context){
@@ -49,7 +47,8 @@ class Utils {
 
     fun showScrollableDialog(context: Context, title: String, message: String){
         val inflater = LayoutInflater.from(context)
-        val view: View = inflater.inflate(R.layout.scrollable_dialog_content,
+        val view: View = inflater.inflate(
+            R.layout.scrollable_dialog_content,
             null)
 
         view.findViewById<TextView>(R.id.textViewScrollableContent).text = message

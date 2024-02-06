@@ -1,32 +1,20 @@
 package com.unipi.smartalertproject
 
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.Granularity
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.Priority
 import com.unipi.smartalertproject.api.ApiService
 import com.unipi.smartalertproject.api.AuthManager
-import com.unipi.smartalertproject.api.Models.APIResponse
-import com.unipi.smartalertproject.api.Models.LoginInfo
+import com.unipi.smartalertproject.api.APIResponse
+import com.unipi.smartalertproject.api.LoginInfo
 import com.unipi.smartalertproject.api.RetrofitClient
+import com.unipi.smartalertproject.api.Utils
 import com.unipi.smartalertproject.databinding.FragmentFirstBinding
 import com.unipi.smartalertproject.helperFragments.LocationService
 import retrofit2.Call
@@ -73,40 +61,7 @@ class FirstFragment : Fragment() {
         }
 
     }
-/*
-    private fun getIncidents(view: View){
-        val token = authManager?.getAccessToken()
-        if (token != null && authManager != null){
-            val call: Call<APIResponse> = apiService.getIncidents("Bearer $token")
 
-            Log.e("Incidents button", "Incidents clicked!")
-
-            // execute call and wait for response or fail
-            call.enqueue(object : Callback<APIResponse> {
-                override fun onResponse(call: Call<APIResponse>, response: Response<APIResponse>) {
-                    if (response.isSuccessful) { // TODO incidents
-                        }
-                    else {
-                        // Access token has expired so we must refresh it
-                        if (authManager!!.isAccessTokenExpired(token)){
-                            Log.e("Token expiration", "Token expired")
-                            refreshToken(view)
-                            getIncidents(view)
-                        }
-                        Log.e("Incidents error code", response.code().toString())
-                        Log.e("Incidents error", response.message().toString())
-                        // You can check response.code() and response.message() for details
-                    }
-                }
-
-                override fun onFailure(call: Call<APIResponse>, t: Throwable) {
-                    // Handle failure here
-                    Log.e("Api error",  t.message.toString())
-                }
-            })
-        }
-    }
-*/
     private fun login(view: View){
         // Get user data
         val name = binding.textName.text.toString()
@@ -150,7 +105,7 @@ class FirstFragment : Fragment() {
                             }
                             else
                             {
-                                findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+                                findNavController().navigate(R.id.action_FirstFragment_to_incidentsPreviewFragment2)
                             }
                         }
                     }

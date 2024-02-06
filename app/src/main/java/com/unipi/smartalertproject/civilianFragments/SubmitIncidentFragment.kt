@@ -2,29 +2,23 @@ package com.unipi.smartalertproject.civilianFragments
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
-import androidx.core.view.drawToBitmap
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
-import com.unipi.smartalertproject.R
-import com.unipi.smartalertproject.Utils
+import com.unipi.smartalertproject.api.Utils
 import com.unipi.smartalertproject.api.ApiService
 import com.unipi.smartalertproject.api.AuthManager
-import com.unipi.smartalertproject.api.Models.APIResponse
-import com.unipi.smartalertproject.api.Models.Incident
-import com.unipi.smartalertproject.api.Models.LoginInfo
-import com.unipi.smartalertproject.api.Models.ValidationProblem
+import com.unipi.smartalertproject.api.APIResponse
+import com.unipi.smartalertproject.api.CreateIncidentDTO
+import com.unipi.smartalertproject.api.Incident
+import com.unipi.smartalertproject.api.ValidationProblem
 import com.unipi.smartalertproject.api.RetrofitClient
 import com.unipi.smartalertproject.databinding.FragmentSubmitIncidentBinding
 import com.unipi.smartalertproject.helperFragments.CameraFragment
@@ -119,7 +113,7 @@ class SubmitIncidentFragment : Fragment(), CameraFragment.ISendDataFromDialog{
                 val photoUrl = "$folder$incidentImageName"
 
                 // create incident
-                val incidentData = Incident( userId, longitude, latitude, comments, photoUrl, category)
+                val incidentData = CreateIncidentDTO( userId, longitude, latitude, comments, photoUrl, category)
 
                 // create call and send authorization token
                 val call: Call<APIResponse> = apiService.submitIncident("Bearer $token",

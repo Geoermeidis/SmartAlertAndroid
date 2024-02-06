@@ -19,7 +19,7 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
-import com.unipi.smartalertproject.Utils
+import com.unipi.smartalertproject.api.Utils
 import com.unipi.smartalertproject.databinding.FragmentCameraBinding
 import java.io.IOException
 import java.text.SimpleDateFormat

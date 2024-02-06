@@ -1,11 +1,19 @@
-package com.unipi.smartalertproject.api.Models
+package com.unipi.smartalertproject.api
 
 import com.google.gson.annotations.SerializedName
+import java.time.OffsetDateTime
+import java.util.Date
 
 data class APIResponse(
     @SerializedName("result") val result: Any?,
     @SerializedName("errorMessages") val errorMessages:List<String>
 )
+
+data class IncidentAPIResponse(
+    @SerializedName("result") val result: List<Incident>,
+    @SerializedName("errorMessages") val errorMessages:List<String>
+)
+
 
 class LoginInfo(
     @SerializedName("username") val username: String,
@@ -33,11 +41,23 @@ data class ValidationProblem(
     @SerializedName("errors") val errors: Map<String, List<String>>
 )
 
-data class Incident(
+data class CreateIncidentDTO(
     @SerializedName("userId") val userId: String,
     @SerializedName("longitude")  val longitude: Double,
     @SerializedName("latitude") val latitude: Double,
     @SerializedName("comments") val comments: String,
     @SerializedName("photoURL") val photoUrl: String = "",
     @SerializedName("categoryName") val categoryName: String
+)
+
+data class Incident(
+    @SerializedName("categoryName") val categoryName: String,
+    @SerializedName("comments") val comments: String,
+    @SerializedName("submittedByUsername") val submittedByUsername: String,
+    @SerializedName("photoURL") val photoUrl: String,
+    @SerializedName("latitude") val latitude: Double,
+    @SerializedName("longitude")  val longitude: Double,
+    @SerializedName("submittedAt") val submittedAt: String,
+    @SerializedName("totalSubmissions") val totalSubmissions: Int,
+    @SerializedName("state") val state: Int,
 )
