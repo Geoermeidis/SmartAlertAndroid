@@ -7,15 +7,20 @@ import android.location.Geocoder
 import android.os.Bundle
 import android.text.Layout.Alignment
 import android.util.Log
+import android.util.TypedValue
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TableRow
 import android.widget.TextView
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.unipi.smartalertproject.R
@@ -28,6 +33,7 @@ import com.unipi.smartalertproject.api.RetrofitClient
 import com.unipi.smartalertproject.api.Utils
 import com.unipi.smartalertproject.databinding.FragmentIncidentsPreviewBinding
 import com.unipi.smartalertproject.databinding.FragmentSubmitIncidentBinding
+import com.unipi.smartalertproject.helperFragments.IncidentInfoDialogFragment
 import com.unipi.smartalertproject.helperFragments.LocationService
 import retrofit2.Call
 import retrofit2.Callback
@@ -58,61 +64,75 @@ class IncidentsPreviewFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
     private fun fillTable(){
-        val geocoder = Geocoder(requireContext())
+        // get only submitted incidents
+        incidents.filter { incident: Incident -> incident.state == 0 } .forEach { incident ->
 
-        incidents.forEach { incident ->
-            var addressCity= "Birmingham"
-            var address = ""
             val density = resources.displayMetrics.density
-//            geocoder.getFromLocation(incident.latitude,incident.longitude,1,
-//                object : Geocoder.GeocodeListener{
-//                    override fun onGeocode(addresses: MutableList<Address>) {
-//                        addressCity = addresses[0].locality
-//                        address = addresses[0].toString()
-//                        // code
-//                    }
-//                }
-//            )
+            val padding = (2 * density + 0.5f).toInt()
 
             val categoryView = TextView(requireContext()).apply {
                 text = incident.categoryName.replaceFirstChar {cat ->
                     if (cat.isLowerCase()) cat.titlecase(Locale.getDefault()) else cat.toString()
                 }
-                setPadding(3, 3, 3, 3)
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+                setPadding(padding, padding, padding, padding)
             }
 
             val submissionsView = TextView(requireContext()).apply {
                 text = incident.totalSubmissions.toString()
-                setPadding(3, 3, 3, 3)
+                setPadding(padding, padding, padding, padding)
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
                 textAlignment = View.TEXT_ALIGNMENT_CENTER
+
             }
 
-            val infoBtn = Button(requireContext()).apply {
-                setBackgroundColor(Color.BLUE)
-                layoutParams = TableRow.LayoutParams((40 * density + 0.5f).toInt(),
-                    (40 * density + 0.5f).toInt()).apply {
+            val infoBtn = ImageButton(requireContext()).apply {
+                setImageResource(R.drawable.info_icon)
+                scaleType = ImageView.ScaleType.FIT_XY
+                layoutParams = TableRow.LayoutParams((60 * density + 0.5f).toInt(),
+                    (50 * density + 0.5f).toInt()).apply {
                     setMargins(
-                        (10 * density + 0.5f).toInt(),
+                        (5 * density + 0.5f).toInt(),
                         (3 * density + 0.5f).toInt(),
                         (2 * density + 0.5f).toInt(),
                         (3 * density + 0.5f).toInt()
                     )
                 }
-                setPadding(3, 3, 3, 3)
+                setPadding(padding, padding, padding, padding)
+                contentDescription = "Information"
+                setOnClickListener {
+                    val bundle = bundleOf("incident" to incident)
+                    val infoDialog = IncidentInfoDialogFragment()
+                    infoDialog.arguments = bundle
+                    infoDialog.show(childFragmentManager, "InfoDialogFragment")
+                }
+            }
+
+            val rejectBtn = ImageButton(requireContext()).apply {
+                setImageResource(R.drawable.rejected_icon)
+                scaleType = ImageView.ScaleType.FIT_XY
+                layoutParams = TableRow.LayoutParams((60 * density + 0.5f).toInt(),
+                    (50 * density + 0.5f).toInt()).apply {
+                    setMargins(
+                        (2 * density + 0.5f).toInt(),
+                        (3 * density + 0.5f).toInt(),
+                        (2 * density + 0.5f).toInt(),
+                        (3 * density + 0.5f).toInt()
+                    )
+                }
+                setPadding(padding, padding, padding, padding)
+                contentDescription = "Reject"
                 setOnClickListener {
 
                 }
             }
 
-            val photoBtn = Button(requireContext()).apply {
-                setBackgroundColor(Color.GRAY)
-                layoutParams = TableRow.LayoutParams((40 * density + 0.5f).toInt(),
-                    (40 * density + 0.5f).toInt()).apply {
+            val acceptBtn = ImageButton(requireContext()).apply {
+                setImageResource(R.drawable.accepted_icon)
+                scaleType = ImageView.ScaleType.FIT_XY
+                layoutParams = TableRow.LayoutParams((60 * density + 0.5f).toInt(),
+                    (50 * density + 0.5f).toInt()).apply {
                     setMargins(
                         (2 * density + 0.5f).toInt(),
                         (3 * density + 0.5f).toInt(),
@@ -120,48 +140,17 @@ class IncidentsPreviewFragment : Fragment() {
                         (3 * density + 0.5f).toInt()
                     )
                 }
-                setPadding(3, 3, 3, 3)
-                setOnClickListener {
 
-                }
-            }
-
-            val rejectBtn = Button(requireContext()).apply {
-                setBackgroundColor(Color.RED)
-                layoutParams = TableRow.LayoutParams((40 * density + 0.5f).toInt(),
-                    (40 * density + 0.5f).toInt()).apply {
-                    setMargins(
-                        (2 * density + 0.5f).toInt(),
-                        (3 * density + 0.5f).toInt(),
-                        (2 * density + 0.5f).toInt(),
-                        (3 * density + 0.5f).toInt()
-                    )
-                }
-                setPadding(3, 3, 3, 3)
-                setOnClickListener {
-
-                }
-            }
-
-            val acceptBtn = Button(requireContext()).apply {
-                setBackgroundColor(Color.GREEN)
-                layoutParams = TableRow.LayoutParams((40 * density + 0.5f).toInt(),
-                    (40 * density + 0.5f).toInt()).apply {
-                    setMargins(
-                        (2 * density + 0.5f).toInt(),
-                        (3 * density + 0.5f).toInt(),
-                        (2 * density + 0.5f).toInt(),
-                        (3 * density + 0.5f).toInt()
-                    )
-                }
-                setPadding(3, 3, 3, 3)
+                setPadding(padding, padding, padding, padding)
+                contentDescription = "Accept"
                 setOnClickListener {
 
                 }
             }
 
             val divider = View(requireContext()).apply {
-                layoutParams =  TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 10) // Height in pixels
+                layoutParams =  TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    (8 * density + 0.5f).toInt()) // Height in pixels
                 setBackgroundColor(Color.GRAY)
             }
 
@@ -169,15 +158,14 @@ class IncidentsPreviewFragment : Fragment() {
                 addView(categoryView)
                 addView(submissionsView)
                 addView(infoBtn)
-                addView(photoBtn)
                 addView(acceptBtn)
                 addView(rejectBtn)
             }
 
-
-            // todo add divider view in rows and columns
-            // todo make date appear only the date and in hover appear the time too
             // todo fix geocoder
+            // todo add map with icons and pointers
+            // todo add info pop up
+            // todo add images instead of buttons/images on buttons
 
             binding.tableIncidents.addView(tableRow)
             binding.tableIncidents.addView(divider)

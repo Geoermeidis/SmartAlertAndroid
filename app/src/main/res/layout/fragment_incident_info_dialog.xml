@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".officerFragments.IncidentsPreviewFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <TableLayout
+            android:id="@+id/table"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:stretchColumns="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="10dp">
+
+            <TableRow>
+                <TextView
+                    android:id="@+id/categoryHeaderText"
+                    android:layout_column="0"
+                    android:padding="3dip"
+                    android:textSize="22sp"
+                    android:text="Category: " />
+
+                <TextView
+                    android:id="@+id/categoryInfoText"
+                    android:layout_column="1"
+                    android:gravity="center"
+                    android:padding="15dip"
+                    android:textSize="22sp" />
+
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:id="@+id/dateHeaderText"
+                    android:layout_column="0"
+                    android:padding="3dip"
+                    android:textSize="22sp"
+                    android:text="Submitted at: " />
+
+                <TextView
+                    android:id="@+id/dateInfoText"
+                    android:layout_column="1"
+                    android:gravity="center"
+                    android:padding="15dip"
+                    android:textSize="22sp" />
+
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:id="@+id/locationHeaderText"
+                    android:layout_column="0"
+                    android:padding="3dip"
+                    android:textSize="22sp"
+                    android:text="Address: " />
+
+                <TextView
+                    android:id="@+id/locationInfoText"
+                    android:layout_column="1"
+                    android:gravity="center"
+                    android:padding="15dip"
+                    android:textSize="22sp" />
+
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:id="@+id/commentsHeaderText"
+                    android:layout_column="0"
+                    android:padding="3dip"
+                    android:textSize="22sp"
+                    android:text="Comments: " />
+
+                <ScrollView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/commentsInfoText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="5"
+                        android:textSize="18sp"
+                        android:scrollbars="vertical"
+                        android:gravity="start|top"
+                        android:padding="8dp"/>
+                </ScrollView>
+
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:id="@+id/submitsHeaderText"
+                    android:layout_column="0"
+                    android:padding="3dip"
+                    android:textSize="22sp"
+                    android:text="Submissions: " />
+
+                <TextView
+                    android:id="@+id/submitsInfoText"
+                    android:layout_column="1"
+                    android:gravity="center"
+                    android:padding="15dip"
+                    android:textSize="22sp"/>
+
+            </TableRow>
+
+            <TableRow>
+                <ImageView
+                    android:id="@+id/imageInfoText"
+                    android:scaleType="fitXY"
+                    android:layout_height="250dp"
+                    android:layout_span="2"
+                    />
+            </TableRow>
+        </TableLayout>
+
+        <Button
+            android:id="@+id/button_backto_incidents"
+            android:layout_width="200dp"
+            android:layout_height="70dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/table"
+            android:text="Back"
+            android:textSize="22sp"
+            android:layout_marginTop="15dp"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

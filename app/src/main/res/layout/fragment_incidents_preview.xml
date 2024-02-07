@@ -17,7 +17,6 @@
             android:id="@+id/table_incidents"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:stretchColumns="3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -27,29 +26,89 @@
             <TableRow>
 
                 <TextView
+                    android:layout_column="0"
+                    android:padding="3dip"
+                    android:textSize="20sp"
+                    android:text="Category" />
+
+                <TextView
                     android:layout_column="1"
                     android:padding="3dip"
-                    android:text="Category" />
+                    android:text="Submits"
+                    android:textSize="20sp"
+                    android:textAlignment="center"
+                    />
 
                 <TextView
                     android:layout_column="2"
                     android:padding="3dip"
-                    android:text="Submissions"
-                    />
-
-                <TextView
-                    android:layout_column="3"
-                    android:padding="3dip"
+                    android:layout_span="4"
+                    android:textSize="20sp"
                     android:textAlignment="center"
                     android:text="Actions" />
-
-
 
             </TableRow>
 
             <View
                 android:layout_height="2dip"
                 android:background="#FF909090" />
+
+<!--            <TableRow>-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:text="Earthquake"-->
+<!--                    android:gravity="center"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:padding="3dp"/>-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="100000"-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:padding="3dp"/>-->
+
+<!--                <ImageButton-->
+<!--                    android:src="@drawable/info_icon"-->
+<!--                    android:scaleType="fitXY"-->
+<!--                    android:layout_width="60dp"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:layout_marginStart="5dp"-->
+<!--                    android:layout_marginTop="3dp"-->
+<!--                    android:layout_marginEnd="3dp"-->
+<!--                    android:layout_marginBottom="3dp"-->
+<!--                    android:padding="3dp"-->
+<!--                    android:contentDescription="Info button" />-->
+<!--                <ImageButton-->
+<!--                    android:src="@drawable/accepted_icon"-->
+<!--                    android:scaleType="fitXY"-->
+<!--                    android:layout_width="60dp"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:layout_marginStart="5dp"-->
+<!--                    android:layout_marginTop="3dp"-->
+<!--                    android:layout_marginEnd="3dp"-->
+<!--                    android:layout_marginBottom="3dp"-->
+<!--                    android:padding="3dp"-->
+<!--                    />-->
+<!--                <ImageButton-->
+<!--                    android:src="@drawable/rejected_icon"-->
+<!--                    android:scaleType="fitXY"-->
+<!--                    android:layout_width="60dp"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:layout_marginStart="5dp"-->
+<!--                    android:layout_marginTop="3dp"-->
+<!--                    android:layout_marginEnd="3dp"-->
+<!--                    android:layout_marginBottom="3dp"-->
+<!--                    android:padding="3dp"-->
+<!--                    />-->
+
+
+<!--            </TableRow>-->
         </TableLayout>
 
         <ProgressBar
