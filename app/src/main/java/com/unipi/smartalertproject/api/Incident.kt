@@ -6,6 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Incident(
+    @SerializedName("id") val id: String,
     @SerializedName("categoryName") val categoryName: String,
     @SerializedName("comments") val comments: String,
     @SerializedName("submittedByUsername") val submittedByUsername: String,

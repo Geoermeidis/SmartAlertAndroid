@@ -38,25 +38,19 @@ class IncidentInfoDialogFragment : DialogFragment() {
         // Inflate the layout for this fragment
         _binding = FragmentIncidentInfoDialogBinding.inflate(inflater, container, false)
 
-        val incident = arguments?.getParcelable("incident", Incident::class.java)
-        if (incident != null){
-            binding.categoryInfoText.text = incident.categoryName
-            binding.commentsInfoText.text = incident.comments
-            binding.dateInfoText.text = incident.submittedAt
+        incident = arguments?.getParcelable("incident", Incident::class.java)!!
 
-            binding.submitsInfoText.text = incident.totalSubmissions.toString()
+        binding.categoryInfoText.text = incident.categoryName
+        binding.commentsInfoText.text = incident.comments
+        binding.dateInfoText.text = incident.submittedAt
 
-            val geocoder = Geocoder(requireContext())
+        binding.submitsInfoText.text = incident.totalSubmissions.toString()
 
-            geocoder.getFromLocation(incident.latitude,incident.longitude,1) {
-                addresses -> binding.locationInfoText.text = addresses[0].locality
-            }
+        val geocoder = Geocoder(requireContext())
 
+        geocoder.getFromLocation(incident.latitude,incident.longitude,1) {
+            addresses -> binding.locationInfoText.text = addresses[0].locality
         }
-
-
-
-
 
         return binding.root
     }
@@ -66,9 +60,11 @@ class IncidentInfoDialogFragment : DialogFragment() {
         binding.buttonBacktoIncidents.setOnClickListener {
             dismiss()
         }
+
+        // TODO if photo is none while user is submitting then update the none photo
+        //  with the one the latest user submitted
+
         setImageFromFirebaseStorage(incident.photoUrl)
-
-
     }
 
     private fun setImageFromFirebaseStorage(imagePath: String){

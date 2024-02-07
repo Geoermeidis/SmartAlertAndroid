@@ -21,22 +21,22 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            >
 
             <TableRow>
                 <TextView
                     android:id="@+id/categoryHeaderText"
                     android:layout_column="0"
                     android:padding="3dip"
-                    android:textSize="22sp"
+                    android:textSize="18sp"
                     android:text="Category: " />
 
                 <TextView
                     android:id="@+id/categoryInfoText"
                     android:layout_column="1"
-                    android:gravity="center"
                     android:padding="15dip"
-                    android:textSize="22sp" />
+                    android:textSize="18sp" />
 
             </TableRow>
 
@@ -45,15 +45,25 @@
                     android:id="@+id/dateHeaderText"
                     android:layout_column="0"
                     android:padding="3dip"
-                    android:textSize="22sp"
+                    android:textSize="18sp"
                     android:text="Submitted at: " />
 
-                <TextView
-                    android:id="@+id/dateInfoText"
-                    android:layout_column="1"
-                    android:gravity="center"
-                    android:padding="15dip"
-                    android:textSize="22sp" />
+                <ScrollView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_column="1">
+
+                    <TextView
+                        android:id="@+id/dateInfoText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="5"
+                        android:textSize="16sp"
+                        android:scrollbars="vertical"
+                        android:gravity="start|top"
+                        android:padding="8dp"/>
+                </ScrollView>
 
             </TableRow>
 
@@ -62,15 +72,25 @@
                     android:id="@+id/locationHeaderText"
                     android:layout_column="0"
                     android:padding="3dip"
-                    android:textSize="22sp"
+                    android:textSize="18sp"
                     android:text="Address: " />
 
-                <TextView
-                    android:id="@+id/locationInfoText"
-                    android:layout_column="1"
-                    android:gravity="center"
-                    android:padding="15dip"
-                    android:textSize="22sp" />
+                <ScrollView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_column="1">
+
+                    <TextView
+                        android:id="@+id/locationInfoText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="5"
+                        android:textSize="16sp"
+                        android:scrollbars="vertical"
+                        android:gravity="start|top"
+                        android:padding="8dp"/>
+                </ScrollView>
 
             </TableRow>
 
@@ -79,7 +99,7 @@
                     android:id="@+id/commentsHeaderText"
                     android:layout_column="0"
                     android:padding="3dip"
-                    android:textSize="22sp"
+                    android:textSize="18sp"
                     android:text="Comments: " />
 
                 <ScrollView
@@ -92,7 +112,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLines="5"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:scrollbars="vertical"
                         android:gravity="start|top"
                         android:padding="8dp"/>
@@ -105,15 +125,15 @@
                     android:id="@+id/submitsHeaderText"
                     android:layout_column="0"
                     android:padding="3dip"
-                    android:textSize="22sp"
+                    android:textSize="18sp"
                     android:text="Submissions: " />
 
                 <TextView
                     android:id="@+id/submitsInfoText"
                     android:layout_column="1"
-                    android:gravity="center"
+                    android:textAlignment="center"
                     android:padding="15dip"
-                    android:textSize="22sp"/>
+                    android:textSize="18sp"/>
 
             </TableRow>
 
@@ -123,7 +143,7 @@
                     android:scaleType="fitXY"
                     android:layout_height="250dp"
                     android:layout_span="2"
-                    />
+                    android:contentDescription="Photo" />
             </TableRow>
         </TableLayout>
 
@@ -137,9 +157,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/table"
             android:text="Back"
-            android:textSize="22sp"
-            android:layout_marginTop="15dp"
-            />
+            android:textSize="18sp"
+            android:layout_marginTop="15dp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

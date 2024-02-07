@@ -6,6 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Query
 
 interface ApiService {
     @POST("api/login")
@@ -17,5 +18,9 @@ interface ApiService {
     @GET("incidents")
     fun getIncidents(@Header("Authorization") accessToken: String): Call<IncidentAPIResponse>
     @PUT("incidents/create")
-    fun submitIncident(@Header("Authorization") accessToken: String, @Body incident: CreateIncidentDTO): Call<APIResponse>
+    fun submitIncident(@Header("Authorization") accessToken: String,
+                       @Body incident: CreateIncidentDTO): Call<APIResponse>
+    @PUT("incidents/updatestate")
+    fun processIncident(@Header("Authorization") accessToken: String, @Query("id") id: String,
+                        @Query("status") status: String): Call<APIResponse>
 }

@@ -19,6 +19,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TableRow
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.storage.FirebaseStorage
@@ -27,10 +28,12 @@ import com.unipi.smartalertproject.R
 import com.unipi.smartalertproject.api.APIResponse
 import com.unipi.smartalertproject.api.ApiService
 import com.unipi.smartalertproject.api.AuthManager
+import com.unipi.smartalertproject.api.CreateIncidentDTO
 import com.unipi.smartalertproject.api.Incident
 import com.unipi.smartalertproject.api.IncidentAPIResponse
 import com.unipi.smartalertproject.api.RetrofitClient
 import com.unipi.smartalertproject.api.Utils
+import com.unipi.smartalertproject.api.ValidationProblem
 import com.unipi.smartalertproject.databinding.FragmentIncidentsPreviewBinding
 import com.unipi.smartalertproject.databinding.FragmentSubmitIncidentBinding
 import com.unipi.smartalertproject.helperFragments.IncidentInfoDialogFragment
@@ -54,20 +57,27 @@ class IncidentsPreviewFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment\
         _binding = FragmentIncidentsPreviewBinding.inflate(inflater, container, false)
         authManager = AuthManager(requireContext())
 
         getIncidents()
 
+        binding.buttonUpdateTable.setOnClickListener {
+            binding.tableIncidents.removeViews(1, binding.tableIncidents.childCount-1)
+            incidents = emptyList()
+            getIncidents()
+        }
+
         return binding.root
     }
 
     private fun fillTable(){
         // get only submitted incidents
-        incidents.filter { incident: Incident -> incident.state == 0 } .forEach { incident ->
-
+        incidents.sortedByDescending { incident -> incident.totalSubmissions }
+            .filter { incident: Incident -> incident.state == 0 }
+            .forEach { incident ->
             val density = resources.displayMetrics.density
             val padding = (2 * density + 0.5f).toInt()
 
@@ -84,7 +94,6 @@ class IncidentsPreviewFragment : Fragment() {
                 setPadding(padding, padding, padding, padding)
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
                 textAlignment = View.TEXT_ALIGNMENT_CENTER
-
             }
 
             val infoBtn = ImageButton(requireContext()).apply {
@@ -124,7 +133,8 @@ class IncidentsPreviewFragment : Fragment() {
                 setPadding(padding, padding, padding, padding)
                 contentDescription = "Reject"
                 setOnClickListener {
-
+                    Log.i("Rott view", this.toString())
+                    changeIncidentStatus(incident.id, "rejected", this.parent as View)
                 }
             }
 
@@ -144,7 +154,7 @@ class IncidentsPreviewFragment : Fragment() {
                 setPadding(padding, padding, padding, padding)
                 contentDescription = "Accept"
                 setOnClickListener {
-
+                    changeIncidentStatus(incident.id, "accepted", this.parent as View)
                 }
             }
 
@@ -208,5 +218,58 @@ class IncidentsPreviewFragment : Fragment() {
         }
     }
 
+    private fun changeIncidentStatus(id: String, state: String, view: View){
+        binding.progressBar2.visibility = View.VISIBLE
+        val token = authManager?.getAccessToken()
+        if (token != null){
+            // create call and send authorization token
+            val call: Call<APIResponse> = apiService.processIncident("Bearer $token",
+                id, state)
 
+            // execute call and wait for response or fail
+            call.enqueue(object : Callback<APIResponse> {
+
+                override fun onResponse(call: Call<APIResponse>, response: Response<APIResponse>) {
+                    Log.i("Call", "Call responded")
+                    if (response.isSuccessful) { // Handle successful response here
+                        utils.showSuccessMessage("Incident $state successfully",
+                            Toast.LENGTH_LONG, requireContext())
+                        binding.tableIncidents.removeView(view)
+                        binding.progressBar2.visibility = View.INVISIBLE
+                    }
+                    else {
+                        when (response.code()){
+                            401 -> {  // Unauthorized request or wrong token
+                                Log.e("Request", "Unauthorized request")
+                                if (authManager!!.isAccessTokenExpired(token)){
+                                    Log.e("Token expiration", "Token expired")
+                                    authManager!!.refreshToken(apiService)
+                                }
+                            }
+
+                            400 -> { // ValidationProblem response
+                                val errorBody = response.errorBody()?.string()
+                                // No validation errors have appeared
+                                Log.e("Error", errorBody.toString())
+                                Log.e("State change", "Error spotted")
+
+                                val apiResponse: APIResponse? = errorBody
+                                    ?.let { utils.convertStringToObject<APIResponse?>(it) }
+
+                                apiResponse?.errorMessages?.get(0)?.let {
+                                    utils.showMessage("Incident status changes",
+                                        it, requireContext()) }
+                            }
+                        }
+                        binding.progressBar2.visibility = View.INVISIBLE
+                    }
+                }
+
+                override fun onFailure(call: Call<APIResponse>, t: Throwable) {
+                    // Handle failure here
+                    Log.e("Api error",  t.message.toString())
+                }
+            })
+        }
+    }
 }
