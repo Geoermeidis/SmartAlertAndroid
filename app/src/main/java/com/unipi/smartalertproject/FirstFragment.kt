@@ -16,7 +16,7 @@ import com.unipi.smartalertproject.api.LoginInfo
 import com.unipi.smartalertproject.api.RetrofitClient
 import com.unipi.smartalertproject.api.Utils
 import com.unipi.smartalertproject.databinding.FragmentFirstBinding
-import com.unipi.smartalertproject.helperFragments.LocationService
+import com.unipi.smartalertproject.services.LocationService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -57,6 +57,7 @@ class FirstFragment : Fragment() {
         }
 
         binding.buttonSignup.setOnClickListener{
+            findNavController().navigate(R.id.action_incidentsPreviewFragment2_to_mapsFragment)
             //redirectToRegister(it)
         }
 
@@ -101,7 +102,8 @@ class FirstFragment : Fragment() {
                             authManager?.getUserId()?.let { Log.d("User id", it) }
                             if (authManager?.getUserRole().equals("Civilian"))
                             {  // redirect to submit new incident
-                                findNavController().navigate(R.id.action_FirstFragment_to_submitIncidentFragment2)
+                                // findNavController().navigate(R.id.action_FirstFragment_to_submitIncidentFragment2)
+                                findNavController().navigate(R.id.action_FirstFragment_to_incidentStatsPreviewFragment)
                             }
                             else
                             {

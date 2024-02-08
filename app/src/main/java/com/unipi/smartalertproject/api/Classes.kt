@@ -1,6 +1,8 @@
 package com.unipi.smartalertproject.api
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 import java.time.OffsetDateTime
 import java.util.Date
 
@@ -49,4 +51,16 @@ data class CreateIncidentDTO(
     @SerializedName("photoURL") val photoUrl: String = "",
     @SerializedName("categoryName") val categoryName: String
 )
+
+@Parcelize
+data class Notification(
+    val eventId: String,
+    val submittedAt: String,
+    val latitude: Double,
+    val longitude: Double,
+    val categoryName: String,
+    val timeForNotification: Int,
+    val maxDistanceNotification: Int,
+    val websiteURL: String
+): Parcelable
 

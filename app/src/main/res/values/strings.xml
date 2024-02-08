@@ -6,45 +6,39 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
-    <string name="lorem_ipsum">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
-        volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus
-        dui nec risus. Maecenas non sodales nisi, vel dictum dolor. Class aptent taciti sociosqu ad
-        litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse blandit eleifend
-        diam, vel rutrum tellus vulputate quis. Aliquam eget libero aliquet, imperdiet nisl a,
-        ornare ex. Sed rhoncus est ut libero porta lobortis. Fusce in dictum tellus.\n\n
-        Suspendisse interdum ornare ante. Aliquam nec cursus lorem. Morbi id magna felis. Vivamus
-        egestas, est a condimentum egestas, turpis nisl iaculis ipsum, in dictum tellus dolor sed
-        neque. Morbi tellus erat, dapibus ut sem a, iaculis tincidunt dui. Interdum et malesuada
-        fames ac ante ipsum primis in faucibus. Curabitur et eros porttitor, ultricies urna vitae,
-        molestie nibh. Phasellus at commodo eros, non aliquet metus. Sed maximus nisl nec dolor
-        bibendum, vel congue leo egestas.\n\n
-        Sed interdum tortor nibh, in sagittis risus mollis quis. Curabitur mi odio, condimentum sit
-        amet auctor at, mollis non turpis. Nullam pretium libero vestibulum, finibus orci vel,
-        molestie quam. Fusce blandit tincidunt nulla, quis sollicitudin libero facilisis et. Integer
-        interdum nunc ligula, et fermentum metus hendrerit id. Vestibulum lectus felis, dictum at
-        lacinia sit amet, tristique id quam. Cras eu consequat dui. Suspendisse sodales nunc ligula,
-        in lobortis sem porta sed. Integer id ultrices magna, in luctus elit. Sed a pellentesque
-        est.\n\n
-        Aenean nunc velit, lacinia sed dolor sed, ultrices viverra nulla. Etiam a venenatis nibh.
-        Morbi laoreet, tortor sed facilisis varius, nibh orci rhoncus nulla, id elementum leo dui
-        non lorem. Nam mollis ipsum quis auctor varius. Quisque elementum eu libero sed commodo. In
-        eros nisl, imperdiet vel imperdiet et, scelerisque a mauris. Pellentesque varius ex nunc,
-        quis imperdiet eros placerat ac. Duis finibus orci et est auctor tincidunt. Sed non viverra
-        ipsum. Nunc quis augue egestas, cursus lorem at, molestie sem. Morbi a consectetur ipsum, a
-        placerat diam. Etiam vulputate dignissim convallis. Integer faucibus mauris sit amet finibus
-        convallis.\n\n
-        Phasellus in aliquet mi. Pellentesque habitant morbi tristique senectus et netus et
-        malesuada fames ac turpis egestas. In volutpat arcu ut felis sagittis, in finibus massa
-        gravida. Pellentesque id tellus orci. Integer dictum, lorem sed efficitur ullamcorper,
-        libero justo consectetur ipsum, in mollis nisl ex sed nisl. Donec maximus ullamcorper
-        sodales. Praesent bibendum rhoncus tellus nec feugiat. In a ornare nulla. Donec rhoncus
-        libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
-        vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
-    </string>
+    <string name="map_id">8d5294dd9ccf9513</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Descriptions -->
+    <string name="earthquakeDescription">An earthquake is a move of earth mass</string>
+    <string name="tornadoDescription">A violently rotating column of air that touches the ground and whips up debris in its path.</string>
+    <string name="avalancheDescription">A large mass of snow, ice, and rock that suddenly slides down a mountainside.</string>
+    <string name="landslideDescription">A large mass of rock, soil, or other debris that slides down a slope.</string>
+    <string name="blizzardDescription">A severe snowstorm with strong winds and very low visibility.</string>
+    <string name="stormDescription">A violent weather system with strong winds, heavy precipitation, and sometimes thunder and lightning.</string>
+    <string name="tsunamiDescription">A giant wave caused by an underwater earthquake, volcanic eruption, or landslide.</string>
+    <string name="floodsDescription">An overflow of water that submerges land that is usually dry.</string>
+    <string name="industrialDescription">An uncontrolled event at an industrial facility that can cause harm to people, property, or the environment.</string>
+    <string name="volcanoDescription">A mountain that erupts, spewing out lava, ash, and gas.</string>
+    <string name="heatwaveDescription">A period of abnormally hot weather that can last for days or even weeks.</string>
+    <string name="wildfireDescription">An uncontrolled fire in nature that spreads quickly and can cause extensive damage to forests, homes, and property.</string>
+    <string name="accidentDescription">An uncontrolled release of radioactive material/hazardous chemicals from a plants or industries, which can have devastating consequences for human health and the environment.</string>
+
+    <!-- Instructions -->
+    <string name="tornadoInstruction">Seek immediate shelter in a basement, storm cellar, or interior room on the lowest floor away from windows and doors. If no safe room is available, lie flat in a ditch and cover your head and neck with your arms.</string>
+    <string name="earthquakeInstruction">Drop, cover, and hold on. Drop to the ground, take cover under a sturdy desk or table, and hold on until the shaking stops. Stay away from windows, mirrors, and hanging objects.</string>
+    <string name="avalancheInstruction">If caught in an avalanche path, try to move to the side of the slope and hold onto something sturdy. If escape is impossible, curl up in a ball and protect your head and neck with your arms.</string>
+    <string name="landslideInstruction">Evacuate the area immediately if a landslide is imminent. Do not cross moving debris or enter unstable areas.</string>
+    <string name="blizzardInstruction">Stay indoors where it is warm and avoid unnecessary travel. Dress warmly in layers if you must go outside. Stay informed about weather updates and road closures.</string>
+    <string name="stormInstruction">Seek shelter in a sturdy building away from windows and doors. Close all windows and shutters. Do not drive through flooded areas.</string>
+    <string name="tsunamiInstruction">Evacuate to higher ground immediately if a tsunami warning is issued. Do not wait for further instructions.</string>
+    <string name="floodsInstruction">Evacuate the area immediately if flooding is imminent. Do not drive through flooded roads or attempt to walk through floodwaters. Follow instructions from emergency officials.</string>
+    <string name="industrialInstruction">Follow instructions from emergency responders and stay away from the affected area. Stay informed about updates and potential evacuations.</string>
+    <string name="volcanoInstruction">Follow evacuation orders and avoid areas downwind of the volcano. Wear protective clothing and mask if outdoors due to ashfall.</string>
+    <string name="heatwaveInstruction">Stay cool and hydrated by drinking plenty of fluids and avoiding strenuous activity. Stay in air-conditioned spaces as much as possible. Check on vulnerable individuals like children and the elderly.</string>
+    <string name="wildfireInstruction">Evacuate immediately if instructed by authorities. If unable to evacuate, close windows and doors and create a defensible space around your home. Follow official updates and instructions.</string>
+    <string name="accidentInstruction">Follow instructions from emergency personnel. Seek shelter indoors and close all windows and doors. Cover exposed skin and hair. Evacuate if instructed. Stay informed about the situation and potential health risks.</string>
+
 </resources>

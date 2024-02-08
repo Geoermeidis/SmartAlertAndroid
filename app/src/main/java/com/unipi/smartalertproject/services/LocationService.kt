@@ -1,4 +1,4 @@
-package com.unipi.smartalertproject.helperFragments
+package com.unipi.smartalertproject.services
 
 import android.Manifest
 import android.content.Context

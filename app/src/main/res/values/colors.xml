@@ -9,4 +9,19 @@
     <color name="light_blue_A200">#FF40C4FF</color>
     <color name="light_blue_A400">#FF00B0FF</color>
     <color name="black_overlay">#66000000</color>
+
+    <color name="tornado">#d1d3cf</color>
+    <color name="earthquake">#594a40</color>
+    <color name="avalanche">#f7ede6</color>
+    <color name="landslide">#2e251f</color>
+    <color name="blizzard">#31d9e8</color>
+    <color name="storm">#665b15</color>
+    <color name="tsunami">#05126e</color>
+    <color name="floods">#0a77bf</color>
+    <color name="cyclone">#334c5c</color>
+    <color name="wildfire">#ff270a</color>
+    <color name="urbanfire">#9c0803</color>
+    <color name="volcano">#804600</color>
+    <color name="heatwave">#fca00a</color>
+
 </resources>

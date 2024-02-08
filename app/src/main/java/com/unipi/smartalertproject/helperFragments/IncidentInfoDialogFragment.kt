@@ -1,25 +1,17 @@
 package com.unipi.smartalertproject.helperFragments
 
-import android.location.Address
 import android.location.Geocoder
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.UploadTask
 import com.squareup.picasso.Picasso
-import com.unipi.smartalertproject.R
-import com.unipi.smartalertproject.api.AuthManager
 import com.unipi.smartalertproject.api.Incident
 import com.unipi.smartalertproject.api.Utils
 import com.unipi.smartalertproject.databinding.FragmentIncidentInfoDialogBinding
-import com.unipi.smartalertproject.databinding.FragmentIncidentsPreviewBinding
 
 class IncidentInfoDialogFragment : DialogFragment() {
 

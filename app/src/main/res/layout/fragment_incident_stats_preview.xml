@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".civilianFragments.IncidentStatsPreviewFragment"
+android:padding="20dp">
+
+    <ScrollView
+        android:id="@+id/scroll_table"
+        android:layout_width="375dp"
+        android:layout_height="554dp"
+        app:layout_constraintBottom_toTopOf="@id/button_update_table"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.81">
+
+
+        <TableLayout
+            android:id="@+id/table_incidents"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableRow>
+
+                <TextView
+                    android:layout_column="0"
+                    android:layout_weight="1"
+                    android:padding="3dip"
+                    android:text="Category"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_column="1"
+                    android:layout_weight="2"
+                    android:padding="3dip"
+                    android:text="Location"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_column="2"
+                    android:layout_weight="1"
+                    android:padding="3dip"
+                    android:text="Activated"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_column="3"
+                    android:layout_weight="1"
+                    android:padding="3dip"
+                    android:text="Info"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+
+            </TableRow>
+
+            <View
+                android:layout_height="2dip"
+                android:background="#FF909090" />
+
+        </TableLayout>
+    </ScrollView>
+
+    <ProgressBar
+    android:id="@+id/progressBar2"
+    style="?android:attr/progressBarStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#FF4141"
+    android:visibility="invisible"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_update_table"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:text="Update"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/button_open_maps_view" />
+
+    <ImageButton
+        android:id="@+id/button_open_maps_view"
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        android:background="@color/white"
+        android:contentDescription="Maps view"
+        android:padding="0dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/maps_icon"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/button_update_table"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Spinner
+        android:id="@+id/picker_sorting_class"
+        android:layout_width="183dp"
+        android:layout_height="51dp"
+        android:entries="@array/sort_categories"
+        app:layout_constraintBottom_toTopOf="@+id/scroll_table"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/picker_sorting_order"
+        android:layout_width="158dp"
+        android:layout_height="52dp"
+        android:text="Asceding"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/scroll_table"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintStart_toEndOf="@+id/picker_sorting_class"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

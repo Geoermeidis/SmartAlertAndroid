@@ -1,5 +1,6 @@
 package com.unipi.smartalertproject.api
 
+import android.location.Address
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize

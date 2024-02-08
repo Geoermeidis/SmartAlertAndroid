@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_FirstFragment_to_incidentsPreviewFragment2"
             app:destination="@id/incidentsPreviewFragment2" />
+        <action
+            android:id="@+id/action_FirstFragment_to_incidentStatsPreviewFragment"
+            app:destination="@id/incidentStatsPreviewFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -52,6 +55,9 @@
         <action
             android:id="@+id/action_incidentsPreviewFragment2_to_incidentInfoDialogFragment"
             app:destination="@id/incidentInfoDialogFragment" />
+        <action
+            android:id="@+id/action_incidentsPreviewFragment2_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
     </fragment>
     <dialog
         android:id="@+id/incidentInfoDialogFragment"
@@ -61,5 +67,32 @@
         <argument
             android:name="incident"
             app:argType="com.unipi.smartalertproject.api.Incident" />
+    </dialog>
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="com.unipi.smartalertproject.helperFragments.MapsFragment"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_maps" >
+        <argument
+            android:name="incidents"
+            app:argType="com.unipi.smartalertproject.api.Incident[]" />
+    </fragment>
+    <fragment
+        android:id="@+id/incidentStatsPreviewFragment"
+        android:name="com.unipi.smartalertproject.civilianFragments.IncidentStatsPreviewFragment"
+        android:label="fragment_incident_stats_preview"
+        tools:layout="@layout/fragment_incident_stats_preview" >
+        <action
+            android:id="@+id/action_incidentStatsPreviewFragment_to_incidentInfoDialogFragment"
+            app:destination="@id/incidentInfoDialogFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/notificationDialogFragment"
+        android:name="com.unipi.smartalertproject.helperFragments.NotificationDialogFragment"
+        android:label="fragment_notification_dialog"
+        tools:layout="@layout/fragment_notification_dialog" >
+        <argument
+            android:name="incident"
+            app:argType="com.unipi.smartalertproject.api.Notification" />
     </dialog>
 </navigation>

@@ -17,12 +17,11 @@ import com.unipi.smartalertproject.api.ApiService
 import com.unipi.smartalertproject.api.AuthManager
 import com.unipi.smartalertproject.api.APIResponse
 import com.unipi.smartalertproject.api.CreateIncidentDTO
-import com.unipi.smartalertproject.api.Incident
 import com.unipi.smartalertproject.api.ValidationProblem
 import com.unipi.smartalertproject.api.RetrofitClient
 import com.unipi.smartalertproject.databinding.FragmentSubmitIncidentBinding
 import com.unipi.smartalertproject.helperFragments.CameraFragment
-import com.unipi.smartalertproject.helperFragments.LocationService
+import com.unipi.smartalertproject.services.LocationService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

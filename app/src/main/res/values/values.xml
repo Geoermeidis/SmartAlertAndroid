@@ -14,25 +14,44 @@
             landslide
         </item>
         <item>
+            blizzard
+        </item>
+        <item>
             storm
+        </item>
+        <item>
+            tsunami
         </item>
         <item>
             floods
         </item>
         <item>
-            typhoon
+            industrial
         </item>
         <item>
-            cyclone
+            wildfire
         </item>
         <item>
-            fire
+            accident
         </item>
         <item>
-            volcano erruption
+            volcano
         </item>
         <item>
             heatwave
         </item>
     </array>
+
+    <array name="sort_categories">
+        <item>
+            All
+        </item>
+        <item>
+            By date
+        </item>
+        <item>
+            By category
+        </item>
+    </array>
+
 </resources>

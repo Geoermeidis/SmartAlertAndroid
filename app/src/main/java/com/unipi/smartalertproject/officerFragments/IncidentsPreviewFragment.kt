@@ -1,43 +1,30 @@
 package com.unipi.smartalertproject.officerFragments
 
-import android.app.ActionBar.LayoutParams
 import android.graphics.Color
-import android.location.Address
-import android.location.Geocoder
 import android.os.Bundle
-import android.text.Layout.Alignment
 import android.util.Log
 import android.util.TypedValue
-import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import com.unipi.smartalertproject.R
 import com.unipi.smartalertproject.api.APIResponse
 import com.unipi.smartalertproject.api.ApiService
 import com.unipi.smartalertproject.api.AuthManager
-import com.unipi.smartalertproject.api.CreateIncidentDTO
 import com.unipi.smartalertproject.api.Incident
 import com.unipi.smartalertproject.api.IncidentAPIResponse
 import com.unipi.smartalertproject.api.RetrofitClient
 import com.unipi.smartalertproject.api.Utils
-import com.unipi.smartalertproject.api.ValidationProblem
 import com.unipi.smartalertproject.databinding.FragmentIncidentsPreviewBinding
-import com.unipi.smartalertproject.databinding.FragmentSubmitIncidentBinding
 import com.unipi.smartalertproject.helperFragments.IncidentInfoDialogFragment
-import com.unipi.smartalertproject.helperFragments.LocationService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -68,6 +55,13 @@ class IncidentsPreviewFragment : Fragment() {
             binding.tableIncidents.removeViews(1, binding.tableIncidents.childCount-1)
             incidents = emptyList()
             getIncidents()
+        }
+
+        binding.buttonOpenMapsView.setOnClickListener{
+            val bundle = Bundle()
+            bundle.putParcelableArray("incidents", incidents.toTypedArray())
+            findNavController().navigate(R.id.action_incidentsPreviewFragment2_to_mapsFragment,
+                bundle)
         }
 
         return binding.root
