@@ -9,10 +9,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 import com.unipi.smartalertproject.api.ApiService
 import com.unipi.smartalertproject.api.AuthManager
 import com.unipi.smartalertproject.api.APIResponse
 import com.unipi.smartalertproject.api.LoginInfo
+import com.unipi.smartalertproject.api.Notification
 import com.unipi.smartalertproject.api.RetrofitClient
 import com.unipi.smartalertproject.api.Utils
 import com.unipi.smartalertproject.databinding.FragmentFirstBinding
@@ -22,9 +25,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
 class FirstFragment : Fragment() {
 
     private val apiService = RetrofitClient.retrofit.create(ApiService::class.java)
@@ -35,11 +35,12 @@ class FirstFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    val db = Firebase.firestore
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
         authManager = AuthManager(requireContext())

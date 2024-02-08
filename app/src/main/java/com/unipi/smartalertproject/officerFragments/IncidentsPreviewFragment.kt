@@ -57,6 +57,7 @@ class IncidentsPreviewFragment : Fragment() {
             getIncidents()
         }
 
+
         binding.buttonOpenMapsView.setOnClickListener{
             val bundle = Bundle()
             bundle.putParcelableArray("incidents", incidents.toTypedArray())

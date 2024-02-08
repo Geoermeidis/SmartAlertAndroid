@@ -54,13 +54,11 @@ data class CreateIncidentDTO(
 
 @Parcelize
 data class Notification(
-    val eventId: String,
     val submittedAt: String,
     val latitude: Double,
     val longitude: Double,
     val categoryName: String,
-    val timeForNotification: Int,
-    val maxDistanceNotification: Int,
+    val maxDistanceNotification: Long,
     val websiteURL: String
 ): Parcelable
 

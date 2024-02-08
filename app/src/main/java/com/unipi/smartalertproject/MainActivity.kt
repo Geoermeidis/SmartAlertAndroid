@@ -1,6 +1,7 @@
 package com.unipi.smartalertproject
 
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -9,13 +10,20 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
+import com.unipi.smartalertproject.api.Notification
 import com.unipi.smartalertproject.databinding.ActivityMainBinding
+import com.unipi.smartalertproject.helperFragments.IncidentInfoDialogFragment
+import com.unipi.smartalertproject.helperFragments.NotificationDialogFragment
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +41,46 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
+
+        val docRef = db.collection("Incidents")
+
+        docRef.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                Log.w("Item read", "Listen failed.", e)
+                return@addSnapshotListener
+            }
+
+            if (snapshot != null && !snapshot.isEmpty) {
+                val data = snapshot.documents.last().data
+                if (data != null){
+                    val notification = Notification(
+                        categoryName = data["CategoryName"].toString(),
+                        submittedAt = data["SubmittedAt"].toString(),
+                        latitude = data["Latitude"] as Double,
+                        longitude = data["Longitude"] as Double,
+                        maxDistanceNotification = data["MaxDistanceNotification"] as Long,
+                        websiteURL = data["WebsiteURL"].toString()
+                    )
+
+                    // TODO test
+                    // TODO check if user is in range based on max distance
+
+                    val bundle = bundleOf("incident" to notification)
+                    val notificationDialog = NotificationDialogFragment()
+                    notificationDialog.arguments = bundle
+
+                    notificationDialog.show(this.supportFragmentManager,
+                        "NotificationDialogFragment")
+
+                    Log.d("Item read", "Current data: ${notification.websiteURL}")
+                }
+
+            } else {
+                Log.d("Item read", "Current data: null")
+            }
+        }
+
+        Log.d("Main activity", "Main activity is here bitches")
 
     }
 
