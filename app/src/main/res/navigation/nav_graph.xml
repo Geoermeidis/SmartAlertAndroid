@@ -57,7 +57,8 @@
             app:destination="@id/incidentInfoDialogFragment" />
         <action
             android:id="@+id/action_incidentsPreviewFragment2_to_mapsFragment"
-            app:destination="@id/mapsFragment" />
+            app:destination="@id/mapsFragment"
+            app:launchSingleTop="true" />
     </fragment>
     <dialog
         android:id="@+id/incidentInfoDialogFragment"
@@ -85,6 +86,10 @@
         <action
             android:id="@+id/action_incidentStatsPreviewFragment_to_incidentInfoDialogFragment"
             app:destination="@id/incidentInfoDialogFragment" />
+        <action
+            android:id="@+id/action_incidentStatsPreviewFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment"
+            app:launchSingleTop="true" />
     </fragment>
     <dialog
         android:id="@+id/notificationDialogFragment"

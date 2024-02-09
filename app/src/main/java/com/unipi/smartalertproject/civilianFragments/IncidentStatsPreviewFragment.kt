@@ -25,26 +25,25 @@ import com.unipi.smartalertproject.api.AuthManager
 import com.unipi.smartalertproject.api.Incident
 import com.unipi.smartalertproject.api.IncidentAPIResponse
 import com.unipi.smartalertproject.api.RetrofitClient
-import com.unipi.smartalertproject.api.Utils
 import com.unipi.smartalertproject.databinding.FragmentIncidentStatsPreviewBinding
 import com.unipi.smartalertproject.helperFragments.IncidentInfoDialogFragment
-import kotlinx.coroutines.NonDisposableHandle.parent
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.Date
 import java.util.Locale
+import kotlin.properties.Delegates
 
 class IncidentStatsPreviewFragment : Fragment() {
     private val apiService = RetrofitClient.retrofit.create(ApiService::class.java)
-
+    // TODO add menus
     private var _binding: FragmentIncidentStatsPreviewBinding? = null
     private val binding get() = _binding!!
     private var authManager: AuthManager? = null
-    private val utils: Utils = Utils()
 
     // View model (in a way)
     private var incidents: List<Incident> = listOf()
+
+    private var density by Delegates.notNull<Float>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,41 +52,39 @@ class IncidentStatsPreviewFragment : Fragment() {
         // Inflate the layout for this fragment\
         _binding = FragmentIncidentStatsPreviewBinding.inflate(inflater, container, false)
         authManager = AuthManager(requireContext())
-
+        density = resources.displayMetrics.density
+        binding.tableIncidents.removeAllViews()
         getIncidents()
+        // TODO set array based on language
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.buttonUpdateTable.setOnClickListener {
-            binding.tableIncidents.removeViews(1, binding.tableIncidents.childCount-1)
+            binding.tableIncidents.removeAllViews()
             incidents = emptyList()
             getIncidents()
         }
 
-        binding.buttonOpenMapsView.setOnClickListener{
-//            val bundle = Bundle() // TODO implement map for users
+        binding.buttonOpenMapsView.setOnClickListener {
+            val bundle = Bundle() // TODO implement map for users
             // TODO implement when in map and back to to call getIncidents()
-//            bundle.putParcelableArray("incidents", incidents.toTypedArray())
-//            findNavController().navigate(R.id.,
-//                bundle)
+            bundle.putParcelableArray("incidents", incidents
+                .filter { incident: Incident -> incident.state == 1 }
+                .toTypedArray())
+            findNavController().navigate(
+                R.id.action_incidentStatsPreviewFragment_to_mapsFragment,
+                bundle
+            )
         }
 
         binding.pickerSortingClass.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                // Handle item selection here
-                binding.tableIncidents.removeViews(1, binding.tableIncidents.childCount-1)
-
-                val selectedClass = parent?.getItemAtPosition(position).toString().lowercase()
+                val selectedClass = resources.getStringArray(R.array.sort_categoriesEn)[position].lowercase()
                 val selectedOrderIsAscending = binding.pickerSortingOrder.isSelected
-
-                if (selectedClass == "all")
-                    fillTable(incidents)
-                else if (selectedClass == "by category" && selectedOrderIsAscending)
-                    fillTable(incidents.sortedBy { it.categoryName })
-                else if (selectedClass == "by category")
-                    fillTable(incidents.sortedByDescending { it.categoryName })
-                else if (selectedClass == "by date" && selectedOrderIsAscending)
-                    fillTable(incidents.sortedBy { it.submittedAt })
-                else
-                    fillTable(incidents.sortedByDescending { it.submittedAt })
+                sortTable(selectedOrderIsAscending, selectedClass)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -95,22 +92,26 @@ class IncidentStatsPreviewFragment : Fragment() {
         }
 
         binding.pickerSortingOrder.setOnCheckedChangeListener { _, selectedOrderIsAscending ->
-            binding.tableIncidents.removeViews(1, binding.tableIncidents.childCount-1)
-            val selectedClass = binding.pickerSortingClass.selectedItem.toString().lowercase()
-
-            if (selectedClass == "all")
-                fillTable(incidents)
-            else if (selectedClass == "by category" && selectedOrderIsAscending)
-                fillTable(incidents.sortedBy { it.categoryName })
-            else if (selectedClass == "by category")
-                fillTable(incidents.sortedByDescending { it.categoryName })
-            else if (selectedClass == "by date" && selectedOrderIsAscending)
-                fillTable(incidents.sortedBy { it.submittedAt })
-            else
-                fillTable(incidents.sortedByDescending { it.submittedAt })
+            val selectedClass = resources
+                .getStringArray(R.array.sort_categoriesEn)[binding.pickerSortingClass.selectedItemPosition]
+                .lowercase()
+            sortTable(selectedOrderIsAscending, selectedClass)
         }
+    }
 
-        return binding.root
+    private fun sortTable(selectedOrderIsAscending: Boolean, selectedClass: String){
+        binding.tableIncidents.removeAllViews()
+
+        if (selectedClass == "all")
+            fillTable(incidents)
+        else if (selectedClass == "by category" && selectedOrderIsAscending)
+            fillTable(incidents.sortedBy { it.categoryName })
+        else if (selectedClass == "by category")
+            fillTable(incidents.sortedByDescending { it.categoryName })
+        else if (selectedClass == "by date" && selectedOrderIsAscending)
+            fillTable(incidents.sortedBy { it.submittedAt })
+        else
+            fillTable(incidents.sortedByDescending { it.submittedAt })
     }
 
     private fun getIncidents(){
@@ -124,7 +125,9 @@ class IncidentStatsPreviewFragment : Fragment() {
                     if (response.isSuccessful) {
                         val data = response.body()
                         incidents  = data?.result!!
+
                         fillTable(incidents)
+
                         binding.progressBar2.visibility = View.INVISIBLE
                         Log.e("Incidents", "Incidents acquired")
                     }
@@ -153,7 +156,6 @@ class IncidentStatsPreviewFragment : Fragment() {
         // get only accepted incidents
         incidentsList.filter { incident: Incident -> incident.state == 1 }
             .forEach { incident ->
-                val density = resources.displayMetrics.density
                 val padding = (2 * density + 0.5f).toInt()
 
                 val categoryView = TextView(requireContext()).apply {
@@ -225,12 +227,6 @@ class IncidentStatsPreviewFragment : Fragment() {
                     }
                 }
 
-                val divider = View(requireContext()).apply {
-                    layoutParams =  TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                        (8 * density + 0.5f).toInt()) // Height in pixels
-                    setBackgroundColor(Color.GRAY)
-                }
-
                 val tableRow = TableRow(requireContext()).apply {
                     addView(categoryView)
                     addView(locationView)
@@ -239,7 +235,12 @@ class IncidentStatsPreviewFragment : Fragment() {
                 }
 
                 binding.tableIncidents.addView(tableRow)
-                binding.tableIncidents.addView(divider)
+                binding.tableIncidents.addView(View(requireContext()).apply {
+                    layoutParams =  TableRow.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        (5 * density + 0.5f).toInt()) // Height in pixels
+                    setBackgroundColor(Color.GRAY)
+                })
             }
     }
 }

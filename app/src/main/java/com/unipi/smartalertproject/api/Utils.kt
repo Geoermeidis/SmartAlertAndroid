@@ -36,7 +36,7 @@ class Utils {
     }
 
     fun mapToString(map :Map<String,List<String>>): String{
-        var stringToReturn: StringBuilder = java.lang.StringBuilder()
+        val stringToReturn: StringBuilder = java.lang.StringBuilder()
         map.keys.forEach {
             stringToReturn.append("\n" + it + "\n\n")
             map[it]?.forEach { error -> stringToReturn.append("• $error\n") }

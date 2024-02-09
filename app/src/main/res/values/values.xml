@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
-    <array name="dangerCategories">
+    <array name="dangerCategoriesEn">
         <item>
             tornado
         </item>
@@ -42,7 +43,63 @@
         </item>
     </array>
 
-    <array name="sort_categories">
+<!-- TODO -->
+
+    <array name="dangerCategoriesGr">
+        <item>
+            Ανεμοστρόβυλος
+        </item>
+        <item>
+            Σεισμός
+        </item>
+        <item>
+            avalanche
+        </item>
+        <item>
+            landslide
+        </item>
+        <item>
+            blizzard
+        </item>
+        <item>
+            storm
+        </item>
+        <item>
+            tsunami
+        </item>
+        <item>
+            floods
+        </item>
+        <item>
+            industrial
+        </item>
+        <item>
+            wildfire
+        </item>
+        <item>
+            accident
+        </item>
+        <item>
+            volcano
+        </item>
+        <item>
+            heatwave
+        </item>
+    </array>
+
+    <array name="sort_categoriesEn">
+        <item>
+            All
+        </item>
+        <item>
+            By date
+        </item>
+        <item>
+            By category
+        </item>
+    </array>
+
+    <array name="sort_categoriesGr">
         <item>
             All
         </item>

@@ -11,20 +11,18 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.os.bundleOf
-import androidx.fragment.app.FragmentActivity
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import com.unipi.smartalertproject.api.Notification
 import com.unipi.smartalertproject.databinding.ActivityMainBinding
-import com.unipi.smartalertproject.helperFragments.IncidentInfoDialogFragment
 import com.unipi.smartalertproject.helperFragments.NotificationDialogFragment
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    val db = Firebase.firestore
-
+    private val db = Firebase.firestore
+    private var uses = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -49,10 +47,10 @@ class MainActivity : AppCompatActivity() {
                 Log.w("Item read", "Listen failed.", e)
                 return@addSnapshotListener
             }
-
+            Log.i("Information uses", uses.toString())
             if (snapshot != null && !snapshot.isEmpty) {
                 val data = snapshot.documents.last().data
-                if (data != null){
+                if (data != null && uses != 0){
                     val notification = Notification(
                         categoryName = data["CategoryName"].toString(),
                         submittedAt = data["SubmittedAt"].toString(),
@@ -72,8 +70,10 @@ class MainActivity : AppCompatActivity() {
                     notificationDialog.show(this.supportFragmentManager,
                         "NotificationDialogFragment")
 
-                    Log.d("Item read", "Current data: ${notification.websiteURL}")
+                    Log.d("Item read", "Current data: ${notification}")
                 }
+                uses += 1
+                Log.d("Uses", "$uses")
 
             } else {
                 Log.d("Item read", "Current data: null")

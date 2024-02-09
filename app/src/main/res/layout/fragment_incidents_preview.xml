@@ -28,12 +28,12 @@
                     android:layout_column="0"
                     android:padding="3dip"
                     android:textSize="20sp"
-                    android:text="Category" />
+                    android:text="@string/selectCategoryHeaderMessage" />
 
                 <TextView
                     android:layout_column="1"
                     android:padding="3dip"
-                    android:text="Submits"
+                    android:text="@string/submissionsTextHeader"
                     android:textSize="20sp"
                     android:textAlignment="center"
                     />
@@ -44,7 +44,7 @@
                     android:layout_span="4"
                     android:textSize="20sp"
                     android:textAlignment="center"
-                    android:text="Actions" />
+                    android:text="@string/actionsTextHeader" />
 
             </TableRow>
 
@@ -71,7 +71,7 @@
         android:id="@+id/button_update_table"
         android:layout_width="150dp"
         android:layout_height="60dp"
-        android:text="Update"
+        android:text="@string/updateBtnText"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -90,6 +90,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/button_update_table"
         app:layout_constraintStart_toStartOf="parent"
-        android:contentDescription="Maps view" />
+        android:contentDescription="@string/mapsViewBtnDesc" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

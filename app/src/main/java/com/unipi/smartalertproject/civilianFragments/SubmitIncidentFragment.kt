@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
+import com.unipi.smartalertproject.R
 import com.unipi.smartalertproject.api.Utils
 import com.unipi.smartalertproject.api.ApiService
 import com.unipi.smartalertproject.api.AuthManager
@@ -50,13 +51,16 @@ class SubmitIncidentFragment : Fragment(), CameraFragment.ISendDataFromDialog{
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentSubmitIncidentBinding.inflate(inflater, container, false)
         authManager = AuthManager(requireContext())
         folder = "images/${authManager?.getUserId()}/"
         incidentImageName = ""
         locationService = LocationService(this)
+
+        // TODO set array based on language
+        // TODO in incident submit send the english version
 
         return binding.root
     }
@@ -91,7 +95,9 @@ class SubmitIncidentFragment : Fragment(), CameraFragment.ISendDataFromDialog{
         val category = binding.spinner.selectedItem.toString()
         Log.i("Checking category", category)
         if (category.isEmpty()){
-            utils.showMessage("Category", "Select category before submitting", requireContext())
+            utils.showMessage(
+                getString(R.string.selectCategoryHeaderMessage),
+                getString(R.string.selectCategoryMessage), requireContext())
             return
         }
 
@@ -124,7 +130,6 @@ class SubmitIncidentFragment : Fragment(), CameraFragment.ISendDataFromDialog{
                     override fun onResponse(call: Call<APIResponse>, response: Response<APIResponse>) {
                         Log.i("Call", "Call responded")
                         if (response.isSuccessful) { // Handle successful response here
-                            val data: APIResponse? = response.body()
 
                             if (incidentImageName.isNotEmpty() && imageBytes.isNotEmpty())
                             {
@@ -135,7 +140,8 @@ class SubmitIncidentFragment : Fragment(), CameraFragment.ISendDataFromDialog{
 
                             binding.progressBar.visibility = View.INVISIBLE
 
-                            utils.showSuccessMessage("You have submitted your incident",
+                            utils.showSuccessMessage(
+                                getString(R.string.incidentSubmssionSuccessMessage),
                                 Toast.LENGTH_LONG, requireContext())
                         }
                         else {
@@ -159,7 +165,8 @@ class SubmitIncidentFragment : Fragment(), CameraFragment.ISendDataFromDialog{
                                         // Handle validation problem
                                         Log.e("Submission error", "Validation error spotted")
                                         Log.e("Submission error", utils.mapToString(validationProblem.errors))
-                                        utils.showScrollableDialog(requireContext(), "Fields validation",
+                                        utils.showScrollableDialog(requireContext(),
+                                            getString(R.string.fieldsValidationErrorMessageIncidentSubmission),
                                             utils.mapToString(validationProblem.errors))
                                     }
                                     else {
@@ -170,7 +177,8 @@ class SubmitIncidentFragment : Fragment(), CameraFragment.ISendDataFromDialog{
                                             ?.let { utils.convertStringToObject<APIResponse?>(it) }
 
                                         apiResponse?.errorMessages?.get(0)?.let {
-                                            utils.showMessage("Incident submission",
+                                            utils.showMessage(
+                                                getString(R.string.incidentSubmissionError),
                                                 it, requireContext()) }
 
                                     }

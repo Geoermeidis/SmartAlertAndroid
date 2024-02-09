@@ -10,7 +10,6 @@
             android:id="@+id/textViewScrollableContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Your long text goes here..."
             android:textSize="16sp"
             android:padding="16dp"/>
 

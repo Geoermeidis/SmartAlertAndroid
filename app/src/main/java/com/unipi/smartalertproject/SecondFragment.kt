@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.unipi.smartalertproject.api.ApiService
-import com.unipi.smartalertproject.api.AuthManager
 import com.unipi.smartalertproject.api.APIResponse
 import com.unipi.smartalertproject.api.RegisterInfo
 import com.unipi.smartalertproject.api.ValidationProblem
@@ -28,7 +27,6 @@ import retrofit2.Response
  */
 class SecondFragment : Fragment() {
     private val apiService = RetrofitClient.retrofit.create(ApiService::class.java)
-    private var authManager: AuthManager? = null
     private var _binding: FragmentSecondBinding? = null
     private val utils: Utils = Utils()
 
@@ -39,7 +37,7 @@ class SecondFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentSecondBinding.inflate(inflater, container, false)
         return binding.root
@@ -54,7 +52,7 @@ class SecondFragment : Fragment() {
         }
 
         binding.buttonSignUp.setOnClickListener{
-            signup(it)
+            signup()
         }
 
         // Confirm passwords match
@@ -74,18 +72,18 @@ class SecondFragment : Fragment() {
                 // You can use s.toString() to get the updated text.
                 val enteredText: String = s.toString()
                 if (enteredText != binding.editSignUpPassword.text.toString()){
-                    binding.textPassworderror.text = "Passwords dont match" // TODO add strings
+                    binding.textPassworderror.text = getString(R.string.passwordsDoNotMatchError)
                     binding.textPassworderror.setTextColor(Color.RED)
                 }
                 else{
-                    binding.textPassworderror.text = "Passwords match"
+                    binding.textPassworderror.text = getString(R.string.passwordsDoMatchError)
                     binding.textPassworderror.setTextColor(Color.GREEN)
                 }
             }
         })
     }
 
-    private fun signup(view: View){
+    private fun signup(){
         // Get user data
         val firstname = binding.textFirstname.text.toString()
         val lastname = binding.extLastname.text.toString()
@@ -94,7 +92,7 @@ class SecondFragment : Fragment() {
         val email = binding.textEmail.text.toString()
         val phone = binding.textPhone.text.toString()
 
-        val registerInfo: RegisterInfo = RegisterInfo(username = username, firstname = firstname,
+        val registerInfo = RegisterInfo(username = username, firstname = firstname,
             lastname = lastname, password = password, email = email, phoneNumber = phone)
 
         // create call
@@ -109,7 +107,8 @@ class SecondFragment : Fragment() {
                     override fun onResponse(call: Call<APIResponse>, response: Response<APIResponse>) {
 
                         if (response.isSuccessful) { // Handle successful response here
-                            utils.showSuccessMessage("You have a created a new account!",
+                            utils.showSuccessMessage(
+                                getString(R.string.registerSuccessMessage),
                                 Toast.LENGTH_LONG, requireContext())
                             findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
                         }
@@ -126,8 +125,9 @@ class SecondFragment : Fragment() {
                 })
             }
             else
-                utils.showMessage("Required fields",
-                    "Please fill out all fields before submitting", requireContext())
+                utils.showMessage(
+                    getString(R.string.registerRequiredFieldMessage),
+                    getString(R.string.registerRequiredFieldMessageContent), requireContext())
         }
     }
 
@@ -144,7 +144,7 @@ class SecondFragment : Fragment() {
                 // Handle validation problem
                 Log.e("Register error", "Validation error spotted")
                 Log.e("Register error", utils.mapToString(validationProblem.errors))
-                utils.showScrollableDialog(requireContext(), "Fields validation",
+                utils.showScrollableDialog(requireContext(), getString(R.string.fieldsValidationErrorMessageIncidentSubmission),
                     utils.mapToString(validationProblem.errors))
             }
             else {
@@ -153,13 +153,13 @@ class SecondFragment : Fragment() {
 
                 val apiResponse: APIResponse? = errorBody
                     ?.let { utils.convertStringToObject<APIResponse?>(it) }
-                apiResponse?.errorMessages?.get(0)?.let {  utils.showMessage("Registration", it, requireContext()) }
+                apiResponse?.errorMessages?.get(0)?.let {  utils.showMessage(getString(R.string.registrationErrorHeader), it, requireContext()) }
 
             }
         }
     }
 
-    fun areFieldsFull(): Boolean{
+    private fun areFieldsFull(): Boolean{
         val firstname = binding.textFirstname.text.toString()
         val lastname = binding.extLastname.text.toString()
         val username = binding.textUsername.text.toString()

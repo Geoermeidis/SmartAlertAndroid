@@ -1,6 +1,5 @@
 package com.unipi.smartalertproject
 
-
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,17 +8,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.firestore
 import com.unipi.smartalertproject.api.ApiService
 import com.unipi.smartalertproject.api.AuthManager
 import com.unipi.smartalertproject.api.APIResponse
 import com.unipi.smartalertproject.api.LoginInfo
-import com.unipi.smartalertproject.api.Notification
 import com.unipi.smartalertproject.api.RetrofitClient
 import com.unipi.smartalertproject.api.Utils
 import com.unipi.smartalertproject.databinding.FragmentFirstBinding
-import com.unipi.smartalertproject.services.LocationService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,11 +26,8 @@ class FirstFragment : Fragment() {
     private var _binding: FragmentFirstBinding? = null
     private var authManager: AuthManager? = null
     private val utils: Utils = Utils()
-    private lateinit var locationService: LocationService
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+
     private val binding get() = _binding!!
-    val db = Firebase.firestore
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,21 +46,21 @@ class FirstFragment : Fragment() {
 
 
         binding.buttonLogin.setOnClickListener {
-            login(it)
+            login()
         }
 
         binding.buttonSignup.setOnClickListener{
-            findNavController().navigate(R.id.action_incidentsPreviewFragment2_to_mapsFragment)
-            //redirectToRegister(it)
+            //findNavController().navigate(R.id.action_incidentsPreviewFragment2_to_mapsFragment)
+            redirectToRegister()
         }
 
     }
 
-    private fun login(view: View){
+    private fun login(){
         // Get user data
         val name = binding.textName.text.toString()
         val password = binding.textPassword.text.toString()
-        val loginData = LoginInfo(name, password)
+        val loginData = LoginInfo(username = name, password = password)
 
         // create call
         val call: Call<APIResponse> = apiService.loginUser(loginData)
@@ -98,7 +90,7 @@ class FirstFragment : Fragment() {
                         if (refreshToken != null) {
                             Log.d("Refresh token login", refreshToken)
                             authManager?.setRefreshToken(refreshToken)
-                            utils.showSuccessMessage("You have logged in!", Toast.LENGTH_SHORT, requireContext())
+                            utils.showSuccessMessage(getString(R.string.loginSuccessMessage), Toast.LENGTH_SHORT, requireContext())
                             authManager?.getUserRole()?.let { Log.d("User role", it) }
                             authManager?.getUserId()?.let { Log.d("User id", it) }
                             if (authManager?.getUserRole().equals("Civilian"))
@@ -119,8 +111,10 @@ class FirstFragment : Fragment() {
                     val apiError = response.errorBody()?.string()
                     val apiResponse: APIResponse? = apiError
                         ?.let { utils.convertStringToObject<APIResponse?>(it) }
-
-                    apiResponse?.errorMessages?.get(0)?.let {  utils.showMessage("Login", it, requireContext()) }
+                    // TODO handle it translation message
+                    apiResponse?.errorMessages?.get(0)?.let {
+                        utils.showMessage(getString(R.string.loginErrorHeader), it, requireContext())
+                    }
                     // You can check response.code() and response.message() for details
                 }
             }
@@ -132,8 +126,8 @@ class FirstFragment : Fragment() {
         })
     }
 
-    private fun redirectToRegister(view: View){
-        findNavController().navigate(com.unipi.smartalertproject.R.id.action_FirstFragment_to_SecondFragment)
+    private fun redirectToRegister(){
+        findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
     }
 
     override fun onDestroyView() {

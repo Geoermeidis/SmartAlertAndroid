@@ -11,6 +11,7 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+
     <!-- Descriptions -->
     <string name="earthquakeDescription">An earthquake is a move of earth mass</string>
     <string name="tornadoDescription">A violently rotating column of air that touches the ground and whips up debris in its path.</string>
@@ -40,5 +41,90 @@
     <string name="heatwaveInstruction">Stay cool and hydrated by drinking plenty of fluids and avoiding strenuous activity. Stay in air-conditioned spaces as much as possible. Check on vulnerable individuals like children and the elderly.</string>
     <string name="wildfireInstruction">Evacuate immediately if instructed by authorities. If unable to evacuate, close windows and doors and create a defensible space around your home. Follow official updates and instructions.</string>
     <string name="accidentInstruction">Follow instructions from emergency personnel. Seek shelter indoors and close all windows and doors. Cover exposed skin and hair. Evacuate if instructed. Stay informed about the situation and potential health risks.</string>
+
+    <string name="accessToken">accessToken</string>
+    <string name="refreshToken">refreshToken</string>
+    <string name="userid">userId</string>
+    <string name="jwtUserId">Id</string>
+    <string name="jetUserRole">Role</string>
+    <string name="userrole">userRole</string>
+    <string name="expirationDate">exp</string>
+
+    <string name="tornadoTag">Tornado</string>
+    <string name="earthquakeTag">Earthquake</string>
+    <string name="avalancheTag">Avalanche</string>
+    <string name="landslideTag">Landslide</string>
+    <string name="blizzardTag">Blizzard</string>
+    <string name="stormTag">Storm</string>
+    <string name="tsunamiTag">Tsunami</string>
+    <string name="floodsTag">Floods</string>
+    <string name="industrialTag">Industrial</string>
+    <string name="volcanoTag">Volcano</string>
+    <string name="heatwaveTag">Heatwave</string>
+    <string name="wildfireTag">Wildfire</string>
+    <string name="accidentTag">Accident</string>
+
+    <string name="selectCategoryMessage">Select category before submitting</string>
+    <string name="incidentSubmssionSuccessMessage">You have submitted your incident</string>
+    <string name="fieldsValidationErrorMessageIncidentSubmission">Fields validation</string>
+    <string name="incidentSubmissionError">Incident submission</string>
+    <string name="selectCategoryHeaderMessage">Category</string>
+    <string name="photoCaptureSucceededMessage">"Photo capture succeeded: "</string>
+    <string name="permissionsCameraHeader">Permissions</string>
+    <string name="permissionRequestDeniedMessage">Permission request denied</string>
+    <string name="imageAttachedErrorHeader">Image attached</string>
+    <string name="imageAttachedErrorMessage">The image could not be loaded</string>
+    <string name="mapMarkerMessageSubmission1">"First submitted at "</string>
+    <string name="mapsMarkerMessageSubmission2">"Total submissions: "</string>
+    <string name="notificationContentFormatted">Civil protection %s. An %s was submitted at %s in %s. Instructions %s. Description %s</string>
+    <string name="infoPromptNotification">More info at: %s</string>
+    <string name="informationIncidentContentDescription">Information</string>
+    <string name="rejectIncidentContentDescription">Reject</string>
+    <string name="acceptIncidentContentDescription">Accept</string>
+    <string name="incidentStateUpdateSuccess">Incident %s successfully</string>
+    <string name="loginSuccessMessage">You have logged in!</string>
+    <string name="loginErrorHeader">Login</string>
+    <string name="registerSuccessMessage">You have a created a new account!</string>
+    <string name="registerRequiredFieldMessage">Required fields</string>
+    <string name="registerRequiredFieldMessageContent">Please fill out all fields before submitting</string>
+    <string name="registrationErrorHeader">Registration</string>
+    <string name="passwordsDoNotMatchError">Passwords do not match</string>
+    <string name="passwordsDoMatchError">Passwords match</string>
+    <string name="floatingBtnMainActivityDesc">message</string>
+    <string name="fragmentCameraTakePhotoBtnText">Take photo</string>
+    <string name="backButtonText">Back</string>
+    <string name="signupButtonText">Sign up</string>
+    <string name="usernameEmailLoginHint">Username/Email</string>
+    <string name="passwordLoginHint">Password</string>
+    <string name="incidentInfoCategoryLabel">Category:</string>
+    <string name="incidentInfoSubmittedAtLabel">Submitted at:</string>
+    <string name="incidentInfoAddressLabel">Address:</string>
+    <string name="incidentInfoCommentsLabel">Comments:</string>
+    <string name="incidentInfoSubmissionsLabel">Submissions:</string>
+    <string name="incidentInfoPhotoLabel">Photo</string>
+    <string name="statsLocationLabel">Location</string>
+    <string name="statsDateActivationLabel">Activated</string>
+    <string name="infoLabel">Info</string>
+    <string name="updateBtnText">Update</string>
+    <string name="mapsViewBtnDesc">Maps view</string>
+    <string name="sortSwitchBtnText">Ascending</string>
+    <string name="submissionsTextHeader">Submits</string>
+    <string name="actionsTextHeader">Actions</string>
+    <string name="notificationHeader">Emergency notification: Extremely important</string>
+    <string name="usernameRegisterHint">Username</string>
+    <string name="confirmPasswordHint">Confirm password</string>
+    <string name="phoneHint">Phone</string>
+    <string name="registerBtnText">Register</string>
+    <string name="emailHint">Email</string>
+    <string name="lastnameHint">Lastname</string>
+    <string name="firstnameHint">Firstname</string>
+    <string name="asterisk">*</string>
+    <string name="notificationImageDesc">Warning!!!</string>
+    <string name="submitBtnText">Submit</string>
+    <string name="submitNewIncidentHeader">Submit new incident</string>
+    <string name="commentsSubmitIncidentLabel">Comments</string>
+    <string name="takePhotoBtnText">Take photo</string>
+    <string name="imageSubmissionText">Image submitted</string>
+
 
 </resources>

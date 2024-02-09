@@ -3,8 +3,6 @@ package com.unipi.smartalertproject.api
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
-import java.time.OffsetDateTime
-import java.util.Date
 
 data class APIResponse(
     @SerializedName("result") val result: Any?,
@@ -22,10 +20,6 @@ class LoginInfo(
     @SerializedName("password") val password: String
 )
 
-data class Tokens(
-   @SerializedName("accessToken") val accessToken: String,
-   @SerializedName("refreshToken") val refreshToken: String
-)
 
 data class RegisterInfo(
     @SerializedName("username") val username: String,

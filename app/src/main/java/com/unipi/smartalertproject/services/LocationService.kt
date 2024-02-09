@@ -16,6 +16,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
+import com.unipi.smartalertproject.R
 import com.unipi.smartalertproject.api.Utils
 
 class LocationService(fragment: Fragment) {
@@ -42,7 +43,8 @@ class LocationService(fragment: Fragment) {
                     permissionGranted = false
             }
             if (!permissionGranted) {
-                utils.showMessage("Permissions", "Permission request denied",
+                utils.showMessage(context.getString(R.string.permissionsCameraHeader),
+                    context.getString(R.string.permissionRequestDeniedMessage),
                     context)
             }
             else {
@@ -53,30 +55,6 @@ class LocationService(fragment: Fragment) {
 
     fun getLocation(callback: (Map<String, Double>) -> Unit) {
         requestUpdatesForLocation(callback)
-    }
-
-    private fun getLastKnownLocation(callback: (Map<String, Double>) -> Unit){
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-        {  // Permissions where not granted so we have to ask again
-            fusedLocationClient.lastLocation.addOnSuccessListener{ location ->
-                if (location != null) {
-                    Log.e("Location", location.toString())
-                    longitude = location.longitude
-                    latitude = location.latitude
-
-                    callback(mapOf("latitude" to latitude, "longitude" to longitude))
-
-                    Log.e("Latitude and longitude",
-                        longitude.toString() + " " + latitude.toString())
-                }
-                else {
-                    Log.d("LOCATION", "Location is null")
-                }
-            }
-        }
-        else
-            requestPermissions()
     }
 
     private fun requestUpdatesForLocation(callback: (Map<String, Double>) -> Unit){

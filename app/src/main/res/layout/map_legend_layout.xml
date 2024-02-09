@@ -15,7 +15,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:text="Tornado"
+            android:text="@string/tornadoTag"
             android:textSize="16sp"
             android:textColor="#000000"
             android:layout_marginStart="10dp"/>
@@ -31,7 +31,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:text="Earthquake"
+            android:text="@string/earthquakeTag"
             android:textSize="16sp"
             android:textColor="#000000"
             android:layout_marginStart="10dp"/>
@@ -47,7 +47,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:text="Avalanche"
+            android:text="@string/avalancheTag"
             android:textSize="16sp"
             android:textColor="#000000"
             android:layout_marginStart="10dp"/>
@@ -63,7 +63,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:text="Landslide"
+            android:text="@string/landslideTag"
             android:textSize="16sp"
             android:textColor="#000000"
             android:layout_marginStart="10dp"/>
@@ -79,7 +79,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:text="Blizzard"
+            android:text="@string/blizzardTag"
             android:textSize="16sp"
             android:textColor="#000000"
             android:layout_marginStart="10dp"/>
@@ -95,7 +95,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:text="Storm"
+            android:text="@string/stormTag"
             android:textSize="16sp"
             android:textColor="#000000"
             android:layout_marginStart="10dp"/>
@@ -111,7 +111,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:text="Tsunami"
+            android:text="@string/tsunamiTag"
             android:textSize="16sp"
             android:textColor="#000000"
             android:layout_marginStart="10dp"/>
@@ -127,7 +127,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:text="Floods"
+            android:text="@string/floodsTag"
             android:textSize="16sp"
             android:textColor="#000000"
             android:layout_marginStart="10dp"/>
@@ -138,12 +138,12 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:background="@color/cyclone" /> <!-- Adjust background color here -->
+            android:background="@color/industrial" /> <!-- Adjust background color here -->
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:text="Cyclone"
+            android:text="@string/industrialTag"
             android:textSize="16sp"
             android:textColor="#000000"
             android:layout_marginStart="10dp"/>
@@ -159,7 +159,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:text="Wildfire"
+            android:text="@string/wildfireTag"
             android:textSize="16sp"
             android:textColor="#000000"
             android:layout_marginStart="10dp"/>
@@ -170,12 +170,12 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:background="@color/urbanfire" /> <!-- Adjust background color here -->
+            android:background="@color/accident" /> <!-- Adjust background color here -->
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:text="Urban fire"
+            android:text="@string/accidentTag"
             android:textSize="16sp"
             android:textColor="#000000"
             android:layout_marginStart="10dp"/>
@@ -191,7 +191,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:text="Volcano"
+            android:text="@string/volcanoTag"
             android:textSize="16sp"
             android:textColor="#000000"
             android:layout_marginStart="10dp"/>
@@ -207,7 +207,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:text="Heatwave"
+            android:text="@string/heatwaveTag"
             android:textSize="16sp"
             android:textColor="#000000"
             android:layout_marginStart="10dp"/>

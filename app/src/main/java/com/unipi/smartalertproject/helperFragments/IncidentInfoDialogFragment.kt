@@ -9,6 +9,7 @@ import androidx.fragment.app.DialogFragment
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
+import com.unipi.smartalertproject.R
 import com.unipi.smartalertproject.api.Incident
 import com.unipi.smartalertproject.api.Utils
 import com.unipi.smartalertproject.databinding.FragmentIncidentInfoDialogBinding
@@ -26,7 +27,7 @@ class IncidentInfoDialogFragment : DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentIncidentInfoDialogBinding.inflate(inflater, container, false)
 
@@ -65,7 +66,9 @@ class IncidentInfoDialogFragment : DialogFragment() {
         imageRef.downloadUrl.addOnSuccessListener { uri ->
             Picasso.get().load(uri).into(binding.imageInfoText)
         }.addOnFailureListener {
-            utils.showMessage("Image attached", "The image couldnt be loaded",
+            utils.showMessage(
+                getString(R.string.imageAttachedErrorHeader),
+                getString(R.string.imageAttachedErrorMessage),
                 requireContext())
         }
     }

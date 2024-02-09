@@ -30,7 +30,7 @@
                     android:layout_column="0"
                     android:padding="3dip"
                     android:textSize="18sp"
-                    android:text="Category: " />
+                    android:text="@string/incidentInfoCategoryLabel" />
 
                 <TextView
                     android:id="@+id/categoryInfoText"
@@ -46,7 +46,7 @@
                     android:layout_column="0"
                     android:padding="3dip"
                     android:textSize="18sp"
-                    android:text="Submitted at: " />
+                    android:text="@string/incidentInfoSubmittedAtLabel" />
 
                 <ScrollView
                     android:layout_width="0dp"
@@ -73,7 +73,7 @@
                     android:layout_column="0"
                     android:padding="3dip"
                     android:textSize="18sp"
-                    android:text="Address: " />
+                    android:text="@string/incidentInfoAddressLabel" />
 
                 <ScrollView
                     android:layout_width="0dp"
@@ -100,7 +100,7 @@
                     android:layout_column="0"
                     android:padding="3dip"
                     android:textSize="18sp"
-                    android:text="Comments: " />
+                    android:text="@string/incidentInfoCommentsLabel" />
 
                 <ScrollView
                     android:layout_width="0dp"
@@ -126,7 +126,7 @@
                     android:layout_column="0"
                     android:padding="3dip"
                     android:textSize="18sp"
-                    android:text="Submissions: " />
+                    android:text="@string/incidentInfoSubmissionsLabel" />
 
                 <TextView
                     android:id="@+id/submitsInfoText"
@@ -143,7 +143,7 @@
                     android:scaleType="fitXY"
                     android:layout_height="250dp"
                     android:layout_span="2"
-                    android:contentDescription="Photo" />
+                    android:contentDescription="@string/incidentInfoPhotoLabel" />
             </TableRow>
         </TableLayout>
 
@@ -156,7 +156,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/table"
-            android:text="Back"
+            android:text="@string/backButtonText"
             android:textSize="18sp"
             android:layout_marginTop="15dp" />
 

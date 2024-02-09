@@ -48,13 +48,15 @@ class MapsFragment : Fragment() {
 
             val markerDefault = MarkerOptions()
                 .position(location)
-                .title("First submitted at ${incident.submittedAt}\n" +
-                        "Total submissions: ${incident.totalSubmissions}")
+                .title(
+                    "${getString(R.string.mapMarkerMessageSubmission1)}${incident.submittedAt}\n${getString(R.string.mapsMarkerMessageSubmission2)}${incident.totalSubmissions}"
+                )
 
             val marker = AdvancedMarkerOptions()
             marker.position(location)
-                .title("First submitted at ${incident.submittedAt}\n" +
-                    "Total submissions: ${incident.totalSubmissions}")
+                .title(
+                    "${getString(R.string.mapMarkerMessageSubmission1)}${incident.submittedAt}\n${getString(R.string.mapsMarkerMessageSubmission2)}${incident.totalSubmissions}"
+                )
 
             if (googleMap.mapCapabilities.isAdvancedMarkersAvailable){
                 val pinConfigBuilder: PinConfig.Builder = PinConfig.builder().apply {

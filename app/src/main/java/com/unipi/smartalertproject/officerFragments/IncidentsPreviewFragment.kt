@@ -104,7 +104,8 @@ class IncidentsPreviewFragment : Fragment() {
                     )
                 }
                 setPadding(padding, padding, padding, padding)
-                contentDescription = "Information"
+                contentDescription =
+                    context.getString(R.string.informationIncidentContentDescription)
                 setOnClickListener {
                     val bundle = bundleOf("incident" to incident)
                     val infoDialog = IncidentInfoDialogFragment()
@@ -126,9 +127,9 @@ class IncidentsPreviewFragment : Fragment() {
                     )
                 }
                 setPadding(padding, padding, padding, padding)
-                contentDescription = "Reject"
+                contentDescription = context.getString(R.string.rejectIncidentContentDescription)
                 setOnClickListener {
-                    Log.i("Rott view", this.toString())
+                    Log.i("Reject view", this.toString())
                     changeIncidentStatus(incident.id, "rejected", this.parent as View)
                 }
             }
@@ -147,7 +148,7 @@ class IncidentsPreviewFragment : Fragment() {
                 }
 
                 setPadding(padding, padding, padding, padding)
-                contentDescription = "Accept"
+                contentDescription = context.getString(R.string.acceptIncidentContentDescription)
                 setOnClickListener {
                     changeIncidentStatus(incident.id, "accepted", this.parent as View)
                 }
@@ -167,10 +168,6 @@ class IncidentsPreviewFragment : Fragment() {
                 addView(rejectBtn)
             }
 
-            // todo fix geocoder
-            // todo add map with icons and pointers
-            // todo add info pop up
-            // todo add images instead of buttons/images on buttons
 
             binding.tableIncidents.addView(tableRow)
             binding.tableIncidents.addView(divider)
@@ -227,7 +224,7 @@ class IncidentsPreviewFragment : Fragment() {
                 override fun onResponse(call: Call<APIResponse>, response: Response<APIResponse>) {
                     Log.i("Call", "Call responded")
                     if (response.isSuccessful) { // Handle successful response here
-                        utils.showSuccessMessage("Incident $state successfully",
+                        utils.showSuccessMessage(String.format(getString(R.string.incidentStateUpdateSuccess), state),
                             Toast.LENGTH_LONG, requireContext())
                         binding.tableIncidents.removeView(view)
                         binding.progressBar2.visibility = View.INVISIBLE
