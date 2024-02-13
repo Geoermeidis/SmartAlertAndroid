@@ -43,47 +43,45 @@
         </item>
     </array>
 
-<!-- TODO -->
-
     <array name="dangerCategoriesGr">
         <item>
-            Ανεμοστρόβυλος
+            ανεμοστρόβυλος
         </item>
         <item>
-            Σεισμός
+            σεισμός
         </item>
         <item>
-            avalanche
+            χιονοστιβάδα
         </item>
         <item>
-            landslide
+            κατολίσθηση
         </item>
         <item>
-            blizzard
+            χιονοθύελλα
         </item>
         <item>
-            storm
+            καταιγίδα
         </item>
         <item>
-            tsunami
+            τσουνάμι
         </item>
         <item>
-            floods
+            πλημμύρα
         </item>
         <item>
-            industrial
+            βιομηχανία
         </item>
         <item>
-            wildfire
+            πυρκαγιά
         </item>
         <item>
-            accident
+            πυρηνικό/χημικό
         </item>
         <item>
-            volcano
+            ηφαίστειο
         </item>
         <item>
-            heatwave
+            καύσωνας
         </item>
     </array>
 
@@ -101,13 +99,13 @@
 
     <array name="sort_categoriesGr">
         <item>
-            All
+            Όλα
         </item>
         <item>
-            By date
+            Κατά ημερομηνία
         </item>
         <item>
-            By category
+            Κατά κατηγορία
         </item>
     </array>
 

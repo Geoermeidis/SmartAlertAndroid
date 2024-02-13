@@ -62,7 +62,16 @@ class CameraFragment : DialogFragment() {
             }
         }
 
-
+    override fun onStart() {
+        super.onStart()
+        val window = dialog?.window
+        if (window != null) {
+            val metrics = resources.displayMetrics
+            val width = metrics.widthPixels * 0.8 // Change 0.8 to your desired proportion
+            val height = metrics.heightPixels * 0.7 // Change 0.7 to your desired proportion
+            window.setLayout(width.toInt(), height.toInt())
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -88,6 +97,7 @@ class CameraFragment : DialogFragment() {
 
         // Set up the listeners for take photo and video capture buttons
         binding.buttonCamera.setOnClickListener { takePhoto() }
+        binding.buttonBackCamera.setOnClickListener{ dismissNow() }
     }
 
     private fun takePhoto() {

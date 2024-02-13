@@ -1,6 +1,7 @@
 package com.unipi.smartalertproject.api
 
 import android.os.Parcelable
+import com.google.firebase.Timestamp
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
@@ -48,7 +49,7 @@ data class CreateIncidentDTO(
 
 @Parcelize
 data class Notification(
-    val submittedAt: String,
+    val submittedAt: Timestamp,
     val latitude: Double,
     val longitude: Double,
     val categoryName: String,

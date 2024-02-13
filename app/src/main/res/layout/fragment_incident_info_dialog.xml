@@ -36,6 +36,7 @@
                     android:id="@+id/categoryInfoText"
                     android:layout_column="1"
                     android:padding="15dip"
+                    android:textAlignment="viewStart"
                     android:textSize="18sp" />
 
             </TableRow>
@@ -58,11 +59,12 @@
                         android:id="@+id/dateInfoText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:maxLines="5"
-                        android:textSize="16sp"
-                        android:scrollbars="vertical"
                         android:gravity="start|top"
-                        android:padding="8dp"/>
+                        android:maxLines="5"
+                        android:padding="8dp"
+                        android:scrollbars="vertical"
+                        android:textAlignment="viewStart"
+                        android:textSize="16sp" />
                 </ScrollView>
 
             </TableRow>
@@ -85,11 +87,12 @@
                         android:id="@+id/locationInfoText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:maxLines="5"
-                        android:textSize="16sp"
-                        android:scrollbars="vertical"
                         android:gravity="start|top"
-                        android:padding="8dp"/>
+                        android:maxLines="5"
+                        android:padding="8dp"
+                        android:scrollbars="vertical"
+                        android:textAlignment="viewStart"
+                        android:textSize="16sp" />
                 </ScrollView>
 
             </TableRow>
@@ -105,17 +108,18 @@
                 <ScrollView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:textAlignment="viewStart">
 
                     <TextView
                         android:id="@+id/commentsInfoText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:maxLines="5"
-                        android:textSize="16sp"
-                        android:scrollbars="vertical"
                         android:gravity="start|top"
-                        android:padding="8dp"/>
+                        android:maxLines="5"
+                        android:padding="8dp"
+                        android:scrollbars="vertical"
+                        android:textSize="16sp" />
                 </ScrollView>
 
             </TableRow>
@@ -131,19 +135,21 @@
                 <TextView
                     android:id="@+id/submitsInfoText"
                     android:layout_column="1"
-                    android:textAlignment="center"
                     android:padding="15dip"
-                    android:textSize="18sp"/>
+                    android:textAlignment="viewStart"
+                    android:textSize="18sp" />
 
             </TableRow>
 
             <TableRow>
+
                 <ImageView
                     android:id="@+id/imageInfoText"
-                    android:scaleType="fitXY"
                     android:layout_height="250dp"
                     android:layout_span="2"
-                    android:contentDescription="@string/incidentInfoPhotoLabel" />
+                    android:contentDescription="@string/incidentInfoPhotoLabel"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@android:drawable/ic_menu_camera" />
             </TableRow>
         </TableLayout>
 

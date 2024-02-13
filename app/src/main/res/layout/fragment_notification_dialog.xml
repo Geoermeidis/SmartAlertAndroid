@@ -28,12 +28,14 @@ tools:context=".helperFragments.NotificationDialogFragment">
 
         <TextView
             android:id="@+id/text_header_notification"
-            android:layout_width="255dp"
-            android:layout_height="92dp"
+            android:layout_width="267dp"
+            android:layout_height="59dp"
             android:text="@string/notificationHeader"
             android:textAlignment="center"
             android:textSize="24sp"
             android:textStyle="bold"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/image_notification"
@@ -41,14 +43,17 @@ tools:context=".helperFragments.NotificationDialogFragment">
 
         <TextView
             android:id="@+id/text_notification_content"
-            android:layout_width="381dp"
-            android:layout_height="38dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textIsSelectable="true"
             android:layout_marginTop="40dp"
             android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image_notification" />
+            app:layout_constraintTop_toBottomOf="@+id/image_notification"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/text_website"
@@ -56,6 +61,8 @@ tools:context=".helperFragments.NotificationDialogFragment">
             android:layout_height="wrap_content"
             android:layout_marginTop="48dp"
             android:textSize="20sp"
+            android:textIsSelectable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"

@@ -34,6 +34,11 @@ class IncidentInfoDialogFragment : DialogFragment() {
         incident = arguments?.getParcelable("incident", Incident::class.java)!!
 
         binding.categoryInfoText.text = incident.categoryName
+        if (requireContext().resources.configuration.locales[0].toString() == "el_GR"){
+            binding.categoryInfoText.text = resources.getStringArray(R.array.dangerCategoriesGr)
+                .toList()[resources.getStringArray(R.array.dangerCategoriesEn).indexOf(incident.categoryName)]
+        }
+
         binding.commentsInfoText.text = incident.comments
         binding.dateInfoText.text = incident.submittedAt
 
@@ -48,28 +53,38 @@ class IncidentInfoDialogFragment : DialogFragment() {
         return binding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        val window = dialog?.window
+        if (window != null) {
+            val metrics = resources.displayMetrics
+            val width = metrics.widthPixels * 0.9 // Change 0.8 to your desired proportion
+            val height = metrics.heightPixels * 0.9 // Change 0.7 to your desired proportion
+            window.setLayout(width.toInt(), height.toInt())
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.buttonBacktoIncidents.setOnClickListener {
             dismiss()
         }
 
-        // TODO if photo is none while user is submitting then update the none photo
-        //  with the one the latest user submitted
-
         setImageFromFirebaseStorage(incident.photoUrl)
     }
 
     private fun setImageFromFirebaseStorage(imagePath: String){
-        val imageRef = storageRef.child(imagePath)
+        if (imagePath == "none"){
+            val imageRef = storageRef.child(imagePath)
 
-        imageRef.downloadUrl.addOnSuccessListener { uri ->
-            Picasso.get().load(uri).into(binding.imageInfoText)
-        }.addOnFailureListener {
-            utils.showMessage(
-                getString(R.string.imageAttachedErrorHeader),
-                getString(R.string.imageAttachedErrorMessage),
-                requireContext())
+            imageRef.downloadUrl.addOnSuccessListener { uri ->
+                Picasso.get().load(uri).into(binding.imageInfoText)
+            }.addOnFailureListener {
+                utils.showMessage(
+                    getString(R.string.imageAttachedErrorHeader),
+                    getString(R.string.imageAttachedErrorMessage),
+                    requireContext())
+            }
         }
     }
 }

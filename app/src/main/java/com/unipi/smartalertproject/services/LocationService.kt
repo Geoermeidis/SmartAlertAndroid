@@ -16,27 +16,56 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
+import com.unipi.smartalertproject.MainActivity
 import com.unipi.smartalertproject.R
 import com.unipi.smartalertproject.api.Utils
 
-class LocationService(fragment: Fragment) {
-    private var _fragment: Fragment
-    private var context: Context
-    private var locationPermissionRequest: ActivityResultLauncher<Array<String>>
-    private var fusedLocationClient: FusedLocationProviderClient
+// TODO test noise notification
+
+class LocationService() {
+    private lateinit var _fragment: Fragment
+    private lateinit var _activity: MainActivity
+    private lateinit var context: Context
+    private lateinit var locationPermissionRequest: ActivityResultLauncher<Array<String>>
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
     private val utils: Utils = Utils()
     private var latitude: Double = -181.0
     private var longitude: Double = -181.0
 
-    init {
+    constructor(activity: MainActivity): this(){
+        _activity = activity
+        context = _activity.baseContext
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+        locationPermissionRequest = _activity.registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) {
+                permissions -> // Handle Permission granted/rejected
+            var permissionGranted = true
+            permissions.entries.forEach {
+                if (it.key in REQUIRED_PERMISSIONS && !it.value)
+                    permissionGranted = false
+            }
+            if (!permissionGranted) {
+                utils.showMessage(context.getString(R.string.permissionsCameraHeader),
+                    context.getString(R.string.permissionRequestDeniedMessage),
+                    context)
+            }
+            else {
+                Log.i("Permissions", "Permissions granted")
+            }
+        }
+    }
+
+    constructor(fragment: Fragment): this(){
         _fragment = fragment
         context = _fragment.requireContext()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-        locationPermissionRequest = fragment.registerForActivityResult(
+        locationPermissionRequest = _fragment.registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
-        ) { permissions -> // Handle Permission granted/rejected
+        ) {
+                permissions -> // Handle Permission granted/rejected
             var permissionGranted = true
             permissions.entries.forEach {
                 if (it.key in REQUIRED_PERMISSIONS && !it.value)

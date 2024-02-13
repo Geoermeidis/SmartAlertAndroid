@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TableRow
@@ -30,12 +31,13 @@ import com.unipi.smartalertproject.helperFragments.IncidentInfoDialogFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Date
 import java.util.Locale
 import kotlin.properties.Delegates
 
 class IncidentStatsPreviewFragment : Fragment() {
     private val apiService = RetrofitClient.retrofit.create(ApiService::class.java)
-    // TODO add menus
+
     private var _binding: FragmentIncidentStatsPreviewBinding? = null
     private val binding get() = _binding!!
     private var authManager: AuthManager? = null
@@ -52,10 +54,24 @@ class IncidentStatsPreviewFragment : Fragment() {
         // Inflate the layout for this fragment\
         _binding = FragmentIncidentStatsPreviewBinding.inflate(inflater, container, false)
         authManager = AuthManager(requireContext())
+
         density = resources.displayMetrics.density
+
         binding.tableIncidents.removeAllViews()
+        addHeadersToTable()
         getIncidents()
-        // TODO set array based on language
+
+        if (requireContext().resources.configuration.locales[0].toString() == "el_GR"){
+            val adapter = ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.sort_categoriesGr,
+                R.layout.custom_spinner
+            )
+
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.pickerSortingClass.adapter = adapter
+        }
+
         return binding.root
     }
 
@@ -64,13 +80,13 @@ class IncidentStatsPreviewFragment : Fragment() {
 
         binding.buttonUpdateTable.setOnClickListener {
             binding.tableIncidents.removeAllViews()
+            addHeadersToTable()
             incidents = emptyList()
             getIncidents()
         }
 
         binding.buttonOpenMapsView.setOnClickListener {
-            val bundle = Bundle() // TODO implement map for users
-            // TODO implement when in map and back to to call getIncidents()
+            val bundle = Bundle()
             bundle.putParcelableArray("incidents", incidents
                 .filter { incident: Incident -> incident.state == 1 }
                 .toTypedArray())
@@ -101,23 +117,49 @@ class IncidentStatsPreviewFragment : Fragment() {
 
     private fun sortTable(selectedOrderIsAscending: Boolean, selectedClass: String){
         binding.tableIncidents.removeAllViews()
-
-        if (selectedClass == "all")
+        addHeadersToTable()
+        if (selectedClass == "all"){
             fillTable(incidents)
-        else if (selectedClass == "by category" && selectedOrderIsAscending)
-            fillTable(incidents.sortedBy { it.categoryName })
-        else if (selectedClass == "by category")
-            fillTable(incidents.sortedByDescending { it.categoryName })
-        else if (selectedClass == "by date" && selectedOrderIsAscending)
-            fillTable(incidents.sortedBy { it.submittedAt })
-        else
-            fillTable(incidents.sortedByDescending { it.submittedAt })
+        }
+        else if (selectedClass == "by date" && selectedOrderIsAscending){
+            fillTable(incidents.sortedBy {Calendar.getInstance()
+                .apply{
+                    time = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+                                .parse(it.submittedAt)
+                }
+            })
+        }
+        else if (selectedClass == "by date"){
+            fillTable(incidents.sortedByDescending { Calendar.getInstance()
+                .apply{
+                    time = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+                        .parse(it.submittedAt)
+                }
+            })
+        }
+        else{
+            if (requireContext().resources.configuration.locales[0].toString() == "el_GR"){
+                if (selectedClass == "by category" && selectedOrderIsAscending)
+                    fillTable(incidents.sortedBy { resources.getStringArray(R.array.dangerCategoriesGr)
+                        .toList()[resources.getStringArray(R.array.dangerCategoriesEn).indexOf(it.categoryName)]
+                    })
+                else if (selectedClass == "by category")
+                    fillTable(incidents.sortedByDescending { resources.getStringArray(R.array.dangerCategoriesGr)
+                        .toList()[resources.getStringArray(R.array.dangerCategoriesEn).indexOf(it.categoryName)]})
+            }
+            else {
+                if (selectedClass == "by category" && selectedOrderIsAscending)
+                    fillTable(incidents.sortedBy { it.categoryName })
+                else if (selectedClass == "by category")
+                    fillTable(incidents.sortedByDescending { it.categoryName })
+            }
+        }
     }
 
     private fun getIncidents(){
         val token = authManager?.getAccessToken()
         if (token != null && authManager != null){
-            binding.progressBar2.visibility = View.VISIBLE
+            binding.progressBarPreview.visibility = View.VISIBLE
             val call: Call<IncidentAPIResponse> = apiService.getIncidents("Bearer $token")
             // execute call and wait for response or fail
             call.enqueue(object : Callback<IncidentAPIResponse> {
@@ -128,7 +170,7 @@ class IncidentStatsPreviewFragment : Fragment() {
 
                         fillTable(incidents)
 
-                        binding.progressBar2.visibility = View.INVISIBLE
+                        binding.progressBarPreview.visibility = View.INVISIBLE
                         Log.e("Incidents", "Incidents acquired")
                     }
                     else {
@@ -136,7 +178,7 @@ class IncidentStatsPreviewFragment : Fragment() {
                         if (authManager!!.isAccessTokenExpired(token)){
                             Log.e("Token expiration", "Token expired")
                             authManager!!.refreshToken(apiService)
-                            binding.progressBar2.visibility = View.INVISIBLE
+                            binding.progressBarPreview.visibility = View.INVISIBLE
                         }
                         Log.e("Incidents error code", response.code().toString())
                         Log.e("Incidents error", response.message().toString())
@@ -152,6 +194,56 @@ class IncidentStatsPreviewFragment : Fragment() {
         }
     }
 
+    private fun addHeadersToTable(){
+        val padding = (2 * density + 0.5f).toInt()
+        val categoryTextView = TextView(requireContext()).apply {
+            text = getString(R.string.selectCategoryHeaderMessage)
+            textAlignment =View.TEXT_ALIGNMENT_CENTER
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
+            setPadding(padding, padding, padding, padding)
+            layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.MATCH_PARENT, 1f)
+        }
+
+        val locationTextView = TextView(requireContext()).apply {
+            text = getString(R.string.statsLocationLabel)
+            textAlignment = View.TEXT_ALIGNMENT_CENTER
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
+            setPadding(padding, padding, padding, padding)
+            layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.MATCH_PARENT, 2f)
+        }
+
+        val dateTextView = TextView(requireContext()).apply {
+            text = getString(R.string.statsDateActivationLabel)
+            textAlignment = View.TEXT_ALIGNMENT_CENTER
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
+            setPadding(padding, padding, padding, padding)
+            layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.MATCH_PARENT, 1f)
+        }
+
+        val infoTextView = TextView(requireContext()).apply {
+            text = "" // Assuming you want a space
+            textAlignment = View.TEXT_ALIGNMENT_CENTER
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
+            setPadding(padding, padding, padding, padding)
+            layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.MATCH_PARENT, 1f)
+        }
+
+        binding.tableIncidents.apply {
+            addView(TableRow(requireContext()).apply {
+                addView(categoryTextView)
+                addView(locationTextView)
+                addView(dateTextView)
+                addView(infoTextView)
+            })
+            addView(View(requireContext()).apply {
+                layoutParams =  TableRow.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    (5 * density + 0.5f).toInt()) // Height in pixels
+                setBackgroundColor(Color.GRAY)
+            })
+        }
+    }
+
     private fun fillTable(incidentsList: List<Incident>){
         // get only accepted incidents
         incidentsList.filter { incident: Incident -> incident.state == 1 }
@@ -159,9 +251,24 @@ class IncidentStatsPreviewFragment : Fragment() {
                 val padding = (2 * density + 0.5f).toInt()
 
                 val categoryView = TextView(requireContext()).apply {
-                    text = incident.categoryName.replaceFirstChar {cat ->
+
+                    var catText = incident.categoryName
+                    if (requireContext().resources.configuration.locales[0].toString() == "el_GR") {
+                        catText = resources.getStringArray(R.array.dangerCategoriesGr)
+                            .toList()[resources.getStringArray(R.array.dangerCategoriesEn)
+                            .indexOf(incident.categoryName)]
+                    }
+
+                    catText = catText.replaceFirstChar { cat ->
                         if (cat.isLowerCase()) cat.titlecase(Locale.getDefault()) else cat.toString()
                     }
+
+                    // TODO add cases for big screens or landscape?
+                    text = catText
+
+                    tooltipText = catText
+
+                    maxWidth = (8 * density + 0.5f).toInt()
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
                     setPadding(padding, padding, padding, padding)
                     gravity = Gravity.CENTER
@@ -173,6 +280,7 @@ class IncidentStatsPreviewFragment : Fragment() {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
                     textAlignment = View.TEXT_ALIGNMENT_CENTER
                     gravity = Gravity.CENTER
+                    maxWidth = (12 * density + 0.5f).toInt()
                 }
 
                 val geocoder = Geocoder(requireContext())
@@ -180,9 +288,8 @@ class IncidentStatsPreviewFragment : Fragment() {
                 geocoder.getFromLocation(incident.latitude,incident.longitude,1) {
                     addresses ->
                         locationView.text = addresses[0].locality
-                        locationView.tooltipText = "${addresses[0].countryName}, ${addresses[0].locality}, ${addresses[0].getAddressLine(0)}"
+                        locationView.tooltipText = "${addresses[0].countryName}, ${addresses[0].getAddressLine(0)}"
                 }
-
 
                 val dateView = TextView(requireContext()).apply {
                     val date: Calendar = Calendar.getInstance()
@@ -211,7 +318,7 @@ class IncidentStatsPreviewFragment : Fragment() {
                     layoutParams = TableRow.LayoutParams((50 * density + 0.5f).toInt(),
                         (50 * density + 0.5f).toInt()).apply {
                         setMargins(
-                            (5 * density + 0.5f).toInt(),
+                            (2 * density + 0.5f).toInt(),
                             (3 * density + 0.5f).toInt(),
                             (2 * density + 0.5f).toInt(),
                             (3 * density + 0.5f).toInt()

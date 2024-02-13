@@ -1,6 +1,5 @@
 package com.unipi.smartalertproject.api
 
-import com.unipi.smartalertproject.R
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET

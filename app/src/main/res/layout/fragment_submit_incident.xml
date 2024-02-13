@@ -15,13 +15,17 @@
 
         <Button
             android:id="@+id/button_submit_incident"
-            android:layout_width="127dp"
-            android:layout_height="51dp"
-            android:layout_marginBottom="32dp"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/submitBtnText"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_photo"
+            app:layout_constraintVertical_bias="1.0" />
 
         <TextView
             android:id="@+id/textView"
@@ -37,28 +41,28 @@
 
         <EditText
             android:id="@+id/text_comments"
-            android:layout_width="259dp"
-            android:layout_height="77dp"
+            android:layout_width="297dp"
+            android:layout_height="107dp"
             android:ems="10"
             android:gravity="start|top"
             android:hint="@string/commentsSubmitIncidentLabel"
             android:inputType="textMultiLine"
             app:layout_constraintBottom_toTopOf="@+id/button_camera"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spinner"
             app:layout_constraintVertical_bias="0.445" />
 
+
         <Spinner
             android:id="@+id/spinner"
-            android:layout_width="170dp"
-            android:layout_height="65dp"
-            android:layout_marginTop="72dp"
+            android:layout_width="196dp"
+            android:layout_height="53dp"
+            android:layout_marginTop="48dp"
             android:entries="@array/dangerCategoriesEn"
             android:spinnerMode="dropdown"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.698"
+            app:layout_constraintHorizontal_bias="0.739"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -66,35 +70,39 @@
             android:id="@+id/category_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="84dp"
+            android:layout_marginTop="60dp"
             android:text="@string/selectCategoryHeaderMessage"
-            android:textSize="20sp"
+            android:textSize="22sp"
             app:layout_constraintEnd_toStartOf="@+id/spinner"
-            app:layout_constraintHorizontal_bias="0.754"
+            app:layout_constraintHorizontal_bias="0.811"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
-
 
         <Button
             android:id="@+id/button_camera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="152dp"
-            android:text="@string/takePhotoBtnText"
+            android:layout_marginTop="160dp"
+            android:text="@string/fragmentCameraTakePhotoBtnText"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
         <ImageView
-            android:contentDescription="@string/imageSubmissionText"
             android:id="@+id/view_photo"
             android:layout_width="286dp"
             android:layout_height="163dp"
+            android:contentDescription="@string/imageSubmissionText"
             android:src="?attr/actionModeBackground"
-            app:layout_constraintBottom_toTopOf="@+id/button_submit_incident"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_camera" />
+            app:layout_constraintTop_toBottomOf="@+id/button_camera"
+            app:layout_constraintVertical_bias="0.369"
+            app:srcCompat="@drawable/image_icon" />
 
         <ProgressBar
             android:id="@+id/progressBar"

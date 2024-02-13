@@ -7,19 +7,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.unipi.smartalertproject.R
-import com.unipi.smartalertproject.api.Utils
+import com.unipi.smartalertproject.api.APIResponse
 import com.unipi.smartalertproject.api.ApiService
 import com.unipi.smartalertproject.api.AuthManager
-import com.unipi.smartalertproject.api.APIResponse
 import com.unipi.smartalertproject.api.CreateIncidentDTO
-import com.unipi.smartalertproject.api.ValidationProblem
 import com.unipi.smartalertproject.api.RetrofitClient
+import com.unipi.smartalertproject.api.Utils
+import com.unipi.smartalertproject.api.ValidationProblem
 import com.unipi.smartalertproject.databinding.FragmentSubmitIncidentBinding
 import com.unipi.smartalertproject.helperFragments.CameraFragment
 import com.unipi.smartalertproject.services.LocationService
@@ -56,11 +57,19 @@ class SubmitIncidentFragment : Fragment(), CameraFragment.ISendDataFromDialog{
         _binding = FragmentSubmitIncidentBinding.inflate(inflater, container, false)
         authManager = AuthManager(requireContext())
         folder = "images/${authManager?.getUserId()}/"
-        incidentImageName = ""
+        incidentImageName = "none"
         locationService = LocationService(this)
 
-        // TODO set array based on language
-        // TODO in incident submit send the english version
+        if (requireContext().resources.configuration.locales[0].toString() == "el_GR"){
+            val adapter = ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.dangerCategoriesGr,
+                R.layout.custom_spinner
+            )
+
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.spinner.adapter = adapter
+        }
 
         return binding.root
     }
@@ -92,7 +101,9 @@ class SubmitIncidentFragment : Fragment(), CameraFragment.ISendDataFromDialog{
     }
 
     private fun submitIncident(){
-        val category = binding.spinner.selectedItem.toString()
+        val category =  // from greek/english to english
+            resources.getStringArray(R.array.dangerCategoriesEn)[binding.spinner.selectedItemPosition]
+
         Log.i("Checking category", category)
         if (category.isEmpty()){
             utils.showMessage(
@@ -103,7 +114,7 @@ class SubmitIncidentFragment : Fragment(), CameraFragment.ISendDataFromDialog{
 
         var longitude: Double
         var latitude: Double
-
+2
         locationService.getLocation { location ->
             binding.progressBar.visibility = View.VISIBLE
             // Handle the obtained location here
@@ -115,7 +126,7 @@ class SubmitIncidentFragment : Fragment(), CameraFragment.ISendDataFromDialog{
             if (latitude != -181.0 && authManager != null && token != null && userId != null){
                 // Get incident data
                 val comments = binding.textComments.text.toString()
-                val photoUrl = "$folder$incidentImageName"
+                val photoUrl = if (incidentImageName == "none") incidentImageName else "$folder$incidentImageName"
 
                 // create incident
                 val incidentData = CreateIncidentDTO( userId, longitude, latitude, comments, photoUrl, category)
@@ -204,6 +215,7 @@ class SubmitIncidentFragment : Fragment(), CameraFragment.ISendDataFromDialog{
         val bmp = BitmapFactory.decodeByteArray(array, 0, array.size)
         imageBytes = array
         val image = binding.viewPhoto
+        Log.i("image bytes", imageBytes.toString())
         image.setImageBitmap(Bitmap.createScaledBitmap(bmp, image.width, image.height, false))
     }
 

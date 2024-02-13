@@ -6,15 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.Timestamp
 import com.unipi.smartalertproject.api.ApiService
 import com.unipi.smartalertproject.api.AuthManager
 import com.unipi.smartalertproject.api.APIResponse
 import com.unipi.smartalertproject.api.LoginInfo
+import com.unipi.smartalertproject.api.Notification
 import com.unipi.smartalertproject.api.RetrofitClient
 import com.unipi.smartalertproject.api.Utils
 import com.unipi.smartalertproject.databinding.FragmentFirstBinding
+import com.unipi.smartalertproject.helperFragments.NotificationDialogFragment
+import com.unipi.smartalertproject.services.LocationService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -50,7 +55,6 @@ class FirstFragment : Fragment() {
         }
 
         binding.buttonSignup.setOnClickListener{
-            //findNavController().navigate(R.id.action_incidentsPreviewFragment2_to_mapsFragment)
             redirectToRegister()
         }
 
@@ -93,14 +97,14 @@ class FirstFragment : Fragment() {
                             utils.showSuccessMessage(getString(R.string.loginSuccessMessage), Toast.LENGTH_SHORT, requireContext())
                             authManager?.getUserRole()?.let { Log.d("User role", it) }
                             authManager?.getUserId()?.let { Log.d("User id", it) }
+
                             if (authManager?.getUserRole().equals("Civilian"))
-                            {  // redirect to submit new incident
-                                // findNavController().navigate(R.id.action_FirstFragment_to_submitIncidentFragment2)
-                                findNavController().navigate(R.id.action_FirstFragment_to_incidentStatsPreviewFragment)
+                            {  // redirect to main menu
+                                findNavController().navigate(R.id.action_FirstFragment_to_mainMenuCivilianFragment)
                             }
                             else
                             {
-                                findNavController().navigate(R.id.action_FirstFragment_to_incidentsPreviewFragment2)
+                                findNavController().navigate(R.id.action_FirstFragment_to_mainMenuOfficerFragment)
                             }
                         }
                     }
@@ -111,7 +115,7 @@ class FirstFragment : Fragment() {
                     val apiError = response.errorBody()?.string()
                     val apiResponse: APIResponse? = apiError
                         ?.let { utils.convertStringToObject<APIResponse?>(it) }
-                    // TODO handle it translation message
+
                     apiResponse?.errorMessages?.get(0)?.let {
                         utils.showMessage(getString(R.string.loginErrorHeader), it, requireContext())
                     }

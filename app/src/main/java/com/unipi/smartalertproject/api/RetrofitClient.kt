@@ -1,6 +1,7 @@
 package com.unipi.smartalertproject.api
 
 
+import android.annotation.SuppressLint
 import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -39,9 +40,12 @@ object RetrofitClient {
     }
 }
 
+@SuppressLint("CustomX509TrustManager")
 class TrustAllCerts : X509TrustManager {
+    @SuppressLint("TrustAllX509TrustManager")
     override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
 
+    @SuppressLint("TrustAllX509TrustManager")
     override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
 
     override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()

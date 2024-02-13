@@ -18,11 +18,11 @@
             android:id="@+id/action_FirstFragment_to_submitIncidentFragment2"
             app:destination="@id/submitIncidentFragment2" />
         <action
-            android:id="@+id/action_FirstFragment_to_incidentsPreviewFragment2"
-            app:destination="@id/incidentsPreviewFragment2" />
+            android:id="@+id/action_FirstFragment_to_mainMenuCivilianFragment"
+            app:destination="@id/mainMenuCivilianFragment" />
         <action
-            android:id="@+id/action_FirstFragment_to_incidentStatsPreviewFragment"
-            app:destination="@id/incidentStatsPreviewFragment" />
+            android:id="@+id/action_FirstFragment_to_mainMenuOfficerFragment"
+            app:destination="@id/mainMenuOfficerFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -100,4 +100,31 @@
             android:name="incident"
             app:argType="com.unipi.smartalertproject.api.Notification" />
     </dialog>
+    <fragment
+        android:id="@+id/mainMenuCivilianFragment"
+        android:name="com.unipi.smartalertproject.civilianFragments.MainMenuCivilianFragment"
+        android:label="fragment_main_menu_civilian"
+        tools:layout="@layout/fragment_main_menu_civilian" >
+        <action
+            android:id="@+id/action_mainMenuCivilianFragment_to_submitIncidentFragment2"
+            app:destination="@id/submitIncidentFragment2" />
+        <action
+            android:id="@+id/action_mainMenuCivilianFragment_to_incidentStatsPreviewFragment"
+            app:destination="@id/incidentStatsPreviewFragment" />
+        <action
+            android:id="@+id/action_mainMenuCivilianFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainMenuOfficerFragment"
+        android:name="com.unipi.smartalertproject.officerFragments.MainMenuOfficerFragment"
+        android:label="fragment_main_menu_officer"
+        tools:layout="@layout/fragment_main_menu_officer" >
+        <action
+            android:id="@+id/action_mainMenuOfficerFragment_to_incidentsPreviewFragment2"
+            app:destination="@id/incidentsPreviewFragment2" />
+        <action
+            android:id="@+id/action_mainMenuOfficerFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
+    </fragment>
 </navigation>

@@ -1,16 +1,11 @@
 <resources>
-    <string name="app_name">SmartAlertProject</string>
+    <string name="app_name" translatable="false">SmartAlertProject</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
+    <string name="second_fragment_label">Register page</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-    <string name="map_id">8d5294dd9ccf9513</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <string name="map_id" translatable="false">8d5294dd9ccf9513</string>
 
     <!-- Descriptions -->
     <string name="earthquakeDescription">An earthquake is a move of earth mass</string>
@@ -42,13 +37,13 @@
     <string name="wildfireInstruction">Evacuate immediately if instructed by authorities. If unable to evacuate, close windows and doors and create a defensible space around your home. Follow official updates and instructions.</string>
     <string name="accidentInstruction">Follow instructions from emergency personnel. Seek shelter indoors and close all windows and doors. Cover exposed skin and hair. Evacuate if instructed. Stay informed about the situation and potential health risks.</string>
 
-    <string name="accessToken">accessToken</string>
-    <string name="refreshToken">refreshToken</string>
-    <string name="userid">userId</string>
-    <string name="jwtUserId">Id</string>
-    <string name="jetUserRole">Role</string>
-    <string name="userrole">userRole</string>
-    <string name="expirationDate">exp</string>
+    <string name="accessToken" translatable="false">accessToken</string>
+    <string name="refreshToken" translatable="false">refreshToken</string>
+    <string name="userid" translatable="false">userId</string>
+    <string name="jwtUserId" translatable="false">Id</string>
+    <string name="jetUserRole" translatable="false">Role</string>
+    <string name="userrole" translatable="false">userRole</string>
+    <string name="expirationDate" translatable="false">exp</string>
 
     <string name="tornadoTag">Tornado</string>
     <string name="earthquakeTag">Earthquake</string>
@@ -76,7 +71,7 @@
     <string name="imageAttachedErrorMessage">The image could not be loaded</string>
     <string name="mapMarkerMessageSubmission1">"First submitted at "</string>
     <string name="mapsMarkerMessageSubmission2">"Total submissions: "</string>
-    <string name="notificationContentFormatted">Civil protection %s. An %s was submitted at %s in %s. Instructions %s. Description %s</string>
+    <string name="notificationContentFormatted">Civil protection at %s. \nA %s was submitted at %s in %s. \n\nInstructions:  %s \n\nDescription: %s</string>
     <string name="infoPromptNotification">More info at: %s</string>
     <string name="informationIncidentContentDescription">Information</string>
     <string name="rejectIncidentContentDescription">Reject</string>
@@ -104,7 +99,6 @@
     <string name="incidentInfoPhotoLabel">Photo</string>
     <string name="statsLocationLabel">Location</string>
     <string name="statsDateActivationLabel">Activated</string>
-    <string name="infoLabel">Info</string>
     <string name="updateBtnText">Update</string>
     <string name="mapsViewBtnDesc">Maps view</string>
     <string name="sortSwitchBtnText">Ascending</string>
@@ -118,13 +112,28 @@
     <string name="emailHint">Email</string>
     <string name="lastnameHint">Lastname</string>
     <string name="firstnameHint">Firstname</string>
-    <string name="asterisk">*</string>
+    <string name="asterisk" translatable="false">*</string>
     <string name="notificationImageDesc">Warning!!!</string>
     <string name="submitBtnText">Submit</string>
     <string name="submitNewIncidentHeader">Submit new incident</string>
     <string name="commentsSubmitIncidentLabel">Comments</string>
     <string name="takePhotoBtnText">Take photo</string>
     <string name="imageSubmissionText">Image submitted</string>
+    <string name="registerHeader">Register account</string>
+    <string name="first_fragment_label">SmartAlertProject</string>
+
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="buttonSubOfficerText">Incident submissions</string>
+    <string name="buttonMapOfficerText">Map</string>
+    <string name="main_menu">Main menu</string>
+    <string name="submitIncidentTextBtn">Submit incident</string>
+    <string name="incidentsBtnCivText">Incidents</string>
+    <string name="officer_incident_accept_message">Are you sure you want to warn all users fot this incident?</string>
+    <string name="officer_incident_accept_title">Send notification to users</string>
+    <string name="officer_incident_reject_title">Reject incident confirmation</string>
+    <string name="officer_incident_reject_message">Are you sure you want to reject this submission?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
 
 </resources>

@@ -19,7 +19,7 @@ class Utils {
         val alertDialog: AlertDialog.Builder = AlertDialog.Builder(context)
         alertDialog.setTitle(title)
         alertDialog.setMessage(message)
-        // TODO:  for alert icon
+
         val alert = alertDialog.create()
         alert.setCanceledOnTouchOutside(true)
         alert.show()
