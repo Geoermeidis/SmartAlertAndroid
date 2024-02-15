@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
-    <array name="dangerCategories">
+    <array name="dangerCategoriesEn">
         <item>
             tornado
         </item>
@@ -14,25 +15,98 @@
             landslide
         </item>
         <item>
+            blizzard
+        </item>
+        <item>
             storm
+        </item>
+        <item>
+            tsunami
         </item>
         <item>
             floods
         </item>
         <item>
-            typhoon
+            industrial
         </item>
         <item>
-            cyclone
+            wildfire
         </item>
         <item>
-            fire
+            accident
         </item>
         <item>
-            volcano erruption
+            volcano
         </item>
         <item>
             heatwave
         </item>
     </array>
+
+    <array name="dangerCategoriesGr">
+        <item>
+            ανεμοστρόβυλος
+        </item>
+        <item>
+            σεισμός
+        </item>
+        <item>
+            χιονοστιβάδα
+        </item>
+        <item>
+            κατολίσθηση
+        </item>
+        <item>
+            χιονοθύελλα
+        </item>
+        <item>
+            καταιγίδα
+        </item>
+        <item>
+            τσουνάμι
+        </item>
+        <item>
+            πλημμύρα
+        </item>
+        <item>
+            βιομηχανία
+        </item>
+        <item>
+            πυρκαγιά
+        </item>
+        <item>
+            πυρηνικό/χημικό
+        </item>
+        <item>
+            ηφαίστειο
+        </item>
+        <item>
+            καύσωνας
+        </item>
+    </array>
+
+    <array name="sort_categoriesEn">
+        <item>
+            All
+        </item>
+        <item>
+            By date
+        </item>
+        <item>
+            By category
+        </item>
+    </array>
+
+    <array name="sort_categoriesGr">
+        <item>
+            Όλα
+        </item>
+        <item>
+            Κατά ημερομηνία
+        </item>
+        <item>
+            Κατά κατηγορία
+        </item>
+    </array>
+
 </resources>

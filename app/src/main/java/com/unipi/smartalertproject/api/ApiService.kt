@@ -1,15 +1,12 @@
 package com.unipi.smartalertproject.api
 
-import com.unipi.smartalertproject.api.Models.APIResponse
-import com.unipi.smartalertproject.api.Models.Incident
-import com.unipi.smartalertproject.api.Models.LoginInfo
-import com.unipi.smartalertproject.api.Models.RegisterInfo
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Query
 
 interface ApiService {
     @POST("api/login")
@@ -19,7 +16,11 @@ interface ApiService {
     @POST("api/refresh-token")
     fun refreshToken(@Body refreshToken: String): Call<APIResponse>
     @GET("incidents")
-    fun getIncidents(@Header("Authorization") accessToken: String): Call<APIResponse>
+    fun getIncidents(@Header("Authorization") accessToken: String): Call<IncidentAPIResponse>
     @PUT("incidents/create")
-    fun submitIncident(@Header("Authorization") accessToken: String, @Body incident: Incident): Call<APIResponse>
+    fun submitIncident(@Header("Authorization") accessToken: String,
+                       @Body incident: CreateIncidentDTO): Call<APIResponse>
+    @PUT("incidents/updatestate")
+    fun processIncident(@Header("Authorization") accessToken: String, @Query("id") id: String,
+                        @Query("status") status: String): Call<APIResponse>
 }

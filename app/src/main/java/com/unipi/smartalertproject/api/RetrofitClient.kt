@@ -1,10 +1,13 @@
 package com.unipi.smartalertproject.api
+
+
+import android.annotation.SuppressLint
+import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
@@ -13,9 +16,6 @@ object RetrofitClient {
     private const val BASE_URL = "https://10.0.2.2:7129/"
 
     val retrofit: Retrofit by lazy {
-        val loggingInterceptor = HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
 
         val trustAllCerts = arrayOf<TrustManager>(TrustAllCerts())
 
@@ -24,6 +24,9 @@ object RetrofitClient {
 
         val sslSocketFactory = sslContext.socketFactory
 
+        val gson = GsonBuilder()
+            .create()
+
         val client = OkHttpClient.Builder()
             .sslSocketFactory(sslSocketFactory, trustAllCerts[0] as X509TrustManager)
             .hostnameVerifier { _, _ -> true }
@@ -31,15 +34,18 @@ object RetrofitClient {
 
         Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
             .build()
     }
 }
 
+@SuppressLint("CustomX509TrustManager")
 class TrustAllCerts : X509TrustManager {
+    @SuppressLint("TrustAllX509TrustManager")
     override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
 
+    @SuppressLint("TrustAllX509TrustManager")
     override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
 
     override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()

@@ -2,33 +2,28 @@ package com.unipi.smartalertproject.civilianFragments
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.core.view.drawToBitmap
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.unipi.smartalertproject.R
-import com.unipi.smartalertproject.Utils
+import com.unipi.smartalertproject.api.APIResponse
 import com.unipi.smartalertproject.api.ApiService
 import com.unipi.smartalertproject.api.AuthManager
-import com.unipi.smartalertproject.api.Models.APIResponse
-import com.unipi.smartalertproject.api.Models.Incident
-import com.unipi.smartalertproject.api.Models.LoginInfo
-import com.unipi.smartalertproject.api.Models.ValidationProblem
+import com.unipi.smartalertproject.api.CreateIncidentDTO
 import com.unipi.smartalertproject.api.RetrofitClient
+import com.unipi.smartalertproject.api.Utils
+import com.unipi.smartalertproject.api.ValidationProblem
 import com.unipi.smartalertproject.databinding.FragmentSubmitIncidentBinding
 import com.unipi.smartalertproject.helperFragments.CameraFragment
-import com.unipi.smartalertproject.helperFragments.LocationService
+import com.unipi.smartalertproject.services.LocationService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -57,13 +52,24 @@ class SubmitIncidentFragment : Fragment(), CameraFragment.ISendDataFromDialog{
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentSubmitIncidentBinding.inflate(inflater, container, false)
         authManager = AuthManager(requireContext())
         folder = "images/${authManager?.getUserId()}/"
-        incidentImageName = ""
+        incidentImageName = "none"
         locationService = LocationService(this)
+
+        if (requireContext().resources.configuration.locales[0].toString() == "el_GR"){
+            val adapter = ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.dangerCategoriesGr,
+                R.layout.custom_spinner
+            )
+
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.spinner.adapter = adapter
+        }
 
         return binding.root
     }
@@ -95,16 +101,20 @@ class SubmitIncidentFragment : Fragment(), CameraFragment.ISendDataFromDialog{
     }
 
     private fun submitIncident(){
-        val category = binding.spinner.selectedItem.toString()
+        val category =  // from greek/english to english
+            resources.getStringArray(R.array.dangerCategoriesEn)[binding.spinner.selectedItemPosition]
+
         Log.i("Checking category", category)
         if (category.isEmpty()){
-            utils.showMessage("Category", "Select category before submitting", requireContext())
+            utils.showMessage(
+                getString(R.string.selectCategoryHeaderMessage),
+                getString(R.string.selectCategoryMessage), requireContext())
             return
         }
 
         var longitude: Double
         var latitude: Double
-
+2
         locationService.getLocation { location ->
             binding.progressBar.visibility = View.VISIBLE
             // Handle the obtained location here
@@ -116,10 +126,10 @@ class SubmitIncidentFragment : Fragment(), CameraFragment.ISendDataFromDialog{
             if (latitude != -181.0 && authManager != null && token != null && userId != null){
                 // Get incident data
                 val comments = binding.textComments.text.toString()
-                val photoUrl = "$folder$incidentImageName"
+                val photoUrl = if (incidentImageName == "none") incidentImageName else "$folder$incidentImageName"
 
                 // create incident
-                val incidentData = Incident( userId, longitude, latitude, comments, photoUrl, category)
+                val incidentData = CreateIncidentDTO( userId, longitude, latitude, comments, photoUrl, category)
 
                 // create call and send authorization token
                 val call: Call<APIResponse> = apiService.submitIncident("Bearer $token",
@@ -131,7 +141,6 @@ class SubmitIncidentFragment : Fragment(), CameraFragment.ISendDataFromDialog{
                     override fun onResponse(call: Call<APIResponse>, response: Response<APIResponse>) {
                         Log.i("Call", "Call responded")
                         if (response.isSuccessful) { // Handle successful response here
-                            val data: APIResponse? = response.body()
 
                             if (incidentImageName.isNotEmpty() && imageBytes.isNotEmpty())
                             {
@@ -142,7 +151,8 @@ class SubmitIncidentFragment : Fragment(), CameraFragment.ISendDataFromDialog{
 
                             binding.progressBar.visibility = View.INVISIBLE
 
-                            utils.showSuccessMessage("You have submitted your incident",
+                            utils.showSuccessMessage(
+                                getString(R.string.incidentSubmssionSuccessMessage),
                                 Toast.LENGTH_LONG, requireContext())
                         }
                         else {
@@ -166,7 +176,8 @@ class SubmitIncidentFragment : Fragment(), CameraFragment.ISendDataFromDialog{
                                         // Handle validation problem
                                         Log.e("Submission error", "Validation error spotted")
                                         Log.e("Submission error", utils.mapToString(validationProblem.errors))
-                                        utils.showScrollableDialog(requireContext(), "Fields validation",
+                                        utils.showScrollableDialog(requireContext(),
+                                            getString(R.string.fieldsValidationErrorMessageIncidentSubmission),
                                             utils.mapToString(validationProblem.errors))
                                     }
                                     else {
@@ -177,7 +188,8 @@ class SubmitIncidentFragment : Fragment(), CameraFragment.ISendDataFromDialog{
                                             ?.let { utils.convertStringToObject<APIResponse?>(it) }
 
                                         apiResponse?.errorMessages?.get(0)?.let {
-                                            utils.showMessage("Incident submission",
+                                            utils.showMessage(
+                                                getString(R.string.incidentSubmissionError),
                                                 it, requireContext()) }
 
                                     }
@@ -203,6 +215,7 @@ class SubmitIncidentFragment : Fragment(), CameraFragment.ISendDataFromDialog{
         val bmp = BitmapFactory.decodeByteArray(array, 0, array.size)
         imageBytes = array
         val image = binding.viewPhoto
+        Log.i("image bytes", imageBytes.toString())
         image.setImageBitmap(Bitmap.createScaledBitmap(bmp, image.width, image.height, false))
     }
 

@@ -1,57 +1,39 @@
 package com.unipi.smartalertproject
 
-
-import android.Manifest
-import android.content.pm.PackageManager
+import android.icu.util.Calendar
 import android.os.Bundle
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.Granularity
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.Priority
 import com.unipi.smartalertproject.api.ApiService
 import com.unipi.smartalertproject.api.AuthManager
-import com.unipi.smartalertproject.api.Models.APIResponse
-import com.unipi.smartalertproject.api.Models.LoginInfo
+import com.unipi.smartalertproject.api.APIResponse
+import com.unipi.smartalertproject.api.LoginInfo
 import com.unipi.smartalertproject.api.RetrofitClient
+import com.unipi.smartalertproject.api.Utils
 import com.unipi.smartalertproject.databinding.FragmentFirstBinding
-import com.unipi.smartalertproject.helperFragments.LocationService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
 class FirstFragment : Fragment() {
 
     private val apiService = RetrofitClient.retrofit.create(ApiService::class.java)
     private var _binding: FragmentFirstBinding? = null
     private var authManager: AuthManager? = null
     private val utils: Utils = Utils()
-    private lateinit var locationService: LocationService
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
         authManager = AuthManager(requireContext())
@@ -62,56 +44,21 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
         binding.buttonLogin.setOnClickListener {
-            login(it)
+            login()
         }
 
         binding.buttonSignup.setOnClickListener{
-            //redirectToRegister(it)
+            redirectToRegister()
         }
 
     }
-/*
-    private fun getIncidents(view: View){
-        val token = authManager?.getAccessToken()
-        if (token != null && authManager != null){
-            val call: Call<APIResponse> = apiService.getIncidents("Bearer $token")
 
-            Log.e("Incidents button", "Incidents clicked!")
-
-            // execute call and wait for response or fail
-            call.enqueue(object : Callback<APIResponse> {
-                override fun onResponse(call: Call<APIResponse>, response: Response<APIResponse>) {
-                    if (response.isSuccessful) { // TODO incidents
-                        }
-                    else {
-                        // Access token has expired so we must refresh it
-                        if (authManager!!.isAccessTokenExpired(token)){
-                            Log.e("Token expiration", "Token expired")
-                            refreshToken(view)
-                            getIncidents(view)
-                        }
-                        Log.e("Incidents error code", response.code().toString())
-                        Log.e("Incidents error", response.message().toString())
-                        // You can check response.code() and response.message() for details
-                    }
-                }
-
-                override fun onFailure(call: Call<APIResponse>, t: Throwable) {
-                    // Handle failure here
-                    Log.e("Api error",  t.message.toString())
-                }
-            })
-        }
-    }
-*/
-    private fun login(view: View){
+    private fun login(){
         // Get user data
         val name = binding.textName.text.toString()
         val password = binding.textPassword.text.toString()
-        val loginData = LoginInfo(name, password)
+        val loginData = LoginInfo(username = name, password = password)
 
         // create call
         val call: Call<APIResponse> = apiService.loginUser(loginData)
@@ -137,20 +84,24 @@ class FirstFragment : Fragment() {
                             authManager?.setAccessToken(accessToken)
                             authManager?.setUserIdFromToken(accessToken)
                             authManager?.setUserRoleFromToken(accessToken)
+                            authManager?.setRefreshTokenExpirationDate(Calendar.getInstance().timeInMillis)
                         }
+
                         if (refreshToken != null) {
                             Log.d("Refresh token login", refreshToken)
                             authManager?.setRefreshToken(refreshToken)
-                            utils.showSuccessMessage("You have logged in!", Toast.LENGTH_SHORT, requireContext())
+                            utils.showSuccessMessage(getString(R.string.loginSuccessMessage), Toast.LENGTH_SHORT, requireContext())
                             authManager?.getUserRole()?.let { Log.d("User role", it) }
                             authManager?.getUserId()?.let { Log.d("User id", it) }
+                            authManager?.getRefreshTokenExpirationDate()?.let { Log.d("User exp", it.toString()) }
+
                             if (authManager?.getUserRole().equals("Civilian"))
-                            {  // redirect to submit new incident
-                                findNavController().navigate(R.id.action_FirstFragment_to_submitIncidentFragment2)
+                            {  // redirect to main menu
+                                findNavController().navigate(R.id.action_FirstFragment_to_mainMenuCivilianFragment)
                             }
                             else
                             {
-                                findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+                                findNavController().navigate(R.id.action_FirstFragment_to_mainMenuOfficerFragment)
                             }
                         }
                     }
@@ -162,7 +113,9 @@ class FirstFragment : Fragment() {
                     val apiResponse: APIResponse? = apiError
                         ?.let { utils.convertStringToObject<APIResponse?>(it) }
 
-                    apiResponse?.errorMessages?.get(0)?.let {  utils.showMessage("Login", it, requireContext()) }
+                    apiResponse?.errorMessages?.get(0)?.let {
+                        utils.showMessage(getString(R.string.loginErrorHeader), it, requireContext())
+                    }
                     // You can check response.code() and response.message() for details
                 }
             }
@@ -174,8 +127,8 @@ class FirstFragment : Fragment() {
         })
     }
 
-    private fun redirectToRegister(view: View){
-        findNavController().navigate(com.unipi.smartalertproject.R.id.action_FirstFragment_to_SecondFragment)
+    private fun redirectToRegister(){
+        findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
     }
 
     override fun onDestroyView() {

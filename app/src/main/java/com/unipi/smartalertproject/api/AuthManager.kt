@@ -4,9 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import java.util.Calendar
 import android.util.Log
-import android.view.View
-import com.unipi.smartalertproject.Utils
-import com.unipi.smartalertproject.api.Models.APIResponse
+import com.unipi.smartalertproject.R
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -20,62 +18,82 @@ class AuthManager(val context: Context) {
     private val utils: Utils = Utils()
 
     fun getAccessToken(): String? {
-        return sharedPreferences.getString("accessToken", "")
+        Log.d("Access token auth", sharedPreferences.getString(context.getString(R.string.accessToken), "")!!)
+        return sharedPreferences.getString(context.getString(R.string.accessToken), "")
     }
 
     fun setAccessToken(value: String) {
         with(sharedPreferences.edit()) {
-            this?.putString("accessToken", value)
+            this?.putString(context.getString(R.string.accessToken), value)
             this?.apply()
-        } // TODO save the strings refreshToken to a string resource file
+        }
     }
 
-    fun getRefreshToken(): String? {
-        return sharedPreferences.getString("refreshToken", "")
+    private fun getRefreshToken(): String? {
+        Log.d("Refresh token auth", sharedPreferences.getString(context.getString(R.string.refreshToken), "")!!)
+        return sharedPreferences.getString(context.getString(R.string.refreshToken), "")
     }
 
     fun setRefreshToken(value: String) {
         with(sharedPreferences.edit()) {
-            this?.putString("refreshToken", value)
+            this?.putString(context.getString(R.string.refreshToken), value)
             this?.apply()
-        } // TODO save the strings refreshToken to a string resource file
+        }
     }
 
-    fun setUserId(value: String){
+    fun setRefreshTokenExpirationDate(time: Long) {
+        // set expiration in 7 days from now
         with(sharedPreferences.edit()) {
-            this?.putString("userId", value)
+            this?.putLong(context.getString(R.string.refreshTokenExpirationDate), time + 24 * 60 * 60 * 1000L * 6)
             this?.apply()
-        } // TODO save the strings refreshToken to a string resource file
+        }
+    }
+    fun getRefreshTokenExpirationDate(): Long{
+        Log.i("Date auth", sharedPreferences.getLong(context.getString(R.string.refreshTokenExpirationDate), 0).toString())
+        return sharedPreferences.getLong(context.getString(R.string.refreshTokenExpirationDate), 0)
     }
 
-    fun getUserId(): String? {
-        return sharedPreferences.getString("userId", "")
+    fun isRefreshTokenExpired(): Boolean {
+        return Calendar.getInstance().timeInMillis > getRefreshTokenExpirationDate()
+    }
+
+    private fun setUserId(value: String){
+        with(sharedPreferences.edit()) {
+            this?.putString(context.getString(R.string.userid), value)
+            this?.apply()
+        }
     }
 
     fun setUserIdFromToken(token: String){
         val payload = decodeToken(token)
-        setUserId(JSONObject(payload).getString("Id"))
+        setUserId(JSONObject(payload).getString(context.getString(R.string.jwtUserId)))
     }
 
-    fun setUserRole(value: String){
+    fun getUserId(): String? {
+        Log.d("UserId auth", sharedPreferences.getString(context.getString(R.string.userid), "")!!)
+        return sharedPreferences.getString(context.getString(R.string.userid), "")
+    }
+
+    private fun setUserRole(value: String){
         with(sharedPreferences.edit()) {
-            this?.putString("userRole", value)
+            this?.putString(context.getString(R.string.userrole), value)
             this?.apply()
-        } // TODO save the strings refreshToken to a string resource file
+        }
     }
 
     fun getUserRole(): String?{
-        return sharedPreferences.getString("userRole", "")
+        Log.d("User role auth", sharedPreferences.getString(context.getString(R.string.userrole), "")!!)
+        return sharedPreferences.getString(context.getString(R.string.userrole), "")
     }
 
     fun setUserRoleFromToken(token: String){
         val payload = decodeToken(token)
-        setUserRole(JSONObject(payload).getString("Role"))
+        setUserRole(JSONObject(payload).getString(context.getString(R.string.jetUserRole)))
     }
 
     fun isAccessTokenExpired(token: String): Boolean {
         val payload = decodeToken(token)
-        val expirationDate = Date(JSONObject(payload).getString("exp").toLong() * 1000)
+        val expirationDate = Date(JSONObject(payload).getString(context.getString(R.string.expirationDate)).toLong() * 1000)
         val currentDate: Date = Calendar.getInstance().time
 
         Log.e("Date expiring", expirationDate.toString())
@@ -95,6 +113,14 @@ class AuthManager(val context: Context) {
         } catch (e: Exception) {
             "Error parsing JWT: $e"
         }
+    }
+
+    fun logout() {
+        setUserRole("")
+        setUserId("")
+        setAccessToken("")
+        setRefreshToken("")
+        setRefreshTokenExpirationDate(0)
     }
 
     fun refreshToken(apiService: ApiService){

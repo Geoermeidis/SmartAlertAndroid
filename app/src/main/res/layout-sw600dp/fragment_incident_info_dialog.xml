@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".officerFragments.IncidentsPreviewFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <TableLayout
+            android:id="@+id/table"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:stretchColumns="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.511"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TableRow android:layout_marginBottom="50dp">
+
+                <TextView
+                    android:id="@+id/categoryHeaderText"
+                    android:layout_column="0"
+                    android:padding="15dip"
+                    android:text="@string/incidentInfoCategoryLabel"
+                    android:textSize="28sp" />
+
+                <TextView
+                    android:id="@+id/categoryInfoText"
+                    android:layout_width="423dp"
+                    android:layout_height="42dp"
+                    android:layout_column="1"
+                    android:padding="15dip"
+                    android:textAlignment="viewStart"
+                    android:textSize="28sp" />
+
+            </TableRow>
+
+            <TableRow android:layout_marginBottom="50dp">
+
+                <TextView
+                    android:id="@+id/dateHeaderText"
+                    android:layout_column="0"
+                    android:padding="15dip"
+                    android:text="@string/incidentInfoSubmittedAtLabel"
+                    android:textSize="28sp" />
+
+                <ScrollView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/dateInfoText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start|top"
+                        android:maxLines="5"
+                        android:padding="8dp"
+                        android:scrollbars="vertical"
+                        android:textAlignment="viewStart"
+                        android:textSize="28sp" />
+                </ScrollView>
+
+            </TableRow>
+
+            <TableRow android:layout_marginBottom="50dp">
+
+                <TextView
+                    android:id="@+id/locationHeaderText"
+                    android:layout_column="0"
+                    android:padding="15dip"
+                    android:text="@string/incidentInfoAddressLabel"
+                    android:textSize="28sp" />
+
+                <ScrollView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/locationInfoText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start|top"
+                        android:maxLines="5"
+                        android:padding="8dp"
+                        android:scrollbars="vertical"
+                        android:textAlignment="viewStart"
+                        android:textSize="28sp" />
+                </ScrollView>
+
+            </TableRow>
+
+            <TableRow android:layout_marginBottom="50dp">
+
+                <TextView
+                    android:id="@+id/commentsHeaderText"
+                    android:layout_column="0"
+                    android:padding="15dip"
+                    android:text="@string/incidentInfoCommentsLabel"
+                    android:textSize="28sp" />
+
+                <ScrollView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="viewStart">
+
+                    <TextView
+                        android:id="@+id/commentsInfoText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start|top"
+                        android:maxLines="5"
+                        android:padding="8dp"
+                        android:scrollbars="vertical"
+                        android:textSize="28sp" />
+                </ScrollView>
+
+            </TableRow>
+
+            <TableRow android:layout_marginBottom="50dp">
+
+                <TextView
+                    android:id="@+id/submitsHeaderText"
+                    android:layout_column="0"
+                    android:padding="15dip"
+                    android:text="@string/incidentInfoSubmissionsLabel"
+                    android:textSize="28sp" />
+
+                <TextView
+                    android:id="@+id/submitsInfoText"
+                    android:layout_column="1"
+                    android:padding="15dip"
+                    android:textAlignment="viewStart"
+                    android:textSize="28sp" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="171dp">
+
+                <ImageView
+                    android:id="@+id/imageInfoText"
+                    android:layout_width="581dp"
+                    android:layout_height="250dp"
+                    android:layout_span="2"
+                    android:contentDescription="@string/incidentInfoPhotoLabel"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@android:drawable/ic_menu_camera"
+                    android:layout_marginStart="100dp"
+
+                    android:layout_marginEnd="100dp"/>
+            </TableRow>
+        </TableLayout>
+
+        <Button
+            android:id="@+id/button_backto_incidents"
+            android:layout_width="229dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
+            android:text="@string/backButtonText"
+            android:textSize="28sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/table"
+            app:layout_constraintVertical_bias="0.0" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

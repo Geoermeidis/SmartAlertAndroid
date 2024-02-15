@@ -1,4 +1,4 @@
-package com.unipi.smartalertproject.helperFragments
+package com.unipi.smartalertproject.services
 
 import android.Manifest
 import android.content.Context
@@ -8,7 +8,6 @@ import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Granularity
@@ -17,34 +16,64 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
-import com.unipi.smartalertproject.Utils
-import kotlinx.coroutines.flow.callbackFlow
+import com.unipi.smartalertproject.MainActivity
+import com.unipi.smartalertproject.R
+import com.unipi.smartalertproject.api.Utils
 
-class LocationService(fragment: Fragment) {
-    private var _fragment: Fragment
-    private var context: Context
-    private var locationPermissionRequest: ActivityResultLauncher<Array<String>>
-    private var fusedLocationClient: FusedLocationProviderClient
+// TODO test noise notification
+
+class LocationService() {
+    private lateinit var _fragment: Fragment
+    private lateinit var _activity: MainActivity
+    private lateinit var context: Context
+    private lateinit var locationPermissionRequest: ActivityResultLauncher<Array<String>>
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
     private val utils: Utils = Utils()
     private var latitude: Double = -181.0
     private var longitude: Double = -181.0
 
-    init {
-        _fragment = fragment
-        context = _fragment.requireContext()
+    constructor(activity: MainActivity): this(){
+        _activity = activity
+        context = _activity.baseContext
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-        locationPermissionRequest = fragment.registerForActivityResult(
+        locationPermissionRequest = _activity.registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
-        ) { permissions -> // Handle Permission granted/rejected
+        ) {
+                permissions -> // Handle Permission granted/rejected
             var permissionGranted = true
             permissions.entries.forEach {
                 if (it.key in REQUIRED_PERMISSIONS && !it.value)
                     permissionGranted = false
             }
             if (!permissionGranted) {
-                utils.showMessage("Permissions", "Permission request denied",
+                utils.showMessage(context.getString(R.string.permissionsCameraHeader),
+                    context.getString(R.string.permissionRequestDeniedMessage),
+                    context)
+            }
+            else {
+                Log.i("Permissions", "Permissions granted")
+            }
+        }
+    }
+
+    constructor(fragment: Fragment): this(){
+        _fragment = fragment
+        context = _fragment.requireContext()
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+        locationPermissionRequest = _fragment.registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) {
+                permissions -> // Handle Permission granted/rejected
+            var permissionGranted = true
+            permissions.entries.forEach {
+                if (it.key in REQUIRED_PERMISSIONS && !it.value)
+                    permissionGranted = false
+            }
+            if (!permissionGranted) {
+                utils.showMessage(context.getString(R.string.permissionsCameraHeader),
+                    context.getString(R.string.permissionRequestDeniedMessage),
                     context)
             }
             else {
@@ -55,30 +84,6 @@ class LocationService(fragment: Fragment) {
 
     fun getLocation(callback: (Map<String, Double>) -> Unit) {
         requestUpdatesForLocation(callback)
-    }
-
-    private fun getLastKnownLocation(callback: (Map<String, Double>) -> Unit){
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-        {  // Permissions where not granted so we have to ask again
-            fusedLocationClient.lastLocation.addOnSuccessListener{ location ->
-                if (location != null) {
-                    Log.e("Location", location.toString())
-                    longitude = location.longitude
-                    latitude = location.latitude
-
-                    callback(mapOf("latitude" to latitude, "longitude" to longitude))
-
-                    Log.e("Latitude and longitude",
-                        longitude.toString() + " " + latitude.toString())
-                }
-                else {
-                    Log.d("LOCATION", "Location is null")
-                }
-            }
-        }
-        else
-            requestPermissions()
     }
 
     private fun requestUpdatesForLocation(callback: (Map<String, Double>) -> Unit){

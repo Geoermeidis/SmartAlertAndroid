@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SecondFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/text_required5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="68dp"
+            android:text="@string/asterisk"
+            android:textColor="@color/red"
+            android:textSize="40sp"
+            android:tooltipText="Required field"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.193"
+            app:layout_constraintStart_toEndOf="@+id/text_phone"
+            app:layout_constraintTop_toBottomOf="@+id/text_required4" />
+
+        <Button
+            android:id="@+id/button_sign_up"
+            android:layout_width="306dp"
+            android:layout_height="82dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/registerBtnText"
+            android:textSize="40sp"
+            app:layout_constraintBottom_toTopOf="@+id/button_login_in_sign_up"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_confirm_password"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/text_required4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:text="@string/asterisk"
+            android:textColor="@color/red"
+            android:textSize="40sp"
+            android:tooltipText="Required field"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.205"
+            app:layout_constraintStart_toEndOf="@+id/text_email"
+            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="52dp"
+            android:text="@string/asterisk"
+            android:textColor="@color/red"
+            android:textSize="40sp"
+            android:tooltipText="Required field"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.205"
+            app:layout_constraintStart_toEndOf="@+id/text_username"
+            app:layout_constraintTop_toBottomOf="@+id/text_required2" />
+
+        <EditText
+            android:id="@+id/ext_lastname"
+            android:layout_width="467dp"
+            android:layout_height="81dp"
+            android:layout_marginTop="40dp"
+            android:autofillHints="name"
+            android:ems="10"
+            android:hint="@string/lastnameHint"
+            android:inputType="text"
+            android:textSize="40sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.545"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_firstname" />
+
+        <TextView
+            android:id="@+id/text_passworderror"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="32dp"
+            android:text="@string/passwordsDoNotMatchError"
+            android:textColor="@color/red"
+            android:textSize="40sp"
+            app:layout_constraintBottom_toTopOf="@+id/button_sign_up"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.532"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_confirm_password"
+            app:layout_constraintVertical_bias="0.454" />
+
+        <EditText
+            android:id="@+id/text_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:autofillHints="emailAddress"
+            android:ems="10"
+            android:hint="@string/emailHint"
+            android:inputType="textEmailAddress"
+            android:textSize="40sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.545"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_username" />
+
+        <EditText
+            android:id="@+id/edit_confirm_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:autofillHints="password"
+            android:ems="10"
+            android:hint="@string/confirmPasswordHint"
+            android:inputType="textPassword"
+            android:textSize="40sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.538"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_sign_up_password" />
+
+        <TextView
+            android:id="@+id/text_required2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:text="@string/asterisk"
+            android:textColor="@color/red"
+            android:textSize="40sp"
+            android:tooltipText="Required field"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.207"
+            app:layout_constraintStart_toEndOf="@+id/ext_lastname"
+            app:layout_constraintTop_toBottomOf="@+id/text_required" />
+
+        <EditText
+            android:id="@+id/text_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:autofillHints="username"
+            android:ems="10"
+            android:hint="@string/usernameRegisterHint"
+            android:inputType="text"
+            android:textSize="40sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.545"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ext_lastname" />
+
+        <EditText
+            android:id="@+id/edit_sign_up_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:autofillHints="password"
+            android:ems="10"
+            android:hint="@string/passwordLoginHint"
+            android:inputType="textPassword"
+            android:textSize="40sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.545"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_phone" />
+
+        <EditText
+            android:id="@+id/text_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:autofillHints="phone"
+            android:ems="10"
+            android:hint="@string/phoneHint"
+            android:inputType="phone"
+            android:textSize="40sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.538"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_email" />
+
+        <TextView
+            android:id="@+id/text_required"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="44dp"
+            android:text="@string/asterisk"
+            android:textColor="@color/red"
+            android:textSize="40sp"
+            android:tooltipText="Required field"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.221"
+            app:layout_constraintStart_toEndOf="@+id/text_firstname"
+            app:layout_constraintTop_toBottomOf="@+id/sign_up_header" />
+
+        <TextView
+            android:id="@+id/text_required7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:text="@string/asterisk"
+            android:textColor="@color/red"
+            android:textSize="40sp"
+            android:tooltipText="Required field"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.193"
+            app:layout_constraintStart_toEndOf="@+id/edit_confirm_password"
+            app:layout_constraintTop_toBottomOf="@+id/text_required6" />
+
+        <EditText
+            android:id="@+id/text_firstname"
+            android:layout_width="462dp"
+            android:layout_height="72dp"
+            android:layout_marginTop="44dp"
+            android:autofillHints="name"
+            android:ems="10"
+            android:hint="@string/firstnameHint"
+            android:inputType="text"
+            android:textSize="40sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.545"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sign_up_header" />
+
+        <TextView
+            android:id="@+id/sign_up_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/registerHeader"
+            android:textSize="48sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_required6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:text="@string/asterisk"
+            android:textColor="@color/red"
+            android:textSize="40sp"
+            android:tooltipText="Required field"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.179"
+            app:layout_constraintStart_toEndOf="@+id/edit_sign_up_password"
+            app:layout_constraintTop_toBottomOf="@+id/text_required5" />
+
+        <Button
+            android:id="@+id/button_login_in_sign_up"
+            android:layout_width="310dp"
+            android:layout_height="79dp"
+            android:text="@string/loginErrorHeader"
+            android:textSize="40sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

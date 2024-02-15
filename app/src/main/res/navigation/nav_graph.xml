@@ -17,6 +17,12 @@
         <action
             android:id="@+id/action_FirstFragment_to_submitIncidentFragment2"
             app:destination="@id/submitIncidentFragment2" />
+        <action
+            android:id="@+id/action_FirstFragment_to_mainMenuCivilianFragment"
+            app:destination="@id/mainMenuCivilianFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_mainMenuOfficerFragment"
+            app:destination="@id/mainMenuOfficerFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -41,4 +47,90 @@
         android:id="@+id/cameraFragment"
         android:name="com.unipi.smartalertproject.helperFragments.CameraFragment"
         android:label="CameraFragment" />
+    <fragment
+        android:id="@+id/incidentsPreviewFragment2"
+        android:name="com.unipi.smartalertproject.officerFragments.IncidentsPreviewFragment"
+        android:label="fragment_incidents_preview"
+        tools:layout="@layout/fragment_incidents_preview" >
+        <action
+            android:id="@+id/action_incidentsPreviewFragment2_to_incidentInfoDialogFragment"
+            app:destination="@id/incidentInfoDialogFragment" />
+        <action
+            android:id="@+id/action_incidentsPreviewFragment2_to_mapsFragment"
+            app:destination="@id/mapsFragment"
+            app:launchSingleTop="true" />
+    </fragment>
+    <dialog
+        android:id="@+id/incidentInfoDialogFragment"
+        android:name="com.unipi.smartalertproject.helperFragments.IncidentInfoDialogFragment"
+        android:label="fragment_incident_info_dialog"
+        tools:layout="@layout/fragment_incident_info_dialog" >
+        <argument
+            android:name="incident"
+            app:argType="com.unipi.smartalertproject.api.Incident" />
+    </dialog>
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="com.unipi.smartalertproject.helperFragments.MapsFragment"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_maps" >
+        <argument
+            android:name="incidents"
+            app:argType="com.unipi.smartalertproject.api.Incident[]" />
+    </fragment>
+    <fragment
+        android:id="@+id/incidentStatsPreviewFragment"
+        android:name="com.unipi.smartalertproject.civilianFragments.IncidentStatsPreviewFragment"
+        android:label="fragment_incident_stats_preview"
+        tools:layout="@layout/fragment_incident_stats_preview" >
+        <action
+            android:id="@+id/action_incidentStatsPreviewFragment_to_incidentInfoDialogFragment"
+            app:destination="@id/incidentInfoDialogFragment" />
+        <action
+            android:id="@+id/action_incidentStatsPreviewFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment"
+            app:launchSingleTop="true" />
+    </fragment>
+    <dialog
+        android:id="@+id/notificationDialogFragment"
+        android:name="com.unipi.smartalertproject.helperFragments.NotificationDialogFragment"
+        android:label="fragment_notification_dialog"
+        tools:layout="@layout/fragment_notification_dialog" >
+        <argument
+            android:name="incident"
+            app:argType="com.unipi.smartalertproject.api.Notification" />
+    </dialog>
+    <fragment
+        android:id="@+id/mainMenuCivilianFragment"
+        android:name="com.unipi.smartalertproject.civilianFragments.MainMenuCivilianFragment"
+        android:label="fragment_main_menu_civilian"
+        tools:layout="@layout/fragment_main_menu_civilian" >
+        <action
+            android:id="@+id/action_mainMenuCivilianFragment_to_submitIncidentFragment2"
+            app:destination="@id/submitIncidentFragment2" />
+        <action
+            android:id="@+id/action_mainMenuCivilianFragment_to_incidentStatsPreviewFragment"
+            app:destination="@id/incidentStatsPreviewFragment" />
+        <action
+            android:id="@+id/action_mainMenuCivilianFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
+        <action
+            android:id="@+id/action_mainMenuCivilianFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainMenuOfficerFragment"
+        android:name="com.unipi.smartalertproject.officerFragments.MainMenuOfficerFragment"
+        android:label="fragment_main_menu_officer"
+        tools:layout="@layout/fragment_main_menu_officer" >
+        <action
+            android:id="@+id/action_mainMenuOfficerFragment_to_incidentsPreviewFragment2"
+            app:destination="@id/incidentsPreviewFragment2" />
+        <action
+            android:id="@+id/action_mainMenuOfficerFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
+        <action
+            android:id="@+id/action_mainMenuOfficerFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+    </fragment>
 </navigation>

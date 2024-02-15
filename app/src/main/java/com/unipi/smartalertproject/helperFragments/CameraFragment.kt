@@ -19,7 +19,8 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
-import com.unipi.smartalertproject.Utils
+import com.unipi.smartalertproject.R
+import com.unipi.smartalertproject.api.Utils
 import com.unipi.smartalertproject.databinding.FragmentCameraBinding
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -36,7 +37,7 @@ class CameraFragment : DialogFragment() {
 
     private val utils: Utils = Utils()
     private var _binding: FragmentCameraBinding? = null
-    public lateinit var onInputListener: ISendDataFromDialog
+    lateinit var onInputListener: ISendDataFromDialog
     private val binding get() = _binding!!
     // Camera
     private var imageCapture: ImageCapture? = null
@@ -52,19 +53,30 @@ class CameraFragment : DialogFragment() {
                     permissionGranted = false
             }
             if (!permissionGranted) {
-                utils.showMessage("Permissions", "Permission request denied",
+                utils.showMessage(
+                    getString(R.string.permissionsCameraHeader),
+                    getString(R.string.permissionRequestDeniedMessage),
                     requireContext())
             } else {
                 startCamera()
             }
         }
 
-
+    override fun onStart() {
+        super.onStart()
+        val window = dialog?.window
+        if (window != null) {
+            val metrics = resources.displayMetrics
+            val width = metrics.widthPixels * 0.8 // Change 0.8 to your desired proportion
+            val height = metrics.heightPixels * 0.7 // Change 0.7 to your desired proportion
+            window.setLayout(width.toInt(), height.toInt())
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
 
         _binding = FragmentCameraBinding.inflate(inflater, container,
@@ -85,6 +97,7 @@ class CameraFragment : DialogFragment() {
 
         // Set up the listeners for take photo and video capture buttons
         binding.buttonCamera.setOnClickListener { takePhoto() }
+        binding.buttonBackCamera.setOnClickListener{ dismissNow() }
     }
 
     private fun takePhoto() {
@@ -139,10 +152,10 @@ class CameraFragment : DialogFragment() {
                         inputStream?.close()
                     }
 
-                    val msg = "Photo capture succeeded: ${output.savedUri}"
-                    Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+                    val msg = "${getString(R.string.photoCaptureSucceededMessage)}${output.savedUri}"
+                    utils.showSuccessMessage(msg, Toast.LENGTH_LONG, requireContext())
                     Log.d("Successful image capture", msg)
-                    onInputListener.sendImageName(name);
+                    onInputListener.sendImageName(name)
                     if (imageBytes != null) {
                         onInputListener.sendByteArray(imageBytes)
                     }
