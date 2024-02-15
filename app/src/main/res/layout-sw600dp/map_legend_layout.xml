@@ -11,15 +11,15 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:background="@color/tornado" /> <!-- Adjust background color here -->
+            android:background="@color/tornado" /> 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="@string/tornadoTag"
-            android:textSize="16sp"
+            android:textSize="24sp"
             android:textColor="#000000"
-            android:layout_marginStart="10dp"/>
+            android:layout_marginStart="20dp"/>
     </TableRow>
 
     <TableRow>
@@ -27,15 +27,15 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:background="@color/earthquake" /> <!-- Adjust background color here -->
+            android:background="@color/earthquake" /> 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="@string/earthquakeTag"
-            android:textSize="16sp"
+            android:textSize="24sp"
             android:textColor="#000000"
-            android:layout_marginStart="10dp"/>
+            android:layout_marginStart="20dp"/>
     </TableRow>
 
     <TableRow>
@@ -43,15 +43,15 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:background="@color/avalanche" /> <!-- Adjust background color here -->
+            android:background="@color/avalanche" /> 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="@string/avalancheTag"
-            android:textSize="16sp"
+            android:textSize="24sp"
             android:textColor="#000000"
-            android:layout_marginStart="10dp"/>
+            android:layout_marginStart="20dp"/>
     </TableRow>
 
     <TableRow>
@@ -59,15 +59,15 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:background="@color/landslide" /> <!-- Adjust background color here -->
+            android:background="@color/landslide" /> 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="@string/landslideTag"
-            android:textSize="16sp"
+            android:textSize="24sp"
             android:textColor="#000000"
-            android:layout_marginStart="10dp"/>
+            android:layout_marginStart="20dp"/>
     </TableRow>
 
     <TableRow>
@@ -75,15 +75,15 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:background="@color/blizzard" /> <!-- Adjust background color here -->
+            android:background="@color/blizzard" /> 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="@string/blizzardTag"
-            android:textSize="16sp"
+            android:textSize="24sp"
             android:textColor="#000000"
-            android:layout_marginStart="10dp"/>
+            android:layout_marginStart="20dp"/>
     </TableRow>
 
     <TableRow>
@@ -91,15 +91,15 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:background="@color/storm" /> <!-- Adjust background color here -->
+            android:background="@color/storm" /> 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="@string/stormTag"
-            android:textSize="16sp"
+            android:textSize="24sp"
             android:textColor="#000000"
-            android:layout_marginStart="10dp"/>
+            android:layout_marginStart="20dp"/>
     </TableRow>
 
     <TableRow>
@@ -107,15 +107,15 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:background="@color/tsunami" /> <!-- Adjust background color here -->
+            android:background="@color/tsunami" /> 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="@string/tsunamiTag"
-            android:textSize="16sp"
+            android:textSize="24sp"
             android:textColor="#000000"
-            android:layout_marginStart="10dp"/>
+            android:layout_marginStart="20dp"/>
     </TableRow>
 
     <TableRow>
@@ -123,15 +123,15 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:background="@color/floods" /> <!-- Adjust background color here -->
+            android:background="@color/floods" /> 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="@string/floodsTag"
-            android:textSize="16sp"
+            android:textSize="24sp"
             android:textColor="#000000"
-            android:layout_marginStart="10dp"/>
+            android:layout_marginStart="20dp"/>
     </TableRow>
 
     <TableRow>
@@ -139,15 +139,15 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:background="@color/industrial" /> <!-- Adjust background color here -->
+            android:background="@color/industrial" /> 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="@string/industrialTag"
-            android:textSize="16sp"
+            android:textSize="24sp"
             android:textColor="#000000"
-            android:layout_marginStart="10dp"/>
+            android:layout_marginStart="20dp"/>
     </TableRow>
 
     <TableRow>
@@ -155,15 +155,15 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:background="@color/wildfire" /> <!-- Adjust background color here -->
+            android:background="@color/wildfire" /> 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="@string/wildfireTag"
-            android:textSize="16sp"
+            android:textSize="24sp"
             android:textColor="#000000"
-            android:layout_marginStart="10dp"/>
+            android:layout_marginStart="20dp"/>
     </TableRow>
 
     <TableRow>
@@ -171,15 +171,16 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:background="@color/accident" /> <!-- Adjust background color here -->
+            android:background="@color/accident" /> 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="@string/accidentTag"
-            android:textSize="16sp"
+            android:textSize="24sp"
             android:textColor="#000000"
-            android:layout_marginStart="10dp"/>
+            android:layout_marginStart="20dp"/>
+
     </TableRow>
 
     <TableRow>
@@ -187,15 +188,15 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:background="@color/volcano" /> <!-- Adjust background color here -->
+            android:background="@color/volcano" /> 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="@string/volcanoTag"
-            android:textSize="16sp"
+            android:textSize="24sp"
             android:textColor="#000000"
-            android:layout_marginStart="10dp"/>
+            android:layout_marginStart="20dp"/>
     </TableRow>
 
     <TableRow>
@@ -203,15 +204,15 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:background="@color/heatwave" /> <!-- Adjust background color here -->
+            android:background="@color/heatwave" /> 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="@string/heatwaveTag"
-            android:textSize="16sp"
+            android:textSize="24sp"
             android:textColor="#000000"
-            android:layout_marginStart="10dp"/>
+            android:layout_marginStart="20dp"/>
     </TableRow>
 
 

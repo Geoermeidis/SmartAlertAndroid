@@ -1,25 +1,21 @@
 package com.unipi.smartalertproject
 
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.Timestamp
 import com.unipi.smartalertproject.api.ApiService
 import com.unipi.smartalertproject.api.AuthManager
 import com.unipi.smartalertproject.api.APIResponse
 import com.unipi.smartalertproject.api.LoginInfo
-import com.unipi.smartalertproject.api.Notification
 import com.unipi.smartalertproject.api.RetrofitClient
 import com.unipi.smartalertproject.api.Utils
 import com.unipi.smartalertproject.databinding.FragmentFirstBinding
-import com.unipi.smartalertproject.helperFragments.NotificationDialogFragment
-import com.unipi.smartalertproject.services.LocationService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -47,8 +43,6 @@ class FirstFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
 
         binding.buttonLogin.setOnClickListener {
             login()
@@ -90,13 +84,16 @@ class FirstFragment : Fragment() {
                             authManager?.setAccessToken(accessToken)
                             authManager?.setUserIdFromToken(accessToken)
                             authManager?.setUserRoleFromToken(accessToken)
+                            authManager?.setRefreshTokenExpirationDate(Calendar.getInstance().timeInMillis)
                         }
+
                         if (refreshToken != null) {
                             Log.d("Refresh token login", refreshToken)
                             authManager?.setRefreshToken(refreshToken)
                             utils.showSuccessMessage(getString(R.string.loginSuccessMessage), Toast.LENGTH_SHORT, requireContext())
                             authManager?.getUserRole()?.let { Log.d("User role", it) }
                             authManager?.getUserId()?.let { Log.d("User id", it) }
+                            authManager?.getRefreshTokenExpirationDate()?.let { Log.d("User exp", it.toString()) }
 
                             if (authManager?.getUserRole().equals("Civilian"))
                             {  // redirect to main menu

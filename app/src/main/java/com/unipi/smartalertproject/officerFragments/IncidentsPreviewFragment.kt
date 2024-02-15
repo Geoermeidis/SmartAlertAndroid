@@ -1,6 +1,9 @@
 package com.unipi.smartalertproject.officerFragments
 
 import android.graphics.Color
+import android.icu.text.SimpleDateFormat
+import android.icu.util.Calendar
+import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
@@ -11,11 +14,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
+import androidx.core.view.get
 import androidx.navigation.fragment.findNavController
 import com.unipi.smartalertproject.R
 import com.unipi.smartalertproject.api.APIResponse
@@ -34,7 +39,7 @@ import java.util.Locale
 
 class IncidentsPreviewFragment : Fragment() {
     private val apiService = RetrofitClient.retrofit.create(ApiService::class.java)
-    // TODO TEST IMAGES IN INFO DIALOG
+
     private var _binding: FragmentIncidentsPreviewBinding? = null
     private val binding get() = _binding!!
     private var authManager: AuthManager? = null
@@ -71,139 +76,190 @@ class IncidentsPreviewFragment : Fragment() {
     }
 
     private fun fillTable(){
+        val userScreenWidth = resources.displayMetrics.widthPixels / resources.displayMetrics.density
+
+        val layoutParameters = TableRow.LayoutParams(0,0).apply {
+            height = resources.getDimensionPixelSize(R.dimen.incident_button_height)
+            width = resources.getDimensionPixelSize(R.dimen.incident_button_width)
+            setMargins(
+                resources.getDimensionPixelSize(R.dimen.stats_info_marginH),
+                resources.getDimensionPixelSize(R.dimen.stats_info_marginV),
+                resources.getDimensionPixelSize(R.dimen.stats_info_marginH),
+                resources.getDimensionPixelSize(R.dimen.stats_info_marginV)
+            )
+        }
+
         // get only submitted incidents
         incidents.sortedByDescending { incident -> incident.totalSubmissions }
             .filter { incident: Incident -> incident.state == 0 }
             .forEach { incident ->
-            val density = resources.displayMetrics.density
-            val padding = (2 * density + 0.5f).toInt()
-            val categoryView = TextView(requireContext()).apply {
-                var catText = incident.categoryName
-                if (requireContext().resources.configuration.locales[0].toString() == "el_GR") {
-                    catText = resources.getStringArray(R.array.dangerCategoriesGr)
-                        .toList()[resources.getStringArray(R.array.dangerCategoriesEn)
-                        .indexOf(incident.categoryName)]
-                }
-
-                catText = catText.replaceFirstChar { cat ->
-                    if (cat.isLowerCase()) cat.titlecase(Locale.getDefault()) else cat.toString()
-                }
-
-                text = catText
-                maxWidth = (8 * density + 0.5f).toInt()
-                gravity = Gravity.CENTER
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
-                setPadding(padding, padding, padding, padding)
-            }
-
-            val submissionsView = TextView(requireContext()).apply {
-                text = incident.totalSubmissions.toString()
-                setPadding(padding, padding, padding, padding)
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
-                textAlignment = View.TEXT_ALIGNMENT_CENTER
-            }
-
-            val infoBtn = ImageButton(requireContext()).apply {
-                setImageResource(R.drawable.info_icon)
-                scaleType = ImageView.ScaleType.FIT_XY
-                layoutParams = TableRow.LayoutParams((55 * density + 0.5f).toInt(),
-                    (45 * density + 0.5f).toInt()).apply {
-                    setMargins(
-                        (2 * density + 0.5f).toInt(),
-                        (3 * density + 0.5f).toInt(),
-                        (2 * density + 0.5f).toInt(),
-                        (3 * density + 0.5f).toInt()
-                    )
-                }
-                setPadding(padding, padding, padding, padding)
-                contentDescription =
-                    context.getString(R.string.informationIncidentContentDescription)
-                setOnClickListener {
-                    val bundle = bundleOf("incident" to incident)
-                    val infoDialog = IncidentInfoDialogFragment()
-                    infoDialog.arguments = bundle
-                    infoDialog.show(childFragmentManager, "InfoDialogFragment")
-                }
-            }
-
-            val rejectBtn = ImageButton(requireContext()).apply {
-                setImageResource(R.drawable.rejected_icon)
-                scaleType = ImageView.ScaleType.FIT_XY
-                layoutParams = TableRow.LayoutParams((55 * density + 0.5f).toInt(),
-                    (45 * density + 0.5f).toInt()).apply {
-                    setMargins(
-                        (2 * density + 0.5f).toInt(),
-                        (3 * density + 0.5f).toInt(),
-                        (2 * density + 0.5f).toInt(),
-                        (3 * density + 0.5f).toInt()
-                    )
-                }
-                setPadding(padding, padding, padding, padding)
-                contentDescription = context.getString(R.string.rejectIncidentContentDescription)
-                setOnClickListener {
-                    AlertDialog.Builder(requireContext()).apply {
-                        setTitle(context.getString(R.string.officer_incident_reject_title))
-                        setMessage(context.getString(R.string.officer_incident_reject_message))
-                        setPositiveButton(context.getString(R.string.yes)) { dialog, _ ->
-                            changeIncidentStatus(incident.id, "rejected", it.parent as View)
-                            dialog.dismiss()
-                        }
-                        setNegativeButton(context.getString(R.string.no)) { dialog, _ ->
-                            dialog.dismiss()
-                        }.create().show()
+                val padding = resources.getDimensionPixelSize(R.dimen.stats_padding)
+                val categoryView = TextView(requireContext()).apply {
+                    var catText = incident.categoryName
+                    if (requireContext().resources.configuration.locales[0].toString() == "el_GR") {
+                        catText = resources.getStringArray(R.array.dangerCategoriesGr)
+                            .toList()[resources.getStringArray(R.array.dangerCategoriesEn)
+                            .indexOf(incident.categoryName)]
+                    }
+                    catText = catText.replaceFirstChar { cat ->
+                        if (cat.isLowerCase()) cat.titlecase(Locale.getDefault())
+                        else cat.toString()
                     }
 
-                }
-            }
-
-            val acceptBtn = ImageButton(requireContext()).apply {
-                setImageResource(R.drawable.accepted_icon)
-                scaleType = ImageView.ScaleType.FIT_XY
-                layoutParams = TableRow.LayoutParams((55 * density + 0.5f).toInt(),
-                    (45 * density + 0.5f).toInt()).apply {
-                    setMargins(
-                        (2 * density + 0.5f).toInt(),
-                        (3 * density + 0.5f).toInt(),
-                        (2 * density + 0.5f).toInt(),
-                        (3 * density + 0.5f).toInt()
-                    )
+                    text = catText
+                    // maxWidth = (8 * density + 0.5f).toInt()
+                    setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.preview_content_size))
+                    textAlignment = View.TEXT_ALIGNMENT_CENTER
+                    gravity = Gravity.CENTER
+                    layoutParams = TableRow.LayoutParams((binding.tableIncidents[0] as TableRow).getChildAt(0).width,
+                        TableRow.LayoutParams.WRAP_CONTENT)
                 }
 
-                setPadding(padding, padding, padding, padding)
-                contentDescription = context.getString(R.string.acceptIncidentContentDescription)
-                setOnClickListener {
-                    AlertDialog.Builder(requireContext()).apply {
-                        setTitle(context.getString(R.string.officer_incident_accept_title))
-                        setMessage(context.getString(R.string.officer_incident_accept_message))
-                        setPositiveButton(context.getString(R.string.yes)) { dialog, _ ->
-                            changeIncidentStatus(incident.id, "accepted", it.parent as View)
-                            dialog.dismiss()
+                val submissionsView = TextView(requireContext()).apply {
+                    text = incident.totalSubmissions.toString()
+                    
+                    setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.preview_content_size))
+                    textAlignment = View.TEXT_ALIGNMENT_CENTER
+                    gravity = Gravity.CENTER
+                    layoutParams = TableRow.LayoutParams(
+                        (binding.tableIncidents[0] as TableRow).getChildAt(1).width,
+                        TableRow.LayoutParams.WRAP_CONTENT)
+                }
+
+                val infoBtn = ImageButton(requireContext()).apply {
+                    setImageResource(R.drawable.info_icon)
+                    scaleType = ImageView.ScaleType.FIT_XY
+                    layoutParams = layoutParameters
+                    setPadding(padding, padding, padding, padding)
+                    contentDescription =
+                        context.getString(R.string.informationIncidentContentDescription)
+                    setOnClickListener {
+                        val bundle = bundleOf("incident" to incident)
+                        val infoDialog = IncidentInfoDialogFragment()
+                        infoDialog.arguments = bundle
+                        infoDialog.show(childFragmentManager, "InfoDialogFragment")
+                    }
+                }
+
+                val rejectBtn = ImageButton(requireContext()).apply {
+                    setImageResource(R.drawable.rejected_icon)
+                    scaleType = ImageView.ScaleType.FIT_XY
+                    layoutParams = layoutParameters
+                    setPadding(padding, padding, padding, padding)
+                    contentDescription = context.getString(R.string.rejectIncidentContentDescription)
+                    setOnClickListener {
+                        AlertDialog.Builder(requireContext()).apply {
+                            setTitle(context.getString(R.string.officer_incident_reject_title))
+                            setMessage(context.getString(R.string.officer_incident_reject_message))
+                            setPositiveButton(context.getString(R.string.yes)) { dialog, _ ->
+                                changeIncidentStatus(incident.id, "rejected", it.parent as View)
+                                dialog.dismiss()
+                            }
+                            setNegativeButton(context.getString(R.string.no)) { dialog, _ ->
+                                dialog.dismiss()
+                            }.create().show()
                         }
-                        setNegativeButton(context.getString(R.string.no)) { dialog, _ ->
-                            dialog.dismiss()
-                        }
-                    }.create().show()
 
+                    }
                 }
-            }
 
-            val divider = View(requireContext()).apply {
-                layoutParams =  TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    (8 * density + 0.5f).toInt()) // Height in pixels
-                setBackgroundColor(Color.GRAY)
-            }
+                val acceptBtn = ImageButton(requireContext()).apply {
+                    setImageResource(R.drawable.accepted_icon)
+                    scaleType = ImageView.ScaleType.FIT_XY
+                    layoutParams = layoutParameters
+                    setPadding(padding, padding, padding, padding)
+                    contentDescription = context.getString(R.string.acceptIncidentContentDescription)
+                    setOnClickListener {
+                        AlertDialog.Builder(requireContext()).apply {
+                            setTitle(context.getString(R.string.officer_incident_accept_title))
+                            setMessage(context.getString(R.string.officer_incident_accept_message))
+                            setPositiveButton(context.getString(R.string.yes)) { dialog, _ ->
+                                changeIncidentStatus(incident.id, "accepted", it.parent as View)
+                                dialog.dismiss()
+                            }
+                            setNegativeButton(context.getString(R.string.no)) { dialog, _ ->
+                                dialog.dismiss()
+                            }
+                        }.create().show()
 
-            val tableRow = TableRow(requireContext()).apply {
-                addView(categoryView)
-                addView(submissionsView)
-                addView(infoBtn)
-                addView(acceptBtn)
-                addView(rejectBtn)
-            }
+                    }
+                }
 
+                val divider = View(requireContext()).apply {
+                    layoutParams =  TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        resources.getDimensionPixelSize(R.dimen.divider_size))
+                    setBackgroundColor(Color.GRAY)
+                }
 
-            binding.tableIncidents.addView(tableRow)
-            binding.tableIncidents.addView(divider)
+                var tableRow: TableRow
+
+                Log.i("Screen width", userScreenWidth.toString())
+                if (userScreenWidth >= 600){ // tablet mode?
+                    val geocoder = Geocoder(requireContext())
+
+                    val locationView = TextView(requireContext()).apply {
+                        text = incident.latitude.toString()
+                        
+                        setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.preview_content_size))
+                        textAlignment = View.TEXT_ALIGNMENT_CENTER
+                        gravity = Gravity.CENTER
+                        layoutParams = TableRow.LayoutParams((binding.tableIncidents[0] as TableRow).getChildAt(3).width,
+                            TableRow.LayoutParams.WRAP_CONTENT)
+                    }
+
+                    geocoder.getFromLocation(incident.latitude,incident.longitude,1) {
+                            addresses ->
+                        locationView.text = addresses[0].locality
+                        locationView.tooltipText = "${addresses[0].countryName}, ${addresses[0].getAddressLine(0)}"
+                    }
+
+                    val dateView = TextView(requireContext()).apply {
+                        val date: Calendar = Calendar.getInstance()
+                        date.time = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+                            .parse(incident.submittedAt)
+                        layoutParams = TableRow.LayoutParams((binding.tableIncidents[0] as TableRow).getChildAt(2).width,
+                            TableRow.LayoutParams.WRAP_CONTENT)
+
+                        text = String.format("%d/%d/%d", date.get(Calendar.DAY_OF_MONTH),
+                            date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR))
+
+                        
+                        setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.preview_content_size))
+
+                        textAlignment = View.TEXT_ALIGNMENT_CENTER
+                        gravity = Gravity.CENTER
+
+                        tooltipText = String.format("%02d-%02d-%d %02d:%02d:%02d",
+                            date.get(Calendar.DAY_OF_MONTH),
+                            date.get(Calendar.MONTH) + 1,
+                            date.get(Calendar.YEAR),
+                            date.get(Calendar.HOUR_OF_DAY),
+                            date.get(Calendar.MINUTE),
+                            date.get(Calendar.SECOND))
+                    }
+
+                    tableRow = TableRow(requireContext()).apply {
+                        addView(categoryView)
+                        addView(submissionsView)
+                        addView(dateView)
+                        addView(locationView)
+                        addView(infoBtn)
+                        addView(acceptBtn)
+                        addView(rejectBtn)
+                    }
+                }
+                else{
+                    tableRow = TableRow(requireContext()).apply {
+                        addView(categoryView)
+                        addView(submissionsView)
+                        addView(infoBtn)
+                        addView(acceptBtn)
+                        addView(rejectBtn)
+                    }
+                }
+
+                binding.tableIncidents.addView(tableRow)
+                binding.tableIncidents.addView(divider)
         }
     }
 

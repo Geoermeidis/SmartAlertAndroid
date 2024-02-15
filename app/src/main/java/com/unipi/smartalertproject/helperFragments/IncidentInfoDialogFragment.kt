@@ -2,6 +2,7 @@ package com.unipi.smartalertproject.helperFragments
 
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -74,9 +75,10 @@ class IncidentInfoDialogFragment : DialogFragment() {
     }
 
     private fun setImageFromFirebaseStorage(imagePath: String){
-        if (imagePath == "none"){
+        Log.i("Image path", imagePath)
+        if (imagePath != "none"){
             val imageRef = storageRef.child(imagePath)
-
+            Log.i("Image ref", imageRef.listAll().toString())
             imageRef.downloadUrl.addOnSuccessListener { uri ->
                 Picasso.get().load(uri).into(binding.imageInfoText)
             }.addOnFailureListener {

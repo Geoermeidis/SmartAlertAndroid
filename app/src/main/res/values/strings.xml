@@ -102,7 +102,7 @@
     <string name="updateBtnText">Update</string>
     <string name="mapsViewBtnDesc">Maps view</string>
     <string name="sortSwitchBtnText">Ascending</string>
-    <string name="submissionsTextHeader">Submits</string>
+    <string name="submissionsTextHeader">Subs</string>
     <string name="actionsTextHeader">Actions</string>
     <string name="notificationHeader">Emergency notification: Extremely important</string>
     <string name="usernameRegisterHint">Username</string>
@@ -134,6 +134,9 @@
     <string name="officer_incident_reject_message">Are you sure you want to reject this submission?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="preview_date">Date</string>
+    <string name="refreshTokenExpirationDate">refreshTokenExpirationDate</string>
+    <string name="logout">Logout</string>
 
 
 </resources>

@@ -7,6 +7,7 @@
     android:layout_height="match_parent">
 
     <!-- Add the legend layout -->
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -16,24 +17,24 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="0dp"
+        android:layout_marginStart="-2dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="-1dp"
         map:mapId="@string/map_id"
         tools:context=".helperFragments.MapsFragment" />
 
     <include
         layout="@layout/map_legend_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="302dp"
+        android:layout_width="231dp"
+        android:layout_height="441dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="552dp"
-        android:layout_marginEnd="218dp"
-        android:layout_marginBottom="37dp" />
+        android:layout_marginStart="39dp"
+        android:layout_marginTop="46dp"
+        android:layout_marginEnd="1010dp"
+        android:layout_marginBottom="313dp" />
 
 </RelativeLayout>

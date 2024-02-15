@@ -18,6 +18,7 @@ class AuthManager(val context: Context) {
     private val utils: Utils = Utils()
 
     fun getAccessToken(): String? {
+        Log.d("Access token auth", sharedPreferences.getString(context.getString(R.string.accessToken), "")!!)
         return sharedPreferences.getString(context.getString(R.string.accessToken), "")
     }
 
@@ -29,6 +30,7 @@ class AuthManager(val context: Context) {
     }
 
     private fun getRefreshToken(): String? {
+        Log.d("Refresh token auth", sharedPreferences.getString(context.getString(R.string.refreshToken), "")!!)
         return sharedPreferences.getString(context.getString(R.string.refreshToken), "")
     }
 
@@ -39,6 +41,22 @@ class AuthManager(val context: Context) {
         }
     }
 
+    fun setRefreshTokenExpirationDate(time: Long) {
+        // set expiration in 7 days from now
+        with(sharedPreferences.edit()) {
+            this?.putLong(context.getString(R.string.refreshTokenExpirationDate), time + 24 * 60 * 60 * 1000L * 6)
+            this?.apply()
+        }
+    }
+    fun getRefreshTokenExpirationDate(): Long{
+        Log.i("Date auth", sharedPreferences.getLong(context.getString(R.string.refreshTokenExpirationDate), 0).toString())
+        return sharedPreferences.getLong(context.getString(R.string.refreshTokenExpirationDate), 0)
+    }
+
+    fun isRefreshTokenExpired(): Boolean {
+        return Calendar.getInstance().timeInMillis > getRefreshTokenExpirationDate()
+    }
+
     private fun setUserId(value: String){
         with(sharedPreferences.edit()) {
             this?.putString(context.getString(R.string.userid), value)
@@ -46,13 +64,14 @@ class AuthManager(val context: Context) {
         }
     }
 
-    fun getUserId(): String? {
-        return sharedPreferences.getString(context.getString(R.string.userid), "")
-    }
-
     fun setUserIdFromToken(token: String){
         val payload = decodeToken(token)
         setUserId(JSONObject(payload).getString(context.getString(R.string.jwtUserId)))
+    }
+
+    fun getUserId(): String? {
+        Log.d("UserId auth", sharedPreferences.getString(context.getString(R.string.userid), "")!!)
+        return sharedPreferences.getString(context.getString(R.string.userid), "")
     }
 
     private fun setUserRole(value: String){
@@ -63,6 +82,7 @@ class AuthManager(val context: Context) {
     }
 
     fun getUserRole(): String?{
+        Log.d("User role auth", sharedPreferences.getString(context.getString(R.string.userrole), "")!!)
         return sharedPreferences.getString(context.getString(R.string.userrole), "")
     }
 
@@ -93,6 +113,14 @@ class AuthManager(val context: Context) {
         } catch (e: Exception) {
             "Error parsing JWT: $e"
         }
+    }
+
+    fun logout() {
+        setUserRole("")
+        setUserId("")
+        setAccessToken("")
+        setRefreshToken("")
+        setRefreshTokenExpirationDate(0)
     }
 
     fun refreshToken(apiService: ApiService){

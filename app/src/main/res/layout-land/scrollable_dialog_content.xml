@@ -4,11 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".FirstFragment">
+
         <TextView
             android:id="@+id/textViewScrollableContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/scrollable_view_text"
+            android:textSize="16sp"
             android:padding="16dp"/>
 
 </androidx.core.widget.NestedScrollView>

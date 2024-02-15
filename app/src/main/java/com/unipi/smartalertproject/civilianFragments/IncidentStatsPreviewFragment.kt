@@ -31,7 +31,6 @@ import com.unipi.smartalertproject.helperFragments.IncidentInfoDialogFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.Date
 import java.util.Locale
 import kotlin.properties.Delegates
 
@@ -195,37 +194,41 @@ class IncidentStatsPreviewFragment : Fragment() {
     }
 
     private fun addHeadersToTable(){
-        val padding = (2 * density + 0.5f).toInt()
+        val padding = resources.getDimensionPixelSize(R.dimen.stats_padding)
         val categoryTextView = TextView(requireContext()).apply {
             text = getString(R.string.selectCategoryHeaderMessage)
             textAlignment =View.TEXT_ALIGNMENT_CENTER
-            setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.stats_header_size))
             setPadding(padding, padding, padding, padding)
-            layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.MATCH_PARENT, 1f)
+            layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                TableRow.LayoutParams.WRAP_CONTENT, 1f)
         }
 
         val locationTextView = TextView(requireContext()).apply {
             text = getString(R.string.statsLocationLabel)
             textAlignment = View.TEXT_ALIGNMENT_CENTER
-            setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.stats_header_size))
             setPadding(padding, padding, padding, padding)
-            layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.MATCH_PARENT, 2f)
+            layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                TableRow.LayoutParams.WRAP_CONTENT, 2f)
         }
 
         val dateTextView = TextView(requireContext()).apply {
             text = getString(R.string.statsDateActivationLabel)
             textAlignment = View.TEXT_ALIGNMENT_CENTER
-            setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.stats_header_size))
             setPadding(padding, padding, padding, padding)
-            layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.MATCH_PARENT, 1f)
+            layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                TableRow.LayoutParams.WRAP_CONTENT, 1f)
         }
 
         val infoTextView = TextView(requireContext()).apply {
-            text = "" // Assuming you want a space
+            text = ""
             textAlignment = View.TEXT_ALIGNMENT_CENTER
-            setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.stats_header_size))
             setPadding(padding, padding, padding, padding)
-            layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.MATCH_PARENT, 1f)
+            layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                    TableRow.LayoutParams.WRAP_CONTENT, 1f)
         }
 
         binding.tableIncidents.apply {
@@ -238,7 +241,7 @@ class IncidentStatsPreviewFragment : Fragment() {
             addView(View(requireContext()).apply {
                 layoutParams =  TableRow.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
-                    (5 * density + 0.5f).toInt()) // Height in pixels
+                    resources.getDimensionPixelSize(R.dimen.divider_size))
                 setBackgroundColor(Color.GRAY)
             })
         }
@@ -248,7 +251,7 @@ class IncidentStatsPreviewFragment : Fragment() {
         // get only accepted incidents
         incidentsList.filter { incident: Incident -> incident.state == 1 }
             .forEach { incident ->
-                val padding = (2 * density + 0.5f).toInt()
+                val padding = resources.getDimensionPixelSize(R.dimen.stats_padding)
 
                 val categoryView = TextView(requireContext()).apply {
 
@@ -263,24 +266,26 @@ class IncidentStatsPreviewFragment : Fragment() {
                         if (cat.isLowerCase()) cat.titlecase(Locale.getDefault()) else cat.toString()
                     }
 
-                    // TODO add cases for big screens or landscape?
                     text = catText
-
                     tooltipText = catText
 
-                    maxWidth = (8 * density + 0.5f).toInt()
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+                    setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.stats_content_size))
                     setPadding(padding, padding, padding, padding)
+
+                    textAlignment = View.TEXT_ALIGNMENT_CENTER
                     gravity = Gravity.CENTER
+                    layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                        TableRow.LayoutParams.WRAP_CONTENT, 1f)
                 }
 
                 val locationView = TextView(requireContext()).apply {
                     text = incident.latitude.toString()
                     setPadding(padding, padding, padding, padding)
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+                    setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.stats_content_size))
                     textAlignment = View.TEXT_ALIGNMENT_CENTER
                     gravity = Gravity.CENTER
-                    maxWidth = (12 * density + 0.5f).toInt()
+                    layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                        TableRow.LayoutParams.WRAP_CONTENT, 2f)
                 }
 
                 val geocoder = Geocoder(requireContext())
@@ -295,14 +300,18 @@ class IncidentStatsPreviewFragment : Fragment() {
                     val date: Calendar = Calendar.getInstance()
                     date.time = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
                         .parse(incident.submittedAt)
+                    layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                        TableRow.LayoutParams.WRAP_CONTENT, 1f)
 
                     text = String.format("%d/%d/%d", date.get(Calendar.DAY_OF_MONTH),
                                         date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR))
 
                     setPadding(padding, padding, padding, padding)
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+                    setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.stats_content_size))
+
                     textAlignment = View.TEXT_ALIGNMENT_CENTER
                     gravity = Gravity.CENTER
+
                     tooltipText = String.format("%02d-%02d-%d %02d:%02d:%02d",
                             date.get(Calendar.DAY_OF_MONTH),
                             date.get(Calendar.MONTH) + 1,
@@ -314,18 +323,24 @@ class IncidentStatsPreviewFragment : Fragment() {
 
                 val infoBtn = ImageButton(requireContext()).apply {
                     setImageResource(R.drawable.info_icon)
+
                     scaleType = ImageView.ScaleType.FIT_XY
-                    layoutParams = TableRow.LayoutParams((50 * density + 0.5f).toInt(),
-                        (50 * density + 0.5f).toInt()).apply {
+
+                    layoutParams = TableRow.LayoutParams(0,0).apply {
                         setMargins(
-                            (2 * density + 0.5f).toInt(),
-                            (3 * density + 0.5f).toInt(),
-                            (2 * density + 0.5f).toInt(),
-                            (3 * density + 0.5f).toInt()
+                            resources.getDimensionPixelSize(R.dimen.stats_info_marginH),
+                            resources.getDimensionPixelSize(R.dimen.stats_info_marginV),
+                            resources.getDimensionPixelSize(R.dimen.stats_info_marginH),
+                            resources.getDimensionPixelSize(R.dimen.stats_info_marginV)
                         )
+                        height = resources.getDimensionPixelSize(R.dimen.button_info_height)
+                        width = resources.getDimensionPixelSize(R.dimen.button_info_width)
+                        weight = 1f
                     }
+
                     setPadding(padding, padding, padding, padding)
                     contentDescription = "Information"
+
                     setOnClickListener {
                         val bundle = bundleOf("incident" to incident)
                         val infoDialog = IncidentInfoDialogFragment()
@@ -345,7 +360,7 @@ class IncidentStatsPreviewFragment : Fragment() {
                 binding.tableIncidents.addView(View(requireContext()).apply {
                     layoutParams =  TableRow.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
-                        (5 * density + 0.5f).toInt()) // Height in pixels
+                        resources.getDimensionPixelSize(R.dimen.divider_size)) // Height in pixels
                     setBackgroundColor(Color.GRAY)
                 })
             }

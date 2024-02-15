@@ -12,67 +12,66 @@
 
         <Button
             android:id="@+id/button_go_to_stats"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginBottom="100dp"
+            android:layout_width="600dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="96dp"
             android:text="@string/incidentsBtnCivText"
-            android:textSize="24sp"
+            android:textSize="30sp"
             app:layout_constraintBottom_toTopOf="@+id/button_go_to_submit"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
 
         <Button
             android:id="@+id/button_go_to_submit"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginBottom="104dp"
+            android:layout_width="600dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="272dp"
             android:text="@string/submitIncidentTextBtn"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/map_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/map_button"
+            android:layout_width="600dp"
+            android:layout_height="80dp"
+            android:layout_marginBottom="96dp"
+            android:text="@string/buttonMapOfficerText"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toTopOf="@+id/button_logout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.75"
+            app:layout_constraintStart_toEndOf="@+id/button_go_to_stats"
+            app:layout_constraintTop_toBottomOf="@+id/text_mm_header_civ"
+            app:layout_constraintVertical_bias="1.0" />
 
         <TextView
             android:id="@+id/text_mm_header_civ"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/main_menu"
-            android:textSize="30sp"
+            android:textSize="40sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/button_go_to_stats"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.478" />
+            app:layout_constraintVertical_bias="0.42" />
 
         <Button
             android:id="@+id/button_logout"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginBottom="168dp"
+            android:layout_width="600dp"
+            android:layout_height="80dp"
+            android:layout_marginBottom="272dp"
             android:text="@string/logout"
-            android:textSize="24sp"
+            android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/map_button"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginBottom="96dp"
-            android:text="@string/buttonMapOfficerText"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/button_logout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.75"
+            app:layout_constraintStart_toEndOf="@+id/button_go_to_submit" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

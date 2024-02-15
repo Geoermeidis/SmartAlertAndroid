@@ -83,7 +83,7 @@
     <string name="updateBtnText">Ενημέρωση</string>
     <string name="mapsViewBtnDesc">Χάρτης</string>
     <string name="sortSwitchBtnText">Αύξουσα</string>
-    <string name="submissionsTextHeader">Υποβολές</string>
+    <string name="submissionsTextHeader">Υπ/ές</string>
     <string name="actionsTextHeader">Ενέργειες</string>
     <string name="notificationHeader">Περιστατικό έκτακτης ανάγκης: Εξαιρετικά σημαντικό</string>
     <string name="usernameRegisterHint">Όνομα χρήστη</string>
@@ -115,4 +115,6 @@
     <string name="officer_incident_reject_message">Είσαι σίγουρος ότι θέλετε αν απορρίψετε το περιστατικό αυτό?</string>
     <string name="yes">Ναι</string>
     <string name="no">Όχι</string>
+    <string name="preview_date">Ημ/μηνία</string>
+    <string name="logout">Logout</string>
 </resources>

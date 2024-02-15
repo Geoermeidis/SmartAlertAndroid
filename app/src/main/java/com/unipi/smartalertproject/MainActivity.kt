@@ -2,29 +2,26 @@ package com.unipi.smartalertproject
 
 import android.location.Location
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
 import androidx.core.os.bundleOf
+import androidx.navigation.Navigation
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.firestore
+import com.unipi.smartalertproject.api.ApiService
+import com.unipi.smartalertproject.api.AuthManager
 import com.unipi.smartalertproject.api.Notification
+import com.unipi.smartalertproject.api.RetrofitClient
 import com.unipi.smartalertproject.databinding.ActivityMainBinding
 import com.unipi.smartalertproject.helperFragments.NotificationDialogFragment
 import com.unipi.smartalertproject.services.LocationService
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private lateinit var apiService: ApiService
+    private lateinit var authManager: AuthManager
     private val db = Firebase.firestore
     private var uses = 0
     private lateinit var locationService: LocationService
@@ -34,18 +31,29 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        authManager = AuthManager(baseContext)
+        apiService = RetrofitClient.retrofit.create(ApiService::class.java)
         locationService = LocationService(this)
-        setSupportActionBar(binding.toolbar)
 
-        baseContext.resources.configuration.locales[0]
+        // Refresh token every time the user logs in
+        // That happens only if the refresh token is valid
 
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        // If refresh token is expired or user has not logged in yet then go to login page
+        if (authManager.getUserId() == null || authManager.isRefreshTokenExpired()){
+            Navigation.findNavController(findViewById(R.id.nav_host_fragment_content_main)).navigate(R.id.FirstFragment)
+        }
+        else{
+            // refresh user access token
+            authManager.refreshToken(apiService)
+            if (!authManager.getUserRole().isNullOrEmpty()){
+                if ( authManager.getUserRole() == "Officer"){
+                    Navigation.findNavController(findViewById(R.id.nav_host_fragment_content_main)).navigate(R.id.mainMenuOfficerFragment)
+                }
+                else{
+                    Navigation.findNavController(findViewById(R.id.nav_host_fragment_content_main)).navigate(R.id.mainMenuCivilianFragment)
+                }
+            }
 
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
         }
 
         val docRef = db.collection("Incidents")
@@ -103,7 +111,7 @@ class MainActivity : AppCompatActivity() {
                                 notificationDialog.show(this.supportFragmentManager,
                                     "NotificationDialogFragment")
 
-                                Log.d("Item read", "Current data: ${notification}")
+                                Log.d("Item read", "Current data: $notification")
                             }
                         }
                     }
@@ -117,31 +125,5 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-    }
-
-    override fun onStart() {
-        super.onStart()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
     }
 }

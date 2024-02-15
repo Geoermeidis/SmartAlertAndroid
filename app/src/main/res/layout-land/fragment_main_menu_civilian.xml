@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".civilianFragments.MainMenuCivilianFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/map_button"
+            android:layout_width="400dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="232dp"
+            android:text="@string/buttonMapOfficerText"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_mm_header_civ"
+            app:layout_constraintVertical_bias="0.981" />
+
+        <Button
+            android:id="@+id/button_logout"
+            android:layout_width="400dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="104dp"
+            android:text="@string/logout"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.542"
+            app:layout_constraintStart_toEndOf="@+id/button_go_to_submit"
+            app:layout_constraintTop_toBottomOf="@+id/map_button"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <Button
+            android:id="@+id/button_go_to_stats"
+            android:layout_width="400dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/incidentsBtnCivText"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/button_go_to_submit"
+            app:layout_constraintEnd_toStartOf="@+id/map_button"
+            app:layout_constraintHorizontal_bias="0.536"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.661" />
+
+        <Button
+            android:id="@+id/button_go_to_submit"
+            android:layout_width="400dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="44dp"
+            android:layout_marginBottom="104dp"
+            android:text="@string/submitIncidentTextBtn"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/text_mm_header_civ"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/main_menu"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/button_go_to_stats"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.324" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

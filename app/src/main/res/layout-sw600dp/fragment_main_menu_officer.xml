@@ -8,31 +8,41 @@ tools:context=".officerFragments.MainMenuOfficerFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="43dp">
+        android:layout_height="match_parent">
 
         <Button
             android:id="@+id/button_go_to_submissions"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="130dp"
             android:layout_marginBottom="104dp"
             android:text="@string/buttonSubOfficerText"
-            android:textSize="24sp"
+            android:textSize="48sp"
             app:layout_constraintBottom_toTopOf="@+id/button_go_to_map"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.984" />
+            app:layout_constraintVertical_bias="1.0" />
+
+        <Button
+            android:id="@+id/button_logout"
+            android:layout_width="0dp"
+            android:layout_height="130dp"
+            android:layout_marginBottom="272dp"
+            android:text="@string/logout"
+            android:textSize="48sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/button_go_to_map"
             android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginBottom="104dp"
+            android:layout_height="130dp"
+            android:layout_marginBottom="108dp"
             android:text="@string/buttonMapOfficerText"
-            android:textSize="24sp"
+            android:textSize="48sp"
             app:layout_constraintBottom_toTopOf="@+id/button_logout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -43,26 +53,13 @@ tools:context=".officerFragments.MainMenuOfficerFragment">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/main_menu"
-            android:textSize="30sp"
+            android:textSize="55sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/button_go_to_submissions"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.598" />
-
-        <Button
-            android:id="@+id/button_logout"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginBottom="212dp"
-            android:text="@string/logout"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintVertical_bias="0.587" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

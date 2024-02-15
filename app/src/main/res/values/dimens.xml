@@ -1,3 +1,15 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="button_info_height">50dp</dimen>
+    <dimen name="button_info_width">50dp</dimen>
+    <dimen name="stats_header_size">16sp</dimen>
+    <dimen name="stats_content_size">14sp</dimen>
+    <dimen name="stats_info_marginH">2dp</dimen>
+    <dimen name="stats_info_marginV">3dp</dimen>
+    <dimen name="stats_padding">2dp</dimen>
+    <dimen name="divider_size">5dp</dimen>
+    <dimen name="scrollable_view_text">16sp</dimen>
+    <dimen name="preview_content_size">16sp</dimen>
+    <dimen name="incident_button_height">45dp</dimen>
+    <dimen name="incident_button_width">55dp</dimen>
 </resources>
