@@ -8,6 +8,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.firestore
 import com.unipi.smartalertproject.api.ApiService
 import com.unipi.smartalertproject.api.AuthManager
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         authManager = AuthManager(baseContext)
         apiService = RetrofitClient.retrofit.create(ApiService::class.java)
         locationService = LocationService(this)
@@ -40,20 +42,22 @@ class MainActivity : AppCompatActivity() {
 
         // If refresh token is expired or user has not logged in yet then go to login page
         if (authManager.getUserId() == null || authManager.isRefreshTokenExpired()){
-            Navigation.findNavController(findViewById(R.id.nav_host_fragment_content_main)).navigate(R.id.FirstFragment)
+            Navigation.findNavController(findViewById(R.id.nav_host_fragment_content_main))
+                .navigate(R.id.FirstFragment)
         }
         else{
             // refresh user access token
             authManager.refreshToken(apiService)
             if (!authManager.getUserRole().isNullOrEmpty()){
                 if ( authManager.getUserRole() == "Officer"){
-                    Navigation.findNavController(findViewById(R.id.nav_host_fragment_content_main)).navigate(R.id.mainMenuOfficerFragment)
+                    Navigation.findNavController(findViewById(R.id.nav_host_fragment_content_main))
+                        .navigate(R.id.mainMenuOfficerFragment)
                 }
                 else{
-                    Navigation.findNavController(findViewById(R.id.nav_host_fragment_content_main)).navigate(R.id.mainMenuCivilianFragment)
+                    Navigation.findNavController(findViewById(R.id.nav_host_fragment_content_main))
+                        .navigate(R.id.mainMenuCivilianFragment)
                 }
             }
-
         }
 
         val docRef = db.collection("Incidents")
@@ -67,56 +71,61 @@ class MainActivity : AppCompatActivity() {
 
             Log.i("Information uses", uses.toString())
             if (snapshot != null && !snapshot.isEmpty) {
-                val data = snapshot.documents.last().data
+                for (change in snapshot.documentChanges) {
+                    if (change.type == DocumentChange.Type.ADDED) {
+                        val lastDoc = change.document.data
 
-                if (data != null && uses > 0){
-                    val notification = Notification(
-                        categoryName = data["CategoryName"].toString(),
-                        submittedAt = data["SubmittedAt"] as Timestamp,
-                        latitude = data["Latitude"] as Double,
-                        longitude = data["Longitude"] as Double,
-                        maxDistanceNotification = data["MaxDistanceNotification"] as Long,
-                        websiteURL = data["WebsiteURL"].toString()
-                    )
-
-                    // Get current location
-                    locationService.getLocation { currentLocation ->
-
-                        val currentLatitude = currentLocation["latitude"]
-                        val currentLongitude = currentLocation["longitude"]
-                        val results = FloatArray(3)
-
-                        // check for nullables
-                        if (currentLatitude != null && currentLongitude != null) {
-                            // get results from comparison of the 2 locations
-
-                            Log.i("Current location", "$currentLatitude, $currentLongitude")
-                            Log.i(
-                                "Incident location",
-                                "${notification.latitude}, ${notification.longitude}"
+                        if (uses > 0){
+                            val notification = Notification(
+                                categoryName = lastDoc["CategoryName"].toString(),
+                                submittedAt = lastDoc["SubmittedAt"] as Timestamp,
+                                latitude = lastDoc["Latitude"] as Double,
+                                longitude = lastDoc["Longitude"] as Double,
+                                maxDistanceNotification = lastDoc["MaxDistanceNotification"] as Long,
+                                websiteURL = lastDoc["WebsiteURL"].toString()
                             )
-                            Log.i("Max distance in meters", "${notification.maxDistanceNotification}")
+                            Log.e("Distance from json", lastDoc["MaxDistanceNotification"].toString())
+                            // Get current location
+                            locationService.getLocation { currentLocation ->
 
-                            Location.distanceBetween(
-                                notification.latitude, notification.longitude,
-                                currentLatitude, currentLongitude, results
-                            )
+                                val currentLatitude = currentLocation["latitude"]
+                                val currentLongitude = currentLocation["longitude"]
+                                val results = FloatArray(3)
 
-                            Log.i("Distance difference", "${results[0]}")
-                            if ( results[0] <= 1.1 * notification.maxDistanceNotification){
-                                val bundle = bundleOf("incident" to notification)
-                                val notificationDialog = NotificationDialogFragment()
-                                notificationDialog.arguments = bundle
+                                // check for nullables
+                                if (currentLatitude != null && currentLongitude != null) {
+                                    // get results from comparison of the 2 locations
 
-                                notificationDialog.show(this.supportFragmentManager,
-                                    "NotificationDialogFragment")
+                                    Log.i("Current location", "$currentLatitude, $currentLongitude")
+                                    Log.i(
+                                        "Incident location",
+                                        "${notification.latitude}, ${notification.longitude}"
+                                    )
+                                    Log.i("Max distance in meters", "${notification.maxDistanceNotification}")
 
-                                Log.d("Item read", "Current data: $notification")
+                                    Location.distanceBetween(
+                                        notification.latitude, notification.longitude,
+                                        currentLatitude, currentLongitude, results
+                                    )
+
+                                    Log.i("Distance difference", "${results[0]}")
+                                    if ( results[0] <= 1.1 * notification.maxDistanceNotification){
+                                        val bundle = bundleOf("incident" to notification)
+                                        val notificationDialog = NotificationDialogFragment()
+                                        notificationDialog.arguments = bundle
+
+                                        notificationDialog.show(this.supportFragmentManager,
+                                            "NotificationDialogFragment")
+
+                                        Log.d("Item read", "Current data: $notification")
+                                    }
+                                }
                             }
+
                         }
                     }
-
                 }
+
 
                 uses += 1
 

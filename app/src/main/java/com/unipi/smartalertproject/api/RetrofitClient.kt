@@ -13,8 +13,8 @@ import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
 object RetrofitClient {
-    private const val BASE_URL = "https://10.0.2.2:7129/"
-
+    private const val BASE_URL = "https://ad84-109-242-227-110.ngrok-free.app"
+    // 10.0.0.2
     val retrofit: Retrofit by lazy {
 
         val trustAllCerts = arrayOf<TrustManager>(TrustAllCerts())

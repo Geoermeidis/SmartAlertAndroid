@@ -36,27 +36,9 @@ class MapsFragment : Fragment() {
     private lateinit var incidents: List<Incident>
     private var authManager: AuthManager? = null
     private val apiService = RetrofitClient.retrofit.create(ApiService::class.java)
-    // TODO
-//    private val disasterToColor = mapOf(
-//        "tornado"    to ResourcesCompat.getColor(resources, R.color.tornado, null),
-//        "earthquake" to ResourcesCompat.getColor(resources, R.color.earthquake, null),
-//        "avalanche"  to ResourcesCompat.getColor(resources, R.color.avalanche, null),
-//        "landslide"  to ResourcesCompat.getColor(resources, R.color.landslide, null),
-//        "blizzard"   to ResourcesCompat.getColor(resources, R.color.blizzard, null),
-//        "storm"      to ResourcesCompat.getColor(resources, R.color.storm, null),
-//        "tsunami"    to ResourcesCompat.getColor(resources, R.color.tsunami, null),
-//        "floods"     to ResourcesCompat.getColor(resources, R.color.floods, null),
-//        "cyclone"    to ResourcesCompat.getColor(resources, R.color.cyclone, null),
-//        "wildfire"   to ResourcesCompat.getColor(resources, R.color.wildfire, null),
-//        "urban fire" to ResourcesCompat.getColor(resources, R.color.urbanfire, null),
-//        "volcano"    to ResourcesCompat.getColor(resources, R.color.volcano, null),
-//        "heatwave"   to ResourcesCompat.getColor(resources, R.color.heatwave, null)
-//    )
 
     private val callback = OnMapReadyCallback { googleMap ->
         Log.i("On callback", "")
-        // get only submitted for officer and accepted for user
-        // get only events for the last week for the civilians so the map does not get crowded
         getIncidents(googleMap)
     }
 
@@ -118,27 +100,7 @@ class MapsFragment : Fragment() {
                                     "${getString(R.string.mapMarkerMessageSubmission1)}${incident.submittedAt}\n${getString(R.string.mapsMarkerMessageSubmission2)}${incident.totalSubmissions}"
                                 )
 
-                            val marker = AdvancedMarkerOptions()
-                            marker.position(location)
-                                .title(
-                                    "${getString(R.string.mapMarkerMessageSubmission1)}${incident.submittedAt}\n${getString(R.string.mapsMarkerMessageSubmission2)}${incident.totalSubmissions}"
-                                )
-
-                            if (googleMap.mapCapabilities.isAdvancedMarkersAvailable){
-                                val pinConfigBuilder: PinConfig.Builder = PinConfig.builder().apply {
-                                    setBackgroundColor(Color.YELLOW)
-                                    setBorderColor(Color.BLUE)
-                                }
-                                // disasterToColor[category]?.let {
-                                // pinConfigBuilder.setBackgroundColor(it)
-                                //}
-                                val pinConfig: PinConfig = pinConfigBuilder.build()
-
-                                marker.icon(BitmapDescriptorFactory.fromPinConfig(pinConfig))
-                                googleMap.addMarker(marker)
-                            }
-                            else
-                                googleMap.addMarker(markerDefault)
+                            googleMap.addMarker(markerDefault)
                         }
 
                         val athens = LatLng(37.983810, 23.727539)

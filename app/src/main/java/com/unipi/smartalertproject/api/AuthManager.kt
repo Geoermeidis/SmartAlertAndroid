@@ -48,6 +48,7 @@ class AuthManager(val context: Context) {
             this?.apply()
         }
     }
+
     fun getRefreshTokenExpirationDate(): Long{
         Log.i("Date auth", sharedPreferences.getLong(context.getString(R.string.refreshTokenExpirationDate), 0).toString())
         return sharedPreferences.getLong(context.getString(R.string.refreshTokenExpirationDate), 0)

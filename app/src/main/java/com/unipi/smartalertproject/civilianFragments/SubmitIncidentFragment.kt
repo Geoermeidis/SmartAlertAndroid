@@ -114,7 +114,7 @@ class SubmitIncidentFragment : Fragment(), CameraFragment.ISendDataFromDialog{
 
         var longitude: Double
         var latitude: Double
-2
+
         locationService.getLocation { location ->
             binding.progressBar.visibility = View.VISIBLE
             // Handle the obtained location here
